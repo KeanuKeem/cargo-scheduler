@@ -1,0 +1,17 @@
+.shipment__right__box-top button {
+    position: absolute;
+    top: 50%;
+    right: 30%;
+    transform: translateY(-50%);
+}
+
+.shipmentFAK__right__box-bottom {
+    width: 40%;
+    margin: 0 auto;
+    padding-top: 1rem;
+}
+
+.shipmentFAK__right__box-bottom ul li {
+    padding: 1rem;
+    cursor: pointer;
+}

@@ -1,0 +1,14 @@
+.shipment {
+    width: 60%;
+    margin: 0 auto;
+    overflow: auto;
+}
+
+.shipment h2 {
+    margin-top: 5rem;
+}
+
+.shipment__type {
+    display: flex;
+    margin-top: 1rem;
+}

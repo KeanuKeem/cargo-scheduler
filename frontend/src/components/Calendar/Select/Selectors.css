@@ -1,0 +1,53 @@
+.selectors {
+    width: 80%;
+    height: 2rem;
+    margin: 2rem auto 0 auto;
+    position: relative;
+}
+
+.selectors__open {
+    width: 80%;
+    height: 5rem;
+    margin: 2rem auto 0 auto;
+    position: relative;
+}
+
+.selectors__left {
+    position: absolute;
+    left: 0;
+}
+
+.selectors__vessel {
+    position: absolute;
+    right: 0;
+}
+
+.selectors__vessel__show {
+    position: absolute;
+    width: max-content;
+    top: 80%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.selectors__vessel__show input {
+    margin-right: .5rem;
+}
+
+.selectors__vessel input:nth-child(2n) {
+    width: 4rem;
+}
+
+.selectors__center {
+    position: absolute;
+    right: 30%;
+}
+
+.selectors__center-margin {
+    margin: 0 1rem;
+}
+
+.selectors__right {
+    position: absolute;
+    right: 20%;
+}

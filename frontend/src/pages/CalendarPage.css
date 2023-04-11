@@ -1,0 +1,9 @@
+.contents {
+    width: 80%;
+    height: 100vh;
+    padding-bottom: 5%;
+    background-color: beige;
+    position: absolute;
+    top: 8vh;
+    right: 0;
+}

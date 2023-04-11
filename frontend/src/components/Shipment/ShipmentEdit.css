@@ -1,0 +1,164 @@
+.shipmentEdit__top-menu {
+    padding-top: 5%;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.shipmentEdit__top-menu p {
+    font-size: .8rem;
+}
+
+.shipmentEdit__top-menu-list {   
+    border-bottom: 1px solid gray;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.shipmentEdit__top-menu-list li {
+    margin: 0 1rem;
+}
+
+.shipmentEdit__top-menu-list h1:first-child {
+    margin-right: 3rem;
+}
+
+.shipmentEdit__top-menu-list li span {
+    display: flex;
+}
+
+.shipmentEdit__top-menu-list li span p {
+    margin-right: .5rem;
+}
+
+.shipmentEdit__top-menu-list__btn {
+    position: absolute;
+    top: 7%;
+    right: 2%;
+}
+
+.shipmentEdit__detail {
+    margin-top: 5%;
+    display: flex;
+}
+
+.shipmentEdit__left,
+.shipmentEdit__right {
+    width: 50%;
+}
+
+.shipmentEdit__left:after,
+.shipmentEdit__right:after {
+    width: 50%;
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.shipmentEdit__left__label,
+.shipmentEdit__left__input {
+    float: left;
+    width: 30%;
+    height: 50%;
+    margin-left: 10%;
+}
+
+.shipmentEdit__left__label p {
+    margin-bottom: 15%;
+}
+
+.shipmentEdit__left__input p {
+    margin-bottom: 10%;
+}
+
+.shipmentEdit__left__notes {
+    border: 1px solid #000;
+    width: 90%;
+    height: 12rem;
+    border-radius: 2%;
+    margin: 15rem 0 0 1.5rem;
+    position: relative;
+}
+
+.notes-label {
+    position: absolute;
+    font-size: 0.8rem;
+    top: -4.5%;
+    left: 3.5%;
+    background-color: #FFF;
+    padding: 0 2%;
+    margin: 0;
+}
+
+.shipmentEdit__left__notes p {
+    padding: 1rem;
+}
+
+.shipmentEdit__right__box {
+    width: 80%;
+    margin: 0 auto;
+    height: 27rem;
+    background-color: rgb(223, 223, 223);
+    border-radius: 2%;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.242);
+}
+
+.shipmentEdit__right__box-top {
+    height: 3rem;
+    border-bottom: 1px solid #000;
+    position: relative;
+}
+
+.shipmentEdit__right__box-top p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shipmentEdit__right__box-bottom {
+    display: flex;
+}
+
+.shipmentEdit__right__box-bottom__left,
+.shipmentEdit__right__box-bottom__right {
+    width: 50%;
+    display: flex;
+    text-align: center;
+}
+
+.shipmentEdit__right__box-bottom__left ul,
+.shipmentEdit__right__box-bottom__right ul {
+    list-style-type: none;
+    margin-top: 2rem;
+    padding-left: 1.5rem;
+}
+
+.shipmentEdit__right__box-bottom__left li {
+    display: flex;
+    margin-bottom: 1.5rem;
+}
+
+.shipmentEdit__right__box-bottom__left li input {
+    vertical-align: middle;
+    margin-right: 1rem;
+}
+
+.shipmentEdit__bottom {
+    width: 80%;
+    margin: 2rem auto 0 auto;
+    position: relative;
+}
+
+.shipmentEdit__bottom button:first-child{
+    margin-top: 3rem;
+    position: absolute;
+    right: 20%;
+}
+
+.shipmentEdit__bottom button:last-child{
+    margin-top: 3rem;
+    position: absolute;
+    right: 10%;
+}

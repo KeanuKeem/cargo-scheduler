@@ -1,0 +1,51 @@
+.import-form__import-form {
+    margin-bottom: 3rem;
+}
+
+.import-form__one-col {
+    margin-top: 1rem;
+    display: flex;
+}
+
+.import-form__one-col__input {
+    display: flex;
+    border: 2px solid;
+}
+
+.import-form__two-cols {
+    display: inline-flex;
+    width: 100%;
+}
+
+.import-form__left, .import-form__right {
+    margin-top: 1rem;
+    width: 50%;
+}
+
+.import-form__left label:not(:first-child),
+.import-form__right label:not(:first-child) {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.import-form__left input,
+.import-form__right input {
+    width: 90%;
+    border: 2px solid;
+}
+
+textarea {
+    width: 95%;
+}
+
+.import-form__btn-container {
+    width: 90%;
+    height: 7rem;
+    text-align: right;
+}
+
+.import-form__btn-container button {
+    margin: 5rem 1rem 0 0;
+}
+
+

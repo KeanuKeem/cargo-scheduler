@@ -1,4 +1,5 @@
 const Shipment = require("../models/Shipment");
+const monthChanger = require("../references/schedule-references");
 
 const createShipment = (req, res) => {
   // const isStepOneChecked = ;
@@ -21,6 +22,11 @@ const createShipment = (req, res) => {
     depot: req.body.depot,
     notes: req.body.notes,
     fakShipments: [],
+    day: {
+      date: Number(req.body.schedule.slice(8, 10)),
+      month: monthChanger(req.body.schedule.slice(5, 7)),
+      year: Number(req.body.schedule.slice(0, 4)),
+    },
     mbl: {
       number: req.body.mblNumber,
       isSurr: false,
@@ -167,8 +173,8 @@ const updateShipment = (req, res) => {
       contType: req.body.contType,
       schedule: req.body.schedule,
       port: req.body.port,
-      vessel: req.body.vessel,
-      voyage: req.body.voyage,
+      vessel: req.body.vessel.toUpperCase(),
+      voyage: req.body.voyage.toUpperCase(),
       mbl: {
         number: req.body.mbl.number,
         isSurr: req.body.mbl.isSurr,
@@ -179,10 +185,15 @@ const updateShipment = (req, res) => {
         isSurr: req.body.hbl.isSurr,
         date: req.body.hbl.date,
       },
-      container: req.body.container,
+      container: req.body.container.toUpperCase(),
       depot: req.body.depot,
       notes: req.body.notes,
       fakShipments: req.body.fakShipments,
+      day: {
+        date: Number(req.body.schedule.slice(8, 10)),
+        month: monthChanger(req.body.schedule.slice(5, 7)),
+        year: Number(req.body.schedule.slice(0, 4)),
+      },
       stepOne: {
         isHandle: req.body.stepOne.isHandle,
         isDone: req.body.stepOne.isDone,
@@ -259,10 +270,15 @@ const updateShipmentsInFak = async (req, res) => {
         schedule: req.body.schedule,
         prevSchedule: req.body.prevSchedule,
         port: req.body.port,
-        vessel: req.body.vessel,
-        voyage: req.body.voyage,
-        container: req.body.container,
+        vessel: req.body.vessel.toUpperCase(),
+        voyage: req.body.voyage.toUpperCase(),
+        container: req.body.container.toUpperCase(),
         depot: req.body.depot,
+        day: {
+          date: Number(req.body.schedule.slice(8, 10)),
+          month: monthChanger(req.body.schedule.slice(5, 7)),
+          year: Number(req.body.schedule.slice(0, 4)),
+        },
       }
     ).catch((err) => {
       res.status(500).send(err);
@@ -280,6 +296,11 @@ const updateShipmentsInFak = async (req, res) => {
       container: req.body.container,
       depot: req.body.depot,
       notes: req.body.notes,
+      day: {
+        date: Number(req.body.schedule.slice(8, 10)),
+        month: monthChanger(req.body.schedule.slice(5, 7)),
+        year: Number(req.body.schedule.slice(0, 4)),
+      },
     }
   )
     .then((result) => {
@@ -345,6 +366,129 @@ const deleteShipmentInFak = async (req, res) => {
     });
 };
 
+// const getShipmentsByVessel = async (req, res) => {
+//   const vessel = req.query.vessel.toUpperCase();
+//   const voyage = req.query.voyage.toUpperCase();
+
+//   try {
+//     const shipments = await Shipment.find({ vessel, voyage });
+//     res.status(200).send(shipments);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).send(err);
+//   }
+// };
+
+const updateVesselSchedules = async (req, res) => {
+  try {
+    const vessel = req.body[0].vessel.toUpperCase();
+    const voyage = req.body[0].voyage.toUpperCase();
+    const newSchedule = req.body[0].newSchedule;
+    const date = Number(newSchedule.slice(8, 10));
+    const month = monthChanger(newSchedule.slice(5, 7));
+    const year = Number(newSchedule.slice(0, 4));
+    const cargoType = req.body[0].type;
+
+    if (cargoType === "All") {
+      await Shipment.updateMany(
+        { vessel, voyage },
+        {
+          $set: {
+            schedule: newSchedule,
+            day: {
+              date,
+              month,
+              year,
+            },
+          },
+        }
+      ).then((result) => {
+        res.status(200).send(result);
+      });
+    } else {
+      await Shipment.updateMany(
+        { vessel, voyage, cargoType },
+        {
+          $set: {
+            schedule: newSchedule,
+            day: {
+              date,
+              month,
+              year,
+            },
+          },
+        }
+      ).then((result) => {
+        res.status(200).send(result);
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+const getScheduleByDay = async (req, res) => {
+  try {
+    const month = req.query.month;
+    const year = req.query.year;
+    const type = req.query.type;
+    const finalSchedule = [
+      {
+        month,
+        year,
+        shipments: [],
+      },
+    ];
+
+    let schedule;
+    if (type === "All") {
+      schedule = await Shipment.find({ "day.month": month, "day.year": year });
+    } else {
+      schedule = await Shipment.find({
+        "day.month": month,
+        "day.year": year,
+        cargoType: type,
+      });
+    }
+
+    for (const shipment of schedule) {
+      const filteredSchedule = finalSchedule[0].shipments.filter((dateObj) => {
+        return dateObj.date === shipment.day.date;
+      });
+      if (filteredSchedule.length > 0) {
+        if (shipment.contType === "LCLFAK") {
+          continue;
+        } else {
+          await filteredSchedule[0].values.push({
+            id: shipment.ref,
+            contType: shipment.contType,
+            cargoType: shipment.cargoType,
+          });
+        }
+      } else {
+        if (shipment.contType === "LCLFAK") {
+          continue;
+        } else {
+          await finalSchedule[0].shipments.push({
+            date: shipment.day.date,
+            values: [
+              {
+                id: shipment.ref,
+                contType: shipment.contType,
+                cargoType: shipment.cargoType,
+              },
+            ],
+          });
+        }
+      }
+    }
+
+    res.status(200).send(finalSchedule);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
 exports.createShipment = createShipment;
 exports.getShipment = getShipment;
 exports.saveShipment = saveShipment;
@@ -354,3 +498,6 @@ exports.updateShipmentsInFak = updateShipmentsInFak;
 exports.deleteShipment = deleteShipment;
 exports.deleteShipments = deleteShipments;
 exports.deleteShipmentInFak = deleteShipmentInFak;
+// exports.getShipmentsByVessel = getShipmentsByVessel;
+exports.updateVesselSchedules = updateVesselSchedules;
+exports.getScheduleByDay = getScheduleByDay;

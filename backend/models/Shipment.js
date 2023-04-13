@@ -46,6 +46,17 @@ const shipmentSchema = new mongoose.Schema({
     required: true,
     default: [],
   },
+  day: {
+    date: {
+      type: Number,
+    },
+    month: {
+      type: String,
+    },
+    year: {
+      type: Number,
+    }
+  },
   mbl: {
     number: {
       type: String,

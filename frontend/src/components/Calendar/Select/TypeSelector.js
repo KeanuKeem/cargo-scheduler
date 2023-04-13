@@ -1,8 +1,10 @@
+import "./TypeSelector.css";
+
 // -----TypeSelector-Components----- //
 const TypeSelector = (props) => {
   if (props.type === "get") {
     return (
-      <select name="cargoType" id="cargoType">
+      <select name="cargoType" id="cargoType" onChange={props.onChange}>
         <option value="All">All</option>
         <option value="Import">Import</option>
         <option value="Export">Export</option>

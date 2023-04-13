@@ -2,24 +2,24 @@ const express = require('express');
 const shipmentsControllers = require('../controllers/shipments-controllers');
 const router = express.Router();
 
-router.post(
-    '/calendar',
-    shipmentsControllers.createShipment
-);
-
 router.get(
     '/',
     shipmentsControllers.getShipment
 );
 
-router.post(
-    '/checklist',
-    shipmentsControllers.saveShipment
+// router.get(
+//     '/vessel',
+//     shipmentsControllers.getShipmentsByVessel
+// );
+
+router.get(
+    '/day',
+    shipmentsControllers.getScheduleByDay
 );
 
 router.post(
-    '/edit',
-    shipmentsControllers.updateShipment
+    '/',
+    shipmentsControllers.createShipment
 );
 
 router.post(
@@ -27,9 +27,24 @@ router.post(
     shipmentsControllers.createShipmentInFak
 );
 
-router.post(
+router.patch(
+    '/checklist',
+    shipmentsControllers.saveShipment
+);
+
+router.patch(
+    '/edit',
+    shipmentsControllers.updateShipment
+);
+
+router.patch(
     '/fakShipment',
     shipmentsControllers.updateShipmentsInFak
+);
+
+router.patch(
+    '/vessel',
+    shipmentsControllers.updateVesselSchedules
 );
 
 router.delete(

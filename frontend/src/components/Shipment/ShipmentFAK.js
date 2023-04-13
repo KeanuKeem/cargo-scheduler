@@ -68,7 +68,7 @@ const ShipmentFAK = (props) => {
         `http://localhost:5000/api/shipment/inFak?id=${props.data.ref}`,
         shipment
       ),
-      await axios.post("http://localhost:5000/api/shipment/calendar", shipment),
+      await axios.post("http://localhost:5000/api/shipment/", shipment),
     ]).catch((err) => {
       console.log(err);
     });
@@ -85,9 +85,6 @@ const ShipmentFAK = (props) => {
       await axios.delete(
         `http://localhost:5000/api/shipment?id=${props.data.ref}`
       ),
-      await axios.delete(
-        `http://localhost:5000/api/schedule?id=${props.data.ref}&schedule=${props.data.schedule}`
-      )
     ]).catch(err => {
       console.log(err);
     });

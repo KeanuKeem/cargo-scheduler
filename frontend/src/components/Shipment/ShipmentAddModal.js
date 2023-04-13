@@ -38,14 +38,12 @@ const ShipmentAddModal = (props) => {
     setShipmentType(event.target.value);
   };
 
-  const formHandler = (event) => {
+  const formHandler = async (event) => {
     event.preventDefault();
     const shipment = makeShipment(event, shipmentType);
 
-    Promise.all([
-      axios.post("http://localhost:5000/api/schedule/", shipment),
-      axios.post("http://localhost:5000/api/shipment/calendar", shipment),
-    ])
+    await axios
+      .post("http://localhost:5000/api/shipment/", shipment)
       .then((response) => {
         props.onDataAdd(true);
         props.onClose();
@@ -54,7 +52,6 @@ const ShipmentAddModal = (props) => {
         console.log(err);
       });
   };
-
 
   return (
     <ShipmentContext.Provider

@@ -1,5 +1,5 @@
 // React
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 // Context
 import SelectContext from "../../../store/select-context";
@@ -14,6 +14,20 @@ const next = ">";
 // -----Calendar-Components----- //
 const Calendar = (props) => {
   const ctx = useContext(SelectContext);
+  const [isToday, setIsToday] = useState(false);
+
+  const todayHandler = () => {
+    if (ctx.month === ctx.thisMonth && ctx.year === ctx.thisYear) {
+      setIsToday(true);
+    } else {
+      setIsToday(false);
+    }
+  };
+
+  useEffect(()=> {
+    todayHandler();
+  }, [ctx.month, ctx.year]);
+  
 
   return (
     <div className="calendar">
@@ -52,6 +66,7 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
+                    isToday &&
                     ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
@@ -59,7 +74,7 @@ const Calendar = (props) => {
                   key={day.key}
                 >
                   <p className="calendar__table__day-date">
-                    {ctx.today === day.value.date ? (
+                    {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
                       day.value.date
@@ -90,6 +105,7 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
+                    isToday &&
                     ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
@@ -97,7 +113,7 @@ const Calendar = (props) => {
                   key={day.key}
                 >
                   <p className="calendar__table__day-date">
-                    {ctx.today === day.value.date ? (
+                    {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
                       day.value.date
@@ -128,6 +144,7 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
+                    isToday &&
                     ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
@@ -135,7 +152,7 @@ const Calendar = (props) => {
                   key={day.key}
                 >
                   <p className="calendar__table__day-date">
-                    {ctx.today === day.value.date ? (
+                    {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
                       day.value.date
@@ -166,6 +183,7 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
+                    isToday &&
                     ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
@@ -173,7 +191,7 @@ const Calendar = (props) => {
                   key={day.key}
                 >
                   <p className="calendar__table__day-date">
-                    {ctx.today === day.value.date ? (
+                    {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
                       day.value.date
@@ -204,6 +222,7 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
+                    isToday &&
                     ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
@@ -211,7 +230,7 @@ const Calendar = (props) => {
                   key={day.key}
                 >
                   <p className="calendar__table__day-date">
-                    {ctx.today === day.value.date ? (
+                    {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
                       day.value.date
@@ -243,6 +262,7 @@ const Calendar = (props) => {
                 return (
                   <td
                     className={
+                      isToday &&
                       ctx.today === day.value.date
                         ? "calendar__today"
                         : "calendar__table__day"
@@ -250,7 +270,7 @@ const Calendar = (props) => {
                     key={day.key}
                   >
                     <p className="calendar__table__day-date">
-                      {ctx.today === day.value.date ? (
+                      {isToday && ctx.today === day.value.date ? (
                         <span>{day.value.date}</span>
                       ) : (
                         day.value.date

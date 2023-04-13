@@ -314,16 +314,14 @@ const Shipment = (props) => {
       props.onDataEdit(true);
       props.onBack();
     } else {
-      Promise.all([
-        await axios.delete(
+      await axios
+        .delete(
           `http://localhost:5000/api/shipment?id=${props.filteredData.ref}`
-        ),
-        await axios.delete(
-          `http://localhost:5000/api/schedule?id=${props.filteredData.ref}&schedule=${props.filteredData.schedule}`
-        ),
-      ]).catch((err) => {
-        console.log(err);
-      });
+        )
+
+        .catch((err) => {
+          console.log(err);
+        });
 
       props.onClose();
     }
@@ -445,7 +443,7 @@ const Shipment = (props) => {
       stepSevenEndValue: checklistState.stepSevenEndValue,
     };
     try {
-      await axios.post(
+      await axios.patch(
         "http://localhost:5000/api/shipment/checklist",
         shipment
       );

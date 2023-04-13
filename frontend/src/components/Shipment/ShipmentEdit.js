@@ -1,6 +1,7 @@
 import { useState, useContext, useRef, useEffect } from "react";
 
 import { editShipment } from "../Reference/AddShipment";
+import { getMonth } from "../Reference/Calendar";
 import SelectContext from "../../store/select-context";
 import TypeSelector from "../Calendar/Select/TypeSelector";
 
@@ -127,6 +128,11 @@ const ShipmentEdit = (props) => {
       depot: depotState,
       notes: notesState,
       fakShipments: props.data.fakShipments,
+      day: {
+        date: Number(scheduleState.slice(8, 10)),
+        month: getMonth(Number(scheduleState.slice(5, 7))),
+        year: Number(scheduleState.slice(0, 4)),
+      },
       stepOne: {
         isHandle: oneState,
         isDone: props.data.stepOne.isDone,
@@ -167,25 +173,17 @@ const ShipmentEdit = (props) => {
     };
 
     if (contTypeState === "FAK") {
-      Promise.all([
-        await axios.post(
+      await axios
+        .patch(
           `http://localhost:5000/api/shipment/fakShipment?id=${props.data.ref}`,
           shipment
-        ),
-        await axios.post("http://localhost:5000/api/schedule/edit", shipment),
-      ]).catch((err) => {
-        console.log(err);
-      });
-    } else if (contTypeState !== "LCLFAK") {
-      Promise.all([
-        await axios.post("http://localhost:5000/api/shipment/edit", shipment),
-        await axios.post("http://localhost:5000/api/schedule/edit", shipment),
-      ]).catch((err) => {
-        console.log(err);
-      });
+        )
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       await axios
-        .post("http://localhost:5000/api/shipment/edit", shipment)
+        .patch("http://localhost:5000/api/shipment/edit", shipment)
         .catch((err) => {
           console.log(err);
         });

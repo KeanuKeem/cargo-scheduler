@@ -20,5 +20,10 @@ function dateSplit(day) {
   
     return { year: year, month: month, date: date };
 }
+
+function monthChanger(month) {
+    return months[Number(month)-1];
+}
   
 module.exports = dateSplit;
+module.exports = monthChanger;

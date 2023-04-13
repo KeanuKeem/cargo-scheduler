@@ -1,0 +1,14 @@
+select {
+    padding: .2rem;
+    position: relative
+}
+
+select i {
+    position: absolute;
+    top:0;
+    z-index: 10;
+}
+
+select option {
+    background: #FFF;
+}

@@ -1,5 +1,11 @@
 // React
-import React, { Fragment, useState, useReducer, useContext, useEffect } from "react";
+import React, {
+  Fragment,
+  useState,
+  useReducer,
+  useContext,
+  useEffect,
+} from "react";
 import axios from "axios";
 
 // Components
@@ -44,13 +50,14 @@ const CalendarPage = () => {
   const [dataAdded, setDataAdded] = useState(false);
   const [dataEdited, setDataEdited] = useState(false);
   const [shipmentAdded, setShipmentAdded] = useState(false);
+  const [sortBy, setSortBy] = useState("All");
   const [isShipmentClicked, setIsShipmentClicked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/schedule/?month=${ctx.month}&year=${ctx.year}`
+          `http://localhost:5000/api/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`
         );
         setFilteredData(response.data);
       } catch (err) {
@@ -61,13 +68,17 @@ const CalendarPage = () => {
     setDataAdded(false);
     setDataEdited(false);
     setShipmentAdded(false);
-  }, [ctx.month, ctx.year, dataAdded, dataEdited, shipmentAdded]);
+  }, [ctx.month, ctx.year, dataAdded, dataEdited, shipmentAdded, sortBy]);
 
   const [modalState, dispatchModal] = useReducer(modalReducer, {
     value: "",
     show: false,
     id: "",
   });
+
+  const sortHandler = (event) => {
+    setSortBy(event.target.value);
+  };
 
   const monthPrevHandler = () => {
     if (ctx.month === "January" && ctx.year > 2023) {
@@ -125,10 +136,15 @@ const CalendarPage = () => {
         <ShipmentAddModal
           onClose={modalCloseHandler}
           onDataAdd={setDataAdded}
-         />
+        />
       )}
       <div className="contents">
-        <Selectors data={filteredData} onAddBtnClicked={modalAddOpenHandler} />
+        <Selectors
+          data={filteredData}
+          onSort={sortHandler}
+          onDataEdit={setDataEdited}
+          onAddBtnClicked={modalAddOpenHandler}
+        />
         <Calendar
           onShipmentClicked={modalShipmentOpenHandler}
           prevMonth={monthPrevHandler}

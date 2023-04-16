@@ -1,25 +1,25 @@
-.select,
-.select-click {
+.selectMonth,
+.selectMonth-click {
     padding: .2rem;
     position: relative;
     background-color: #FFF;
     border: 1px solid #000;
     border-radius: .5rem;
-    width: 5rem;
+    width: 6rem;
     height: 1rem;
     cursor: pointer;
 }
 
-.select {
+.selectMonth {
     box-shadow: 3px 3px rgba(0, 0, 0, 0.259);
 }
 
-.select-click {
-    margin: 3px 0 0 3px;
+.selectMonth-click {
     animation: clickDropdown .1s linear;
+    animation-fill-mode: forwards;
 }
 
-.select__header {
+.selectMonth__header {
     font-size: .9rem;
     position: absolute;
     left: 40%;
@@ -27,9 +27,9 @@
     transform: translate(-50%, -50%);
 }
 
-.select__arrow {
+.selectMonth__arrow {
     position: absolute;
-    right: 15%;
+    right: 10%;
     top: 15%;
 }
 
@@ -41,41 +41,47 @@
     animation: spin-back .3s linear;
 }
 
-.select__dropdown__hide,
-.select__dropdown__show {
+.selectMonth__dropdown,
+.selectMonth__dropdown__hide,
+.selectMonth__dropdown__show {
     background-color: #FFF;
     border: 1px solid #000;
     border-radius: .5rem;
     position: absolute;
-    width: 5rem;
+    width: 6rem;
     z-index: 10;
     padding: .2rem;
     top: 110%;
 }
 
-.select__dropdown__hide {
-    animation: hideDropdown .3s linear;
+.selectMonth__dropdown {
     visibility: hidden;
 }
 
-.select__dropdown__show {
+.selectMonth__dropdown__hide {
+    animation: hideDropdown .4s linear;
+    animation-fill-mode: forwards;
+}
+
+.selectMonth__dropdown__show {
+    padding: .2rem;
     margin-left: 3px;
     margin-top: 3px;
-    animation: showDropdown .1s linear;
+    animation: showDropdown 0.4s linear;
     visibility: visible;
     box-shadow: 3px 3px rgba(0, 0, 0, 0.259);
 }
 
-.select__dropdown__show li,
-.select__dropdown__hide li {
+.selectMonth__dropdown__show li,
+.selectMonth__dropdown__hide li {
     list-style-type: none;
     padding: .3rem;
     margin-left: .4rem;
     cursor: pointer;
 }
 
-.select__dropdown__show li:hover,
-.this-type {
+.selectMonth__dropdown__show li:hover,
+.this-month {
     font-weight: bold;
 }
 
@@ -112,14 +118,18 @@
     }
     100% {
         opacity: 0;
+        visibility: hidden;
     }
 }
 
 @keyframes clickDropdown {
     0% {
-        transform: translate(0, 0);
+        top: 0;
+        left: 0;
+
     }
     100% {
-        transform: translate(3px, 3px);
+        top: 3px;
+        left: 3px;
     }
 }

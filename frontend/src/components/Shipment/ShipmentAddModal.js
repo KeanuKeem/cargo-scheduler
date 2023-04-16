@@ -20,12 +20,14 @@ const ModalOverlay = (props) => {
       <div className="modal__top-bar">
         <button className="modal__top-bar__exit">X</button>
       </div>
-      <ShipmentForm
-        shipmentType={props.shipmentType}
-        shipmentSet={props.shipmentSet}
-        sendFrom="contType"
-        onClose={props.onClose}
-      />
+      <div className="modal__contents">
+        <ShipmentForm
+          shipmentType={props.shipmentType}
+          shipmentSet={props.shipmentSet}
+          sendFrom="contType"
+          onClose={props.onClose}
+        />
+      </div>
     </div>
   );
 };

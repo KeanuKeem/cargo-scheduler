@@ -15,9 +15,9 @@
     transform: translate(-50%);
     width: 70%;
     z-index: 100;
-    overflow: auto;
     height: 80vh;
     background-color: #FFF;
+    box-shadow: 5px 5px rgba(255, 255, 255, 0.396);
 }
 
 .modal__top-bar {
@@ -43,4 +43,9 @@
     top: 50%;
     right: 2%;
     transform: translateY(-50%);
+}
+
+.modal__contents {
+    overflow: auto;
+    height: inherit;
 }

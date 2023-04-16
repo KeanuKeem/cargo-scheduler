@@ -24,10 +24,6 @@ const Selectors = (props) => {
     setIsVessel(!isVessel);
   };
 
-  const typeChangeHandler = (event) => {
-    setType(event.target.value);
-  };
-
   const updateScheduleHandler = async (event) => {
     event.preventDefault();
 
@@ -58,26 +54,26 @@ const Selectors = (props) => {
         <YearSelector />
       </div>
       <div className="selectors__right">
-        <button onClick={props.onAddBtnClicked}>ADD</button>
+        <button className="btn" onClick={props.onAddBtnClicked}>ADD</button>
       </div>
       {!isVessel ? (
         <div className="selectors__vessel">
-          <button onClick={updateScheduleBtnHandler}>
+          <button className="btn" onClick={updateScheduleBtnHandler}>
             Vessel Schedule Update
           </button>
         </div>
       ) : (
         <>
           <div className="selectors__vessel">
-            <button onClick={updateScheduleBtnHandler}>Close</button>
+            <button className="btn" onClick={updateScheduleBtnHandler}>Close</button>
           </div>
           <div className="selectors__vessel__show">
             <form onSubmit={updateScheduleHandler}>
-              <TypeSelector type="get" onChange={typeChangeHandler} />
-              <input type="text" ref={vesselRef} placeholder="Vessel Name" />
+              <TypeSelector type="get" onChange={setType} />
+              <input className="selectos__vessel__vessel" type="text" ref={vesselRef} placeholder="Vessel Name" />
               <input type="text" ref={voyageRef} placeholder="Voyage" />
               <input type="date" ref={newScheduleRef} />
-              <button type="submit">Update</button>
+              <button className="btn" type="submit">Update</button>
             </form>
           </div>
         </>

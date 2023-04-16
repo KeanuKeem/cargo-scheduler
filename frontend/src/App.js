@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Components
 import CalendarPage from "./pages/CalendarPage";
 import NavbarRoot from "./pages/NavbarRoot";
+import Login from "./pages/Login";
 
 // Context
 import SelectContext from "./store/select-context";
@@ -14,16 +15,18 @@ import { getMonth } from "./components/Reference/Calendar";
 
 // CSS
 import "./App.css";
-import Shipment from "./components/Shipment/Shipment";
 
 // Router
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />
+  },
   {
     path: "/calendar",
     element: <NavbarRoot />,
     children: [
       { path: "/calendar", element: <CalendarPage /> },
-      { path: "/calendar/:shipmentId", element: <Shipment /> },
     ],
   },
 ]);

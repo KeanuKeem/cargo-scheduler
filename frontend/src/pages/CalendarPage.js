@@ -76,10 +76,6 @@ const CalendarPage = () => {
     id: "",
   });
 
-  const sortHandler = (event) => {
-    setSortBy(event.target.value);
-  };
-
   const monthPrevHandler = () => {
     if (ctx.month === "January" && ctx.year > 2023) {
       ctx.setMonth(getPrevMonth(ctx.month));
@@ -141,7 +137,7 @@ const CalendarPage = () => {
       <div className="contents">
         <Selectors
           data={filteredData}
-          onSort={sortHandler}
+          onSort={setSortBy}
           onDataEdit={setDataEdited}
           onAddBtnClicked={modalAddOpenHandler}
         />

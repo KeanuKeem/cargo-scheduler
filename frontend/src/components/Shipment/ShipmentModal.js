@@ -44,18 +44,20 @@ const ModalOverlay = (props) => {
           )}
           <button className="modal__top-bar__exit">X</button>
         </div>
-        {Object.keys(props.filteredData).length > 0 && (
-          <ShipmentFAK
-            data={props.filteredData}
-            onClose={props.onClose}
-            showBackBtn={backBtnShowHandler}
-            showFakShipment={isFakShipment}
-            onFakChange={fakShipmentShowHandler}
-            onDataEdit={props.onDataEdit}
-            onShipmentAdd={props.onShipmentAdd}
-            onBack={backBtnClickHandler}
-          />
-        )}
+        <div className="modal__contents">
+          {Object.keys(props.filteredData).length > 0 && (
+            <ShipmentFAK
+              data={props.filteredData}
+              onClose={props.onClose}
+              showBackBtn={backBtnShowHandler}
+              showFakShipment={isFakShipment}
+              onFakChange={fakShipmentShowHandler}
+              onDataEdit={props.onDataEdit}
+              onShipmentAdd={props.onShipmentAdd}
+              onBack={backBtnClickHandler}
+            />
+          )}
+        </div>
       </div>
     );
   }
@@ -65,13 +67,15 @@ const ModalOverlay = (props) => {
       <div className="modal__top-bar">
         <button className="modal__top-bar__exit">X</button>
       </div>
-      {Object.keys(props.filteredData).length > 0 && (
-        <Shipment
-          filteredData={props.filteredData}
-          onDataEdit={props.onDataEdit}
-          onClose={props.onClose}
-        />
-      )}
+      <div className="modal__contents">
+        {Object.keys(props.filteredData).length > 0 && (
+          <Shipment
+            filteredData={props.filteredData}
+            onDataEdit={props.onDataEdit}
+            onClose={props.onClose}
+          />
+        )}
+      </div>
     </div>
   );
 };

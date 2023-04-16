@@ -1,5 +1,5 @@
-.select,
-.select-click {
+.selectYear,
+.selectYear-click {
     padding: .2rem;
     position: relative;
     background-color: #FFF;
@@ -10,16 +10,16 @@
     cursor: pointer;
 }
 
-.select {
+.selectYear {
     box-shadow: 3px 3px rgba(0, 0, 0, 0.259);
 }
 
-.select-click {
+.selectYear-click {
     margin: 3px 0 0 3px;
     animation: clickDropdown .1s linear;
 }
 
-.select__header {
+.selectYear__header {
     font-size: .9rem;
     position: absolute;
     left: 40%;
@@ -27,7 +27,7 @@
     transform: translate(-50%, -50%);
 }
 
-.select__arrow {
+.selectYear__arrow {
     position: absolute;
     right: 15%;
     top: 15%;
@@ -41,8 +41,8 @@
     animation: spin-back .3s linear;
 }
 
-.select__dropdown__hide,
-.select__dropdown__show {
+.selectYear__dropdown__hide,
+.selectYear__dropdown__show {
     background-color: #FFF;
     border: 1px solid #000;
     border-radius: .5rem;
@@ -53,12 +53,13 @@
     top: 110%;
 }
 
-.select__dropdown__hide {
+.selectYear__dropdown__hide {
     animation: hideDropdown .3s linear;
     visibility: hidden;
 }
 
-.select__dropdown__show {
+.selectYear__dropdown__show {
+    right: 0;
     margin-left: 3px;
     margin-top: 3px;
     animation: showDropdown .1s linear;
@@ -66,16 +67,16 @@
     box-shadow: 3px 3px rgba(0, 0, 0, 0.259);
 }
 
-.select__dropdown__show li,
-.select__dropdown__hide li {
+.selectYear__dropdown__show li,
+.selectYear__dropdown__hide li {
     list-style-type: none;
     padding: .3rem;
     margin-left: .4rem;
     cursor: pointer;
 }
 
-.select__dropdown__show li:hover,
-.this-type {
+.selectYear__dropdown__show li:hover,
+.this-year {
     font-weight: bold;
 }
 

@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config;
 const shipmentRoutes = require("./routes/shipment-routes")
-const scheduleRoutes = require("./routes/schedule-routes");
 
 const app = express();
 
@@ -20,8 +19,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/shipment", shipmentRoutes);
-
-app.use("/api/schedule", scheduleRoutes);
 
 mongoose
   .connect(process.env.CONNECT_MONGODB)

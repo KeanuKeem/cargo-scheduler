@@ -1,0 +1,44 @@
+.signupOk {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 25vh;
+    background-color: #FFF;
+    border: 1px solid #000;
+    border-radius: 1rem;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.323);
+    width: 30%;
+    z-index: 7;
+}
+
+.signupOk__header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    background-color: #7868E6;
+}
+
+.signupOk__header h1 {
+    width: 80%;
+    margin: 0 auto;
+    padding: .3rem 0;
+    color: #FFF;
+}
+
+.signupOk__body {
+    width: 60%;
+    margin: 15% auto 8% auto;
+}
+
+.signupOk__body > * {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+}
+
+.signupOk__btn {
+    width: 50%;
+    margin: 0 auto;
+}

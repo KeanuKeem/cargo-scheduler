@@ -1,8 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-require("dotenv").config;
+require('dotenv').config();
 const shipmentRoutes = require("./routes/shipment-routes")
+const userRoutes = require("./routes/user-routes");
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/shipment", shipmentRoutes);
+
+app.use("/api/user", userRoutes);
 
 mongoose
   .connect(process.env.CONNECT_MONGODB)

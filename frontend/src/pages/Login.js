@@ -1,36 +1,137 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
+import ReactDOM from "react-dom";
+
+import Signup from "../components/Login/Signup";
+import LoginInput from "../components/Login/LoginInput";
+import LoginBtn from "../components/Login/LoginBtn";
 
 import "./Login.css";
+import SignupSuccessful from "../components/Login/SignupSuccessful";
+
+const minimiseReducer = (state, action) => {
+  if (action.type === "SIGNUP_MIN") {
+    return {
+      signup: action.value,
+      username: state.value,
+      password: state.value,
+    };
+  }
+  if (action.type === "SIGNUP_CLOSE") {
+    return {
+      signup: action.value,
+      username: state.value,
+      password: state.value,
+    };
+  }
+};
 
 const Login = () => {
-  const [btnClicked, setBtnClicked] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isUsername, setIsUsername] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  const [isMinimised, dispatchIsMinimised] = useReducer(minimiseReducer, {
+    signup: false,
+    username: false,
+    password: false,
+  });
 
-  const btnHandler = () => {
-    
+  const signUpClickHandler = () => {
+    setIsSignUp(true);
   };
 
-  return (
-    <div className="back">
-      <div className="login">
-        <form className="login__form">
-          <div className="login__form__input">
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-          </div>
-          <div className="login__form__btn">
-            <button className="login__btn" type="submit">
-              Log In
-            </button>
-          </div>
-        </form>
+  const userNameClickHandler = () => {
+    setIsUsername(true);
+  };
 
-        <div className="login__btns">
-          <button className="login__btn">Sign Up</button>
-          <button className="login__btn">Find Username</button>
-          <button className="login__btn">Find Password</button>
+  const passwordClickHandler = () => {
+    setIsPassword(true);
+  };
+
+  const signupExitHandler = () => {
+    dispatchIsMinimised({
+      type: "SIGNUP_CLOSE",
+      value: false,
+    });
+    setIsSignUp(false);
+  };
+
+  const minimiseSignUpHandler = () => {
+    dispatchIsMinimised({
+      type: "SIGNUP_MIN",
+      value: true,
+    });
+    setTimeout(() => {
+      setIsSignUp(false);
+    }, 400);
+  };
+
+  // const loginHandler = (event) => {
+  //   event.preventDefault();
+
+  // };
+
+  return (
+    <>
+      {isSignUp && (
+        <>
+          {ReactDOM.createPortal(
+            <div className="back" onClick={signupExitHandler}></div>,
+            document.getElementById("backdrop-root")
+          )}
+          {ReactDOM.createPortal(
+            <Signup
+              onClose={signupExitHandler}
+              onMinimise={minimiseSignUpHandler}
+              signup={isSignUp}
+              minimised={isMinimised.signup}
+            />,
+            document.getElementById("overlay-root")
+          )}
+        </>
+      )}
+      <div
+        className={
+          isSignUp || isUsername || isPassword ? "back-opened" : "back"
+        }
+      >
+        <div className="login">
+          <div className="header">
+            <h1>Cargo Scheduler</h1>
+          </div>
+          <form className="login__form">
+            <div className="login__form__input">
+              <LoginInput type="text" placeholder="Username" />
+              <LoginInput type="password" placeholder="Password" />
+            </div>
+            <div className="login__form__btn">
+              <LoginBtn
+                type="submit"
+                className="loginBtn btnFour"
+                placeholder="Log In"
+              />
+            </div>
+          </form>
+
+          <div className="login__btns">
+            <LoginBtn
+              onClick={signUpClickHandler}
+              className="loginBtn btnTwo"
+              placeholder="Sign Up"
+            />
+            <LoginBtn
+              onClick={userNameClickHandler}
+              className="loginBtn btnTwo"
+              placeholder="Find Username"
+            />
+            <LoginBtn
+              onClick={passwordClickHandler}
+              className="loginBtn btnTwo"
+              placeholder="Find Password"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

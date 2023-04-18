@@ -1,0 +1,81 @@
+.loginInput__password {
+    position: relative;
+}
+
+.loginInput,
+.loginInput-pushed {
+    background-color: #FFF;
+    padding: .5rem;
+    border-radius: .5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.loginInput {
+    border: 0.5px solid #000;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.323);
+}
+
+.loginInput-pushed {
+    margin-top: 3px;
+    margin-left: 3px;
+    outline: none;
+    border: 1.5px solid #000;
+}
+
+.passwordShow,
+.passwordShow-focus,
+.passwordShow-pushed {
+    border: .5px solid;
+    border-top-right-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+    width: fit-content;
+    padding: .5rem;
+    position: absolute;
+    background-color: #EDEEF7;
+    cursor: pointer;
+}
+
+.passwordShow {
+    top: 0;
+    right: 0;
+}
+
+.passwordShow-pushed {
+    top: 3px;
+    right: -3px;
+}
+
+.loginInput:focus {
+    animation: inputFocus .3s linear;
+    animation-fill-mode: forwards;
+    outline: none;
+}
+
+.passwordShow-focus {
+    animation: passwordFocus .3s linear;
+    animation-fill-mode: forwards;
+    outline: none;
+}
+
+@keyframes inputFocus {
+    0% {
+        transform: translate(0, 0);
+        box-shadow: 3px 3px rgba(0, 0, 0, 0.323);
+    }
+    100% {
+        transform: translate(3px, 3px);
+        box-shadow: 0px 0px rgba(0, 0, 0, 0.323);
+    }
+}
+
+@keyframes passwordFocus {
+    0% {
+        top: 0;
+        right: 0;
+    }
+    100% {
+        top: 3px;
+        right: -3px;
+    }
+}

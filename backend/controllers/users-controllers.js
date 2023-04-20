@@ -1,4 +1,7 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+const localStrategy = require("passport-local").Strategy;
 const User = require("../models/User");
 const signupValidators = require("../validators/signupValidator");
 const { validityCodeChecker } = require("../validators/validityCodeGenerator");
@@ -99,7 +102,16 @@ const createAccount = async (req, res) => {
         newAccount
           .save()
           .then((result) => {
-            res.status(200).send(result.status);
+            let token;
+            token = jwt.sign(
+              { userID: newAccount.username },
+              process.env.SESSION_KEY,
+              { expiresIn: "1h" }
+            );
+            res
+              .status(200)
+              .json({ userId: newAccount.username, token: token })
+              .send(result.status);
           })
           .catch((err) => {
             res.status(500).send(err);
@@ -132,4 +144,24 @@ const createAccount = async (req, res) => {
   }
 };
 
+const loginHandler = async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+  if (user !== null) {
+    bcrypt.compare(req.body.password, user.password, (err, save) => {
+      if (save) {
+        let token;
+        token = jwt.sign({ userID: user.username }, process.env.SESSION_KEY, {
+          expiresIn: "1h",
+        });
+        res.status(200).json({ userId: user._id, token: token });
+      } else {
+        res.status(500).send("Username and Password does not match!");
+      }
+    });
+  } else {
+    res.status(500).send("Username does not exist!");
+  }
+};
+
 exports.createAccount = createAccount;
+exports.loginHandler = loginHandler;

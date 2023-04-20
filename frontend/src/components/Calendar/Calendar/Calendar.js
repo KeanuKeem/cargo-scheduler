@@ -33,7 +33,7 @@ const Calendar = (props) => {
     <div className="calendar">
       <table className="calendar__table">
         <thead>
-          <tr>
+          <tr className="calendar__table__this-month-tr">
             <td colSpan="7" className="calendar__table__this-month">
               <button
                 onClick={props.prevMonth}

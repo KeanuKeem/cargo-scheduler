@@ -57,11 +57,12 @@ const CalendarPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`
+          `http://localhost:5000/api/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`,
+          {headers: {Authorization: "Bearer " + ctx.token}}
         );
         setFilteredData(response.data);
       } catch (err) {
-        console.log(err);
+        
       }
     };
     fetchData();

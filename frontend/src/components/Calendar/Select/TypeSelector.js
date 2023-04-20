@@ -24,7 +24,7 @@ const TypeSelector = (props) => {
   };
 
   const blurHandler = () => {
-    setShowDropdown(!showDropdown);
+    setShowDropdown(false);
     setInitial(false);
   };
 

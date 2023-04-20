@@ -8,8 +8,10 @@
 
 .calendar__table {
     margin: 0 auto;
-    border: 2px solid #000;
+    border: 1px solid #000;
+    border-spacing: 1px;
     width: 100%;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.259);
 }
 
 .calendar__table__this-month {
@@ -18,6 +20,8 @@
     font-size: 1rem;
     border-bottom: 2px solid;
     position: relative;
+    background-color: #7868E6;
+    color: #FFF;
 }
 
 .calendar__table__prev-btn {
@@ -35,6 +39,7 @@
     padding: .3rem;
     font-size: .8rem;
     border: 1px solid;
+    background-color: #EDEEF7;
 }
 
 .calendar__table__day  {
@@ -43,6 +48,7 @@
     height: 5rem;
     position: relative;
     overflow-wrap: anywhere;
+    background-color: #FFF;
 }
 
 .calendar__today {
@@ -50,6 +56,7 @@
     width: 3rem;
     height: 5rem;
     position: relative;
+    background-color: #FFF;
 }
 
 .calendar__table__day-date {

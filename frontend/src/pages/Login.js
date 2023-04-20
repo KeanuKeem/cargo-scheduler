@@ -1,12 +1,13 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useContext } from "react";
 import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
 
+import SelectContext from "../store/select-context";
 import Signup from "../components/Login/Signup";
 import LoginInput from "../components/Login/LoginInput";
 import LoginBtn from "../components/Login/LoginBtn";
 
 import "./Login.css";
-import SignupSuccessful from "../components/Login/SignupSuccessful";
 
 const minimiseReducer = (state, action) => {
   if (action.type === "SIGNUP_MIN") {
@@ -25,7 +26,8 @@ const minimiseReducer = (state, action) => {
   }
 };
 
-const Login = () => {
+const Login = (props) => {
+  const ctx = useContext(SelectContext);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isUsername, setIsUsername] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
@@ -34,6 +36,8 @@ const Login = () => {
     username: false,
     password: false,
   });
+
+  const navigate = useNavigate();
 
   const signUpClickHandler = () => {
     setIsSignUp(true);
@@ -65,11 +69,6 @@ const Login = () => {
     }, 400);
   };
 
-  // const loginHandler = (event) => {
-  //   event.preventDefault();
-
-  // };
-
   return (
     <>
       {isSignUp && (
@@ -98,10 +97,23 @@ const Login = () => {
           <div className="header">
             <h1>Cargo Scheduler</h1>
           </div>
-          <form className="login__form">
+          <form
+            className="login__form"
+            onSubmit={async (event) => {
+              event.preventDefault();
+              const logInOkay = await props.onLogIn(event);
+              if (logInOkay) {
+                navigate("/calendar");
+              }
+            }}
+          >
             <div className="login__form__input">
-              <LoginInput type="text" placeholder="Username" />
-              <LoginInput type="password" placeholder="Password" />
+              <LoginInput type="text" id="username" placeholder="Username" />
+              <LoginInput
+                type="password"
+                id="password"
+                placeholder="Password"
+              />
             </div>
             <div className="login__form__btn">
               <LoginBtn
@@ -110,6 +122,11 @@ const Login = () => {
                 placeholder="Log In"
               />
             </div>
+            {ctx.loginError !== "" && (
+              <div className="login__error">
+                <p>{ctx.loginError}</p>
+              </div>
+            )}
           </form>
 
           <div className="login__btns">

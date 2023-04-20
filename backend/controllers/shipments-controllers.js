@@ -2,14 +2,6 @@ const Shipment = require("../models/Shipment");
 const monthChanger = require("../references/schedule-references");
 
 const createShipment = (req, res) => {
-  // const isStepOneChecked = ;
-  // const isStepTwoChecked = ;
-  // const isStepThreeChecked = req.body.stepThree === 'on';
-  // const isStepFourChecked = req.body.stepFour === 'on';
-  // const isStepFiveChecked = req.body.stepFive === 'on';
-  // const isStepSixChecked = req.body.stepSix === 'on';
-  // const isStepSevenChecked = req.body.stepSeven === 'on';
-
   const newShipment = new Shipment({
     ref: req.body.ref,
     cargoType: req.body.cargoType,
@@ -498,6 +490,5 @@ exports.updateShipmentsInFak = updateShipmentsInFak;
 exports.deleteShipment = deleteShipment;
 exports.deleteShipments = deleteShipments;
 exports.deleteShipmentInFak = deleteShipmentInFak;
-// exports.getShipmentsByVessel = getShipmentsByVessel;
 exports.updateVesselSchedules = updateVesselSchedules;
 exports.getScheduleByDay = getScheduleByDay;

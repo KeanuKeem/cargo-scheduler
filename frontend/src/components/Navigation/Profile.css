@@ -1,0 +1,20 @@
+.profile {
+    width: 50%;
+    height: 80vh;
+    background-color: #FFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 12;
+    border: 1px solid;
+}
+
+.profile__menu {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.profile__menu p {
+    position: absolute;
+    bottom: 0;
+}

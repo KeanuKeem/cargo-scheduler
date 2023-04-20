@@ -5,6 +5,7 @@ import "./LoginInput.css";
 const LoginInput = (props) => {
   const [typed, setTyped] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showText, setShowText] = useState("Show");
   const [loginClass, setLoginClass] = useState("loginInput ");
   const [passwordClass, setPasswordClass] = useState("passwordShow ");
 
@@ -14,6 +15,11 @@ const LoginInput = (props) => {
 
   const passwordShowHandler = () => {
     setShowPassword(!showPassword);
+    if (showText === "Show"){
+      setShowText("Hide");
+    } else {
+      setShowText("Show");
+    }
   };
 
   const focusHandler = () => {
@@ -69,7 +75,7 @@ const LoginInput = (props) => {
           className={passwordClass}
           onClick={passwordShowHandler}
         >
-          Show
+          {showText}
         </p>
       </div>
     );

@@ -2,7 +2,7 @@
 .selectMonth-click {
     padding: .2rem;
     position: relative;
-    background-color: #FFF;
+    background-color: #EDEEF7;
     border: 1px solid #000;
     border-radius: .5rem;
     width: 6rem;
@@ -44,7 +44,7 @@
 .selectMonth__dropdown,
 .selectMonth__dropdown__hide,
 .selectMonth__dropdown__show {
-    background-color: #FFF;
+    background-color: #EDEEF7;
     border: 1px solid #000;
     border-radius: .5rem;
     position: absolute;

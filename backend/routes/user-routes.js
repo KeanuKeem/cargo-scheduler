@@ -7,4 +7,9 @@ router.post(
     usersControllers.createAccount
 );
 
+router.post(
+    "/login",
+    usersControllers.loginHandler
+);
+
 module.exports = router;

@@ -1,16 +1,14 @@
 const express = require('express');
 const shipmentsControllers = require('../controllers/shipments-controllers');
 const router = express.Router();
+const checkAuth = require("../validators/check-auth");
+
+router.use(checkAuth);
 
 router.get(
     '/',
     shipmentsControllers.getShipment
 );
-
-// router.get(
-//     '/vessel',
-//     shipmentsControllers.getShipmentsByVessel
-// );
 
 router.get(
     '/day',

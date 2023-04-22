@@ -1,0 +1,51 @@
+.top-bar {
+    width: 100%;
+    height: 3vh;
+    background-color: #240fac;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+}
+
+.top-bar__btn {
+    width: 10%;
+    height: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    padding-left: 1rem;
+}
+
+.top-bar__close,
+.top-bar__minimise,
+.top-bar__maximise {
+    font-size: .85rem;
+    cursor: pointer;
+}
+
+.top-bar__close {
+    color: rgb(255, 73, 73);
+}
+
+.top-bar__close:hover {
+    color: rgb(255, 108, 108);
+}
+
+.top-bar__minimise {
+    color: rgb(200, 255, 0);
+}
+
+.top-bar__minimise:hover {
+    color: rgb(239, 255, 146);
+}
+
+.top-bar__maximise {
+    rotate: 45deg;
+    color: rgb(0, 174, 69);
+
+}
+
+.top-bar__maximise:hover {
+    rotate: 45deg;
+    color: rgb(0, 215, 86);
+}

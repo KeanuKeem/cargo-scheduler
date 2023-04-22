@@ -1,8 +1,7 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
-const { validityCodeGenerator } = require("./validityCodeGenerator");
 
-const emailHandler = (email) => {
+const findUsernameEmailHandler = (email, username) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -14,11 +13,11 @@ const emailHandler = (email) => {
   const mailOptions = {
     from: "cargo.scheduler@gmail.com",
     to: email,
-    subject: "Cargo Scheduler: please enter this validity code",
+    subject: "Cargo Scheduler: Your account username with Cargo Scheduler",
     text:
-      "Thanks for showing your interest in Cargo Scheduler!\n\n" +
-      "Please enter this validity code: " +
-      validityCodeGenerator(email),
+      "Hi there!\n\n" +
+      "Your account username with Cargo Scheduler is " + username +
+      ". \n\nPlease use this username to log in!"
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
@@ -30,4 +29,4 @@ const emailHandler = (email) => {
   });
 };
 
-exports.emailHandler = emailHandler;
+exports.findUsernameEmailHandler = findUsernameEmailHandler;

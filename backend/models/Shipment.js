@@ -54,7 +54,7 @@ const shipmentSchema = new mongoose.Schema({
     },
     year: {
       type: Number,
-    }
+    },
   },
   mbl: {
     number: {
@@ -185,6 +185,11 @@ const shipmentSchema = new mongoose.Schema({
     endDate: {
       type: String,
     },
+  },
+  creator: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
 });
 

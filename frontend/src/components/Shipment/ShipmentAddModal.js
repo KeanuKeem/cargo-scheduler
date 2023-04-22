@@ -45,7 +45,9 @@ const ShipmentAddModal = (props) => {
     const shipment = makeShipment(event, shipmentType);
 
     await axios
-      .post("http://localhost:5000/api/shipment/", shipment)
+      .post("http://localhost:5000/api/shipment/", shipment, {
+        headers: { Authorization: "Bearer " + ctx.token}
+      })
       .then((response) => {
         props.onDataAdd(true);
         props.onClose();

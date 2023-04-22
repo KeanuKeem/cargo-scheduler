@@ -1,16 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleXmark,
-  faCircleMinus,
-} from "@fortawesome/free-solid-svg-icons";
-
 import "./Signup.css";
 import LoginInput from "./LoginInput";
 import LoginBtn from "./LoginBtn";
 import SignupSuccessful from "./SignupSuccessful";
+import MenuTopBar from "./MenuTopBar";
+import BtnModal from "./BtnModal";
 
 const Signup = (props) => {
   const [doMinimise, setDoMinimise] = useState(false);
@@ -43,8 +39,6 @@ const Signup = (props) => {
       validity: stage,
     };
 
-    console.log(userDetail);
-
     let result;
     await axios
       .post("http://localhost:5000/api/user/signup", userDetail)
@@ -54,7 +48,7 @@ const Signup = (props) => {
       .catch((err) => {
         result = err;
       });
-    console.log(result);
+
     if (result.status === 200) {
       setUsernameError(result.data.username);
       setPasswordError(result.data.password);
@@ -115,33 +109,8 @@ const Signup = (props) => {
   return (
     <>
       {isSuccessful && <SignupSuccessful onClose={props.onClose} />}
-      <div
-        className={
-          !props.minimised
-            ? "signup"
-            : props.minimised && doMinimise
-            ? "signup-minimised"
-            : "signup-minimised-back"
-        }
-      >
-        <div className="signup__top-bar">
-          <div className="signup__top-btn">
-            <FontAwesomeIcon
-              className="signup__top-bar__close"
-              icon={faCircleXmark}
-              onClick={props.onClose}
-            />
-            <FontAwesomeIcon
-              className="signup__top-bar__minimise"
-              icon={faCircleMinus}
-              onClick={minimiseHandler}
-            />
-            <FontAwesomeIcon
-              className="signup__top-bar__maximise"
-              icon={faCircleXmark}
-            />
-          </div>
-        </div>
+      <BtnModal minimised={props.minimised} doMinimise={doMinimise}>
+        <MenuTopBar onClose={props.onClose} onMinimise={minimiseHandler} />
         <h2 className="signup__header">Welcome to Cargo Scheduler</h2>
         <form
           className="signup__form"
@@ -218,7 +187,7 @@ const Signup = (props) => {
                 id="emailValidity"
                 placeholder="Email Validation Code"
               />
-              <p className="signup__form__error">{emailError}</p>
+              <p className="signup__form__error">{emailValidityError}</p>
             </div>
           )}
 
@@ -230,7 +199,7 @@ const Signup = (props) => {
             />
           </div>
         </form>
-      </div>
+      </BtnModal>
     </>
   );
 };

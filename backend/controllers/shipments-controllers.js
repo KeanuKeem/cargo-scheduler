@@ -1,89 +1,42 @@
 const Shipment = require("../models/Shipment");
-const monthChanger = require("../references/schedule-references");
+const monthChanger = require("../services/schedule-references");
+const { findShipmentsByDay } = require("../services/findShipment");
+const { makeShipment } = require("../services/makeShipment")
 
-const createShipment = (req, res) => {
-  const newShipment = new Shipment({
-    ref: req.body.ref,
-    cargoType: req.body.cargoType,
-    contType: req.body.contType,
-    schedule: req.body.schedule,
-    port: req.body.port,
-    vessel: req.body.vessel.toUpperCase(),
-    voyage: req.body.voyage.toUpperCase(),
-    container: req.body.container.toUpperCase(),
-    depot: req.body.depot,
-    notes: req.body.notes,
-    fakShipments: [],
-    day: {
-      date: Number(req.body.schedule.slice(8, 10)),
-      month: monthChanger(req.body.schedule.slice(5, 7)),
-      year: Number(req.body.schedule.slice(0, 4)),
-    },
-    mbl: {
-      number: req.body.mblNumber,
-      isSurr: false,
-      date: "",
-    },
-    hbl: {
-      number: req.body.hblNumber,
-      isSurr: false,
-      date: "",
-    },
-    stepOne: {
-      isHandle: req.body.stepOne,
-      isDone: false,
-      date: "",
-    },
-    stepTwo: {
-      isHandle: req.body.stepTwo,
-      isDone: false,
-      date: "",
-    },
-    stepThree: {
-      isHandle: req.body.stepThree,
-      isDone: false,
-      date: "",
-    },
-    stepFour: {
-      isHandle: req.body.stepFour,
-      isDone: false,
-      date: "",
-    },
-    stepFive: {
-      isHandle: req.body.stepFive,
-      isDone: false,
-      date: "",
-    },
-    stepSix: {
-      isHandle: req.body.stepSix,
-      isDone: false,
-      date: "",
-    },
-    stepSeven: {
-      isHandle: req.body.stepSeven,
-      isStart: false,
-      isEnd: false,
-      startDate: "",
-      endDate: "",
-    },
-  });
+const getScheduleByDay = async (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+  try {
+    const schedule = await findShipmentsByDay(req.query.month, req.query.year, req.query.type, req.userData.userId);
+    res.status(200).send(schedule);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
 
-  newShipment
-    .save()
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err);
-    });
+const createShipment = (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+  try {
+    const message = makeShipment(req);
+    if (message === "successful") {
+      res.status(200);
+    } else {
+      res.status(500).send(message);
+    }
+  } catch (err) {
+    res.status(500).send("Server Error, Try again!");
+  }
 };
 
 const getShipment = async (req, res) => {
   const ref = req.query.id;
+  const _id = req.userData.userId;
 
   try {
-    const shipment = await Shipment.findOne({ ref: ref });
+    const shipment = await Shipment.findOne({ ref: ref, creator: _id });
     res.status(200).send(shipment);
   } catch (err) {
     console.log(err);
@@ -414,68 +367,6 @@ const updateVesselSchedules = async (req, res) => {
         res.status(200).send(result);
       });
     }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
-
-const getScheduleByDay = async (req, res) => {
-  try {
-    const month = req.query.month;
-    const year = req.query.year;
-    const type = req.query.type;
-    const finalSchedule = [
-      {
-        month,
-        year,
-        shipments: [],
-      },
-    ];
-
-    let schedule;
-    if (type === "All") {
-      schedule = await Shipment.find({ "day.month": month, "day.year": year });
-    } else {
-      schedule = await Shipment.find({
-        "day.month": month,
-        "day.year": year,
-        cargoType: type,
-      });
-    }
-
-    for (const shipment of schedule) {
-      const filteredSchedule = finalSchedule[0].shipments.filter((dateObj) => {
-        return dateObj.date === shipment.day.date;
-      });
-      if (filteredSchedule.length > 0) {
-        if (shipment.contType === "LCLFAK") {
-          continue;
-        } else {
-          await filteredSchedule[0].values.push({
-            id: shipment.ref,
-            contType: shipment.contType,
-            cargoType: shipment.cargoType,
-          });
-        }
-      } else {
-        if (shipment.contType === "LCLFAK") {
-          continue;
-        } else {
-          await finalSchedule[0].shipments.push({
-            date: shipment.day.date,
-            values: [
-              {
-                id: shipment.ref,
-                contType: shipment.contType,
-                cargoType: shipment.cargoType,
-              },
-            ],
-          });
-        }
-      }
-    }
-
-    res.status(200).send(finalSchedule);
   } catch (err) {
     res.status(500).send(err);
   }

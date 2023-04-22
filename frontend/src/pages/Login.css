@@ -17,12 +17,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    height: 35vh;
+    height: 40vh;
     background-color: #FFF;
     border: 1px solid #000;
     border-radius: 1rem;
     box-shadow: 3px 3px rgba(0, 0, 0, 0.323);
     width: 30%;
+    overflow: auto;
 }
 
 .header {
@@ -43,7 +44,7 @@
 
 .login__form {
     width: 80%;
-    margin: 28% auto 0 auto;
+    margin: 15vh auto 0 auto;
     transform: translateY(-50%);
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -75,3 +76,73 @@
     gap: .5rem;
 }
 
+@media (max-width:1000px) {
+    .login {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        height: 40vh;
+        background-color: #FFF;
+        border: 1px solid #000;
+        border-radius: 1rem;
+        box-shadow: 3px 3px rgba(0, 0, 0, 0.323);
+        width: 60%;
+        overflow: auto;
+    }
+
+    .login__form {
+        width: 80%;
+        margin: 20vh auto 0 auto;
+        transform: translateY(-50%);
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: .5rem;
+        position: relative;
+    }
+}
+
+@media (max-width:650px) {
+    .login {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        height: 60vh;
+        background-color: #FFF;
+        border: 1px solid #000;
+        border-radius: 1rem;
+        box-shadow: 3px 3px rgba(0, 0, 0, 0.323);
+        width: 90%;
+        overflow: auto;
+    }
+
+    .login__form {
+        width: 80%;
+        margin: 24vh auto 0 auto;
+        transform: translateY(-50%);
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: .5rem;
+        position: relative;
+    }
+    
+    .login__form {
+        width: 80%;
+        margin: 15vh auto 0 auto;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        position: relative;
+    }
+
+    .login__btns {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+}

@@ -2,17 +2,17 @@ import LoginBtn from "./LoginBtn";
 
 import "./Successful.css";
 
-const SignupSuccessful = (props) => {
+const FindPasswordSuccesfful = (props) => {
   return (
     <>
       <div>
         <div className="successful">
           <div className="successful__header">
-            <h1>SuccessFully Signed Up!</h1>
+            <h1>Password has been renewed!</h1>
           </div>
           <div className="successful__body">
-            <p>Thanks for signing up!</p>
-            <p>Please go ahead and log in!</p>
+            <p>We have set your new password as given!</p>
+            <p>Please try with the new password!</p>
           </div>
           <div className="successful__btn">
             <LoginBtn
@@ -27,4 +27,4 @@ const SignupSuccessful = (props) => {
   );
 };
 
-export default SignupSuccessful;
+export default FindPasswordSuccesfful;

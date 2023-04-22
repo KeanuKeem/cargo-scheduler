@@ -62,7 +62,7 @@ const CalendarPage = () => {
         );
         setFilteredData(response.data);
       } catch (err) {
-        
+        console.log(err);
       }
     };
     fetchData();
@@ -114,6 +114,8 @@ const CalendarPage = () => {
   };
 
   const monthArray = generateDateArray(filteredData, ctx.month, ctx.year);
+
+  console.log(filteredData, "filteredData");
 
   return (
     <Fragment>

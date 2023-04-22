@@ -1,11 +1,16 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
-const localStrategy = require("passport-local").Strategy;
+require("dotenv").config();
 const User = require("../models/User");
-const signupValidators = require("../validators/signupValidator");
-const { validityCodeChecker } = require("../validators/validityCodeGenerator");
-const { emailHandler } = require("../validators/emailHandler");
+const signupValidators = require("../services/signupValidator");
+const { validityCodeChecker } = require("../services/validityCodeGenerator");
+const { signupEmailHandler } = require("../services/signupEmailHandler");
+const { findUsernameHandler } = require("../services/findUsernameHandler");
+const { findPasswordStageOne } = require("../services/findPasswordStageOne");
+const {
+  findPasswordEmailHandler,
+} = require("../services/findPasswordEmailHandler");
+const { findPasswordStageTwo } = require("../services/findPasswordStageTwo");
 
 const createAccount = async (req, res) => {
   if (req.body.validity === "one") {
@@ -34,7 +39,7 @@ const createAccount = async (req, res) => {
       organisationMessage === "" &&
       emailMessage === ""
     ) {
-      emailHandler(req.body.email);
+      signupEmailHandler(req.body.email);
       const response = {
         username: usernameMessage,
         password: passwordMessage,
@@ -150,7 +155,7 @@ const loginHandler = async (req, res) => {
     bcrypt.compare(req.body.password, user.password, (err, save) => {
       if (save) {
         let token;
-        token = jwt.sign({ userID: user.username }, process.env.SESSION_KEY, {
+        token = jwt.sign({ userId: user._id }, process.env.SESSION_KEY, {
           expiresIn: "1h",
         });
         res.status(200).json({ userId: user._id, token: token });
@@ -163,5 +168,65 @@ const loginHandler = async (req, res) => {
   }
 };
 
+const findUsername = async (req, res) => {
+  try {
+    const condition = await findUsernameHandler(
+      req.body.firstname,
+      req.body.lastname,
+      req.body.email,
+      req.body.organisation
+    );
+
+    if (condition) {
+      res.status(200).send("");
+    } else {
+      res.status(500).send("Your details don't match, please try again!");
+    }
+  } catch (err) {
+    res.status(500).send("Server Error! Please try again");
+  }
+};
+
+const findPassword = async (req, res) => {
+  try {
+    const stage = req.body.stage;
+    if (stage === "ONE") {
+      const condition = await findPasswordStageOne(
+        req.body.username,
+        req.body.email,
+        req.body.organisation
+      );
+      if (condition) {
+        findPasswordEmailHandler(req.body.email, req.body.username);
+        res.status(200).send("TWO");
+      } else {
+        res.status(500).send("Your details don't match, please try again!");
+      }
+    }
+
+    if (stage === "TWO") {
+      const message = await findPasswordStageTwo(
+        req.body.username,
+        req.body.email,
+        req.body.organisation,
+        req.body.verification,
+        req.body.password
+      );
+      console.log(message, "message");
+      if (message === "Password Saved") {
+        res.status(200).send("");
+      } else if (message === "Password unsaved") {
+        res.status(500).send("Password could not saved, please try again!");
+      } else {
+        res.status(500).send(message);
+      }
+    }
+  } catch (err) {
+    res.status(500).send("Server Error, please try again!");
+  }
+};
+
 exports.createAccount = createAccount;
 exports.loginHandler = loginHandler;
+exports.findUsername = findUsername;
+exports.findPassword = findPassword;

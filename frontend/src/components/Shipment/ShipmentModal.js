@@ -86,11 +86,11 @@ const ShipmentModal = (props) => {
 
   const id = props.modalValue.id.split("+")[1];
 
-  console.log(id);
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/shipment/?id=${id}`
+        `http://localhost:5000/api/shipment/?id=${id}`,
+        {headers: { Authorization: "Bearer " + ctx.token}}
       );
       setFilteredData(response.data);
     } catch (err) {

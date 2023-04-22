@@ -29,10 +29,10 @@ let logoutTimer;
 function App() {
   const [month, setMonth] = useState(thisMonth);
   const [year, setYear] = useState(thisYear);
-  const [token, setToken] = useState();
-  const [userId, setUserId] = useState();
   const [loginError, setLoginError] = useState("");
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
+  const [token, setToken] = useState();
+  const [userId, setUserId] = useState();
   const [isLogIn, setIsLogIn] = useState(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
     if (storedData && storedData.token && new Date(storedData.expiration) > new Date()) {

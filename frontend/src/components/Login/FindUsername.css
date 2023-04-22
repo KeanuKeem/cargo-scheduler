@@ -1,10 +1,17 @@
-.signup__header {
+.findUser__header {
     text-align: center;
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
-.signup__form {
+.findUser__text,
+.findUser__error {
+    text-align: center;
+    margin: .5rem auto 0 auto;
+    width: 80%;
+}
+
+.findUser__form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,44 +21,32 @@
     position: relative;
 }
 
-.signup__form__flex {
+.findUser__form__flex {
     width: 70%;
     margin: .5rem 0;
 }
 
-.signup__form__flex:last-child {
+.findUser__form__flex:last-child {
     margin-top: 3rem;
 }
 
-.signup__form__names {
+.findUser__form__names {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin: .5rem 0;
 }
 
-.signup__form__errors {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.signup__form__names > * {
+.findUser__form__names > * {
     min-width: 0;
     padding: .5rem;
 }
 
-.signup__form__error {
-    padding-left: 1rem;
-    margin-top: .3rem;
-}
-
-
-.signup__form__btn {
+.findUser__form__btn {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 70%;
-    margin-top: 1rem;
 }
-
-
-
 

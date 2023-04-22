@@ -1,0 +1,67 @@
+.BtnModal,
+.BtnModal-minimised,
+.BtnModal-minimised-back {
+    width: 35%;
+    height: 80vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    background-color: #FFF;
+    border: 1px solid #000;
+    border-radius: .5rem;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.323);
+}
+
+.BtnModal {
+    animation: appear .2s linear;
+    animation-fill-mode: forwards;
+}
+
+.BtnModal-minimised {
+    animation: minimise .5s linear;
+    animation-fill-mode: forwards;
+}
+
+.BtnModal-minimised-back {
+    animation: minimise-back .5s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes minimise {
+    0% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+        scale: 1;
+    }
+    100% {
+        transform: translate(-50%, 0);
+        opacity: 0;
+        scale: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes minimise-back {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+        scale: 0;
+        
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+        scale: 1;
+    }
+}

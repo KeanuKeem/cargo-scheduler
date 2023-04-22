@@ -9,6 +9,7 @@
     border-radius: .5rem;
     width: 100%;
     box-sizing: border-box;
+    font-size: .8rem;
 }
 
 .loginInput {
@@ -34,6 +35,7 @@
     position: absolute;
     background-color: #EDEEF7;
     cursor: pointer;
+    font-size: .8rem;
 }
 
 .passwordShow {

@@ -1,5 +1,3 @@
-const { passwordValidator } = require("./signupValidator");
-
 let validities = [];
 
 const validityCodeGenerator = (email) => {
@@ -23,24 +21,30 @@ const validityCodeGenerator = (email) => {
 };
 
 const validityCodeChecker = (email, code) => {
-    let index = 0;
     let found = false;
     for (const obj of validities) {
         if (obj.email === email && obj.code === code) {
             found = true;
             break;
+        }
+    }
+    return found;
+};
+
+const validityCodeRemover= (email, code) => {
+    let index = 0;
+    for (const obj of validities) {
+        if (obj.email === email && obj.code === code) {
+            validities.splice(index, index+1);
+            break;
         } else {
             index++;
         }
     }
-
-    if (found) {
-        validities.splice(index, index+1);
-        return found;
-    } else {
-        return found;
-    }
 };
+
+console.log(validities, "validities");
 
 exports.validityCodeGenerator = validityCodeGenerator;
 exports.validityCodeChecker = validityCodeChecker;
+exports.validityCodeRemover = validityCodeRemover;

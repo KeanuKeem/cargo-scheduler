@@ -6,8 +6,12 @@ import SelectContext from "../store/select-context";
 import Signup from "../components/Login/Signup";
 import LoginInput from "../components/Login/LoginInput";
 import LoginBtn from "../components/Login/LoginBtn";
+import FindUsername from "../components/Login/FindUsername";
+import FindPassword from "../components/Login/FindPassword";
 
 import "./Login.css";
+
+
 
 const minimiseReducer = (state, action) => {
   if (action.type === "SIGNUP_MIN") {
@@ -23,6 +27,34 @@ const minimiseReducer = (state, action) => {
       username: state.value,
       password: state.value,
     };
+  }
+  if (action.type === "USER_MIN") {
+    return {
+      signup: state.value,
+      username: action.value,
+      password: state.value,
+    };
+  }
+  if (action.type === "USER_CLOSE") {
+    return {
+      signup: state.value,
+      username: action.value,
+      password: state.value,
+    }
+  }
+  if (action.type === "PASS_MIN") {
+    return {
+      signup: state.value,
+      username: state.value,
+      password: action.value,
+    }
+  }
+  if (action.type === "PASS_CLOSE") {
+    return {
+      signup: state.value,
+      username: state.value,
+      password: action.value,
+    }
   }
 };
 
@@ -69,6 +101,36 @@ const Login = (props) => {
     }, 400);
   };
 
+  const findUserExitHandler = () => {
+    dispatchIsMinimised({
+      type: "USER_CLOSE",
+      value: false,
+    });
+    setIsUsername(false);
+  };
+
+  const minimiseUserHandler = () => {
+    dispatchIsMinimised({
+      type: "USER_MIN",
+      value: true,
+    });
+  };
+
+  const findPassExitHandler = () => {
+    dispatchIsMinimised({
+      type: "PASS_CLOSE",
+      value: false,
+    });
+    setIsPassword(false);
+  }
+
+  const minimisePassHandler = () => {
+    dispatchIsMinimised({
+      type: "PASS_MIN",
+      value: true,
+    });
+  }
+
   return (
     <>
       {isSignUp && (
@@ -83,6 +145,40 @@ const Login = (props) => {
               onMinimise={minimiseSignUpHandler}
               signup={isSignUp}
               minimised={isMinimised.signup}
+            />,
+            document.getElementById("overlay-root")
+          )}
+        </>
+      )}
+      {isUsername && (
+        <>
+          {ReactDOM.createPortal(
+            <div className="back" onClick={findUserExitHandler}></div>,
+            document.getElementById("backdrop-root")
+          )}
+          {ReactDOM.createPortal(
+            <FindUsername
+              onClose={findUserExitHandler}
+              onMinimise={minimiseUserHandler}
+              findUser={isUsername}
+              minimised={isMinimised.username}
+            />,
+            document.getElementById("overlay-root")
+          )}
+        </>
+      )}
+      {isPassword && (
+        <>
+          {ReactDOM.createPortal(
+            <div className="back" onClick={findPassExitHandler}></div>,
+            document.getElementById("backdrop-root")
+          )}
+          {ReactDOM.createPortal(
+            <FindPassword
+              onClose={findPassExitHandler}
+              onMinimise={minimisePassHandler}
+              findUser={isPassword}
+              minimised={isMinimised.password}
             />,
             document.getElementById("overlay-root")
           )}

@@ -12,4 +12,14 @@ router.post(
     usersControllers.loginHandler
 );
 
+router.post(
+    "/findUser",
+    usersControllers.findUsername
+);
+
+router.post(
+    "/findPass",
+    usersControllers.findPassword
+);
+
 module.exports = router;

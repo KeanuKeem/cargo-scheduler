@@ -10,12 +10,12 @@
 
 .modal {
     position: fixed;
-    top: 10vh;
+    top: 5vh;
     left: 50%;
     transform: translate(-50%);
-    width: 70%;
+    width: 90%;
     z-index: 100;
-    height: 80vh;
+    height: 90vh;
     background-color: #FFF;
     box-shadow: 5px 5px rgba(255, 255, 255, 0.396);
 }
@@ -27,22 +27,36 @@
     left: 50%;
     transform: translate(-50%);
     z-index: 101;
-    height: 3vh;
-    background-color: blue;
+    height: 4vh;
+    background-color: #240fac;
 }
 
 .modal__top-bar__back {
     position: fixed;
     top: 50%;
-    left: 2%;
+    left: 5%;
+    font-size: .85rem;
     transform: translateY(-50%);
+    color: #a6ff00;
+    cursor: pointer;
+}
+
+.modal__top-bar__back:hover {
+    color: #74b300;
 }
 
 .modal__top-bar__exit {
     position: fixed;
     top: 50%;
-    right: 2%;
+    left: 2%;
+    font-size: .85rem;
     transform: translateY(-50%);
+    color: #FF0000;
+    cursor: pointer;
+}
+
+.modal__top-bar__exit:hover {
+    color: #b00000;
 }
 
 .modal__contents {

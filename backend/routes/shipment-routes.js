@@ -15,6 +15,11 @@ router.get(
     shipmentsControllers.getScheduleByDay
 );
 
+router.get(
+    '/search',
+    shipmentsControllers.getSearch
+);
+
 router.post(
     '/',
     shipmentsControllers.createShipment
@@ -36,11 +41,6 @@ router.patch(
 );
 
 router.patch(
-    '/fakShipment',
-    shipmentsControllers.updateShipmentsInFak
-);
-
-router.patch(
     '/vessel',
     shipmentsControllers.updateVesselSchedules
 );
@@ -53,11 +53,6 @@ router.delete(
 router.delete(
     '/fak',
     shipmentsControllers.deleteShipments
-);
-
-router.delete(
-    '/fakShipment',
-    shipmentsControllers.deleteShipmentInFak
 );
 
 module.exports = router;

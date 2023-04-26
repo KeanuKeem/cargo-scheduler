@@ -10,5 +10,12 @@
 
 .shipment__type {
     display: flex;
+    flex-direction: row;
+    gap: 1rem;
     margin-top: 1rem;
+}
+
+.shipment__type-selector {
+    display: flex;
+    flex-direction: column;
 }

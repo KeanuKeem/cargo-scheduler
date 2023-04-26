@@ -16,6 +16,7 @@ import { getMonth } from "./components/Reference/Calendar";
 
 // CSS
 import "./App.css";
+import TodoPage from "./pages/TodoPage";
 
 const date = new Date();
 const dateMonth = date.getMonth();
@@ -33,16 +34,21 @@ function App() {
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
   const [token, setToken] = useState();
   const [userId, setUserId] = useState();
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState();
   const [isLogIn, setIsLogIn] = useState(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
-    if (storedData && storedData.token && new Date(storedData.expiration) > new Date()) {
+    if (
+      storedData &&
+      storedData.token &&
+      new Date(storedData.expiration) > new Date()
+    ) {
       setToken(storedData.token);
       setUserId(storedData.userId);
       return true;
     }
     return false;
   });
-
 
   const monthSelectHandler = (event) => {
     setMonth(event.target.value);
@@ -66,7 +72,9 @@ function App() {
 
       if (result.status === 200) {
         setToken(result.data.token);
-        const tokenExpirationDate = new Date(new Date().getTime() + 1000 * 60 * 60);
+        const tokenExpirationDate = new Date(
+          new Date().getTime() + 1000 * 60 * 60
+        );
         setTokenExpirationDate(tokenExpirationDate);
         localStorage.setItem(
           "userData",
@@ -96,7 +104,8 @@ function App() {
 
   useEffect(() => {
     if (token && tokenExpirationDate) {
-      const remainingTime = tokenExpirationDate.getTime() - new Date().getTime();
+      const remainingTime =
+        tokenExpirationDate.getTime() - new Date().getTime();
       logoutTimer = setTimeout(logoutHandler, remainingTime);
     } else {
       clearTimeout(logoutTimer);
@@ -115,6 +124,10 @@ function App() {
         userId,
         isLogIn,
         loginError,
+        isSearch,
+        searchValue,
+        setIsSearch,
+        setSearchValue,
         onMonthChange: monthSelectHandler,
         setMonth: setMonth,
         onYearChange: yearSelectHandler,
@@ -131,6 +144,19 @@ function App() {
                 <>
                   <NavbarRoot onLogOut={logoutHandler} />
                   <CalendarPage />
+                </>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/todo"
+            element={
+              isLogIn ? (
+                <>
+                  <NavbarRoot onLogOut={logoutHandler} />
+                  <TodoPage />
                 </>
               ) : (
                 <Navigate to="/" />

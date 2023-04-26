@@ -58,12 +58,10 @@ const CalendarPage = () => {
       try {
         const response = await axios.get(
           `http://localhost:5000/api/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`,
-          {headers: {Authorization: "Bearer " + ctx.token}}
+          { headers: { Authorization: "Bearer " + ctx.token } }
         );
         setFilteredData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     };
     fetchData();
     setDataAdded(false);
@@ -108,14 +106,29 @@ const CalendarPage = () => {
     setIsShipmentClicked(true);
   };
 
+  const searchShipmentOpenHandler = () => {
+    dispatchModal({
+      type: "SHIPMENT",
+      val: "shipment",
+      id: "0+" + ctx.searchValue,
+    });
+    setIsShipmentClicked(true);
+  };
+
   const modalCloseHandler = () => {
     dispatchModal({ type: "CLOSE" });
     setIsShipmentClicked(false);
+    ctx.setIsSearch(false);
+    ctx.setSearchValue();
   };
 
-  const monthArray = generateDateArray(filteredData, ctx.month, ctx.year);
+  useEffect(() => {
+    if (ctx.searchValue !== null && ctx.searchValue !== undefined) {
+      searchShipmentOpenHandler();
+    }
+  }, [ctx.searchValue]);
 
-  console.log(filteredData, "filteredData");
+  const monthArray = generateDateArray(filteredData, ctx.month, ctx.year);
 
   return (
     <Fragment>

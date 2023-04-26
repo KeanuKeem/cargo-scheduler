@@ -42,7 +42,6 @@ const shipmentSchema = new mongoose.Schema({
   },
   fakShipments: {
     type: [{ ref: String }],
-    required: true,
     default: [],
   },
   day: {

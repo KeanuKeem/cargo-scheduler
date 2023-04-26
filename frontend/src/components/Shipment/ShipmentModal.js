@@ -7,6 +7,12 @@ import ShipmentFAK from "./ShipmentFAK";
 
 import SelectContext from "../../store/select-context";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleXmark,
+  faCircleChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+
 import "./ShipmentModal.css";
 
 const Backdrop = (props) => {
@@ -35,14 +41,17 @@ const ModalOverlay = (props) => {
       <div className="modal">
         <div className="modal__top-bar">
           {showBackBtn && (
-            <button
+            <FontAwesomeIcon
               className="modal__top-bar__back"
               onClick={backBtnClickHandler}
-            >
-              Back
-            </button>
+              icon={faCircleChevronLeft}
+            />
           )}
-          <button className="modal__top-bar__exit">X</button>
+          <FontAwesomeIcon
+            className="modal__top-bar__exit"
+            icon={faCircleXmark}
+            onClick={props.onClose}
+          />
         </div>
         <div className="modal__contents">
           {Object.keys(props.filteredData).length > 0 && (
@@ -65,7 +74,11 @@ const ModalOverlay = (props) => {
   return (
     <div className="modal">
       <div className="modal__top-bar">
-        <button className="modal__top-bar__exit">X</button>
+        <FontAwesomeIcon
+          className="modal__top-bar__exit"
+          icon={faCircleXmark}
+          onClick={props.onClose}
+        />
       </div>
       <div className="modal__contents">
         {Object.keys(props.filteredData).length > 0 && (
@@ -90,7 +103,7 @@ const ShipmentModal = (props) => {
     try {
       const response = await axios.get(
         `http://localhost:5000/api/shipment/?id=${id}`,
-        {headers: { Authorization: "Bearer " + ctx.token}}
+        { headers: { Authorization: "Bearer " + ctx.token } }
       );
       setFilteredData(response.data);
     } catch (err) {

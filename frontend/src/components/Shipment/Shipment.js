@@ -1,6 +1,9 @@
 import { useContext, useState, useEffect, useReducer } from "react";
-import ShipmentEdit from "./ShipmentEdit";
+import axios from "axios";
+
 import SelectContext from "../../store/select-context";
+import ShipmentEdit from "./ShipmentEdit";
+import ShipmentPopup from "./ShipmentPopup";
 
 import {
   deleteShipment,
@@ -10,7 +13,6 @@ import {
 import { getToday } from "../Reference/Calendar";
 
 import "./Shipment.css";
-import axios from "axios";
 
 const checklistReducer = (state, action) => {
   if (action.type === "ONE") {
@@ -261,6 +263,9 @@ const Shipment = (props) => {
 
   const [isEdit, setIsEdit] = useState(false);
   const [saveBtnShow, setSaveBtnShow] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [saveMessage, setSaveMessage] = useState("");
 
   const [checklistState, dispatchChecklistState] = useReducer(
     checklistReducer,
@@ -292,38 +297,33 @@ const Shipment = (props) => {
     setIsEdit(!isEdit);
   };
 
-  const deleteBtnHandler = async () => {
+  const deleteShipmentHandler = async () => {
     if (props.filteredData.contType === "LCLFAK") {
-      Promise.all([
-        await axios
-          .delete(
-            `http://localhost:5000/api/shipment/fakShipment?mId=${props.mId}&id=${props.filteredData.ref}`
-          )
-          .catch((err) => {
-            console.log(err);
-          }),
-        await axios
-          .delete(
-            `http://localhost:5000/api/shipment?id=${props.filteredData.ref}`
-          )
-          .catch((err) => {
-            console.log(err);
-          }),
-      ]);
+      await axios
+        .delete(
+          `http://localhost:5000/api/shipment?mId=${props.mId}&id=${props.filteredData.ref}`,
+          { headers: { Authorization: "Bearer " + ctx.token } }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
 
       props.onDataEdit(true);
       props.onBack();
     } else {
       await axios
         .delete(
-          `http://localhost:5000/api/shipment?id=${props.filteredData.ref}`
+          `http://localhost:5000/api/shipment?mId=&id=${props.filteredData.ref}`,
+          { headers: { Authorization: "Bearer " + ctx.token } }
         )
-
+        .then(() => {
+          props.onDataEdit(true);
+          props.onClose();
+        })
         .catch((err) => {
-          console.log(err);
+          setIsSaved(true);
+          setSaveMessage(err.response.data);
         });
-
-      props.onClose();
     }
   };
 
@@ -407,6 +407,18 @@ const Shipment = (props) => {
     });
   };
 
+  const deleteBtnHandler = () => {
+    setIsDelete(true);
+  };
+
+  const deleteBtnCancelHandler = () => {
+    setIsDelete(false);
+  };
+
+  const okayBtnHandler = () => {
+    setIsSaved(false);
+  };
+
   const saveChecklistHandler = async (event) => {
     event.preventDefault();
 
@@ -443,13 +455,19 @@ const Shipment = (props) => {
       stepSevenEndValue: checklistState.stepSevenEndValue,
     };
     try {
-      await axios.patch(
-        "http://localhost:5000/api/shipment/checklist",
-        shipment
-      );
-      setSaveBtnShow(false);
+      await axios
+        .patch("http://localhost:5000/api/shipment/checklist", shipment, {
+          headers: { Authorization: "Bearer " + ctx.token },
+        })
+        .then((result) => {
+          setSaveBtnShow(false);
+          setIsSaved(true);
+          setSaveMessage(result.data);
+        });
     } catch (err) {
-      console.log(err);
+      setIsSaved(true);
+      setIsDelete(false);
+      setSaveMessage(err.response.data);
     }
     props.onDataEdit(true);
   };
@@ -485,323 +503,153 @@ const Shipment = (props) => {
     );
   } else {
     return (
-      <form onSubmit={saveChecklistHandler}>
-        <div className="shipment__top-menu">
-          <ul className="shipment__top-menu-list">
-            <li>
-              <h1>{props.filteredData.ref}</h1>
-            </li>
-            <li>
-              <p>{props.filteredData.cargoType}</p>
-            </li>
-            <li>
-              <p>
-                {props.filteredData.contType === "BKR"
-                  ? "BROKERAGE"
-                  : props.filteredData.contType === "LCLFAK"
-                  ? "LCL"
-                  : props.filteredData.contType}
-              </p>
-            </li>
-            <li>
-              <p>{`${props.filteredData.schedule.slice(
-                8,
-                10
-              )}/${props.filteredData.schedule.slice(
-                5,
-                7
-              )}/${props.filteredData.schedule.slice(0, 4)}`}</p>
-            </li>
-            {props.filteredData.contType !== "BKR" && (
+      <>
+        {isSaved && (
+          <ShipmentPopup
+            type="notification"
+            text={saveMessage}
+            button="Okay!"
+            onClick={okayBtnHandler}
+          />
+        )}
+        {isDelete && (
+          <ShipmentPopup
+            type="select"
+            text="Would you really wish to delete this shipment?"
+            buttonOne="Yes"
+            buttonTwo="No"
+            onClickOne={deleteShipmentHandler}
+            onClickTwo={deleteBtnCancelHandler}
+          />
+        )}
+        <form onSubmit={saveChecklistHandler}>
+          <div className="shipment__top-menu">
+            <ul className="shipment__top-menu-list">
+              <li>
+                <h1 className="shipment__id">{props.filteredData.ref}</h1>
+              </li>
+              <li>
+                <p>{props.filteredData.cargoType}</p>
+              </li>
+              <li>
+                <p>
+                  {props.filteredData.contType === "BKR"
+                    ? "BROKERAGE"
+                    : props.filteredData.contType === "LCLFAK"
+                    ? "LCL"
+                    : props.filteredData.contType}
+                </p>
+              </li>
+              <li>
+                <p>{`${props.filteredData.schedule.slice(
+                  8,
+                  10
+                )}/${props.filteredData.schedule.slice(
+                  5,
+                  7
+                )}/${props.filteredData.schedule.slice(0, 4)}`}</p>
+              </li>
+              {props.filteredData.contType !== "BKR" && (
+                <li>
+                  <span>
+                    <p>MBL Surrendered: </p>
+                    <input
+                      type="checkbox"
+                      onChange={checklistMblHandler}
+                      defaultChecked={checklistState.isMblSurr}
+                    />
+                  </span>
+                </li>
+              )}
               <li>
                 <span>
-                  <p>MBL Surrendered: </p>
+                  <p>HBL Surrendered: </p>
                   <input
                     type="checkbox"
-                    onChange={checklistMblHandler}
-                    defaultChecked={checklistState.isMblSurr}
+                    onChange={checklistHblHandler}
+                    defaultChecked={checklistState.isHblSurr}
                   />
                 </span>
               </li>
-            )}
-            <li>
-              <span>
-                <p>HBL Surrendered: </p>
-                <input
-                  type="checkbox"
-                  onChange={checklistHblHandler}
-                  defaultChecked={checklistState.isHblSurr}
-                />
-              </span>
-            </li>
-            {saveBtnShow && (
-              <li>
-                <button className="shipment__top-menu-list__btn" type="submit">
-                  Save
-                </button>
-              </li>
-            )}
-          </ul>
-          <div className="shipment__detail">
-            <div className="shipment__left">
-              <div className="shipment__left__label">
-                <p>Place of Discharge: </p>
-                {props.filteredData.contType === "BKR" ? "" : <p>MBL: </p>}
-                <p>HBL: </p>
-                <p>Container Number: </p>
-                <p>Vessel: </p>
-                <p>Available Depot: </p>
-              </div>
-              <div className="shipment__left__input">
-                <p>{props.filteredData.port}</p>
-                {props.filteredData.contType === "BKR" ? (
-                  ""
-                ) : (
-                  <p>{props.filteredData.mbl.number}</p>
-                )}
-                <p>{props.filteredData.hbl.number}</p>
-                <p>{props.filteredData.container}</p>
-                <p>{`${props.filteredData.vessel} ${props.filteredData.voyage}`}</p>
-                <p>{props.filteredData.depot}</p>
-              </div>
-              <div className="shipment__left__notes">
-                <span className="notes-label">Notes: </span>
-                <p>{props.filteredData.notes}</p>
-              </div>
-            </div>
-            <div className="shipment__right">
-              <div className="shipment__right__box">
-                <div className="shipment__right__box-top">
-                  <p>Checklist:</p>
+              {saveBtnShow && (
+                <li>
+                  <button
+                    className="shipment__top-menu-list__btn"
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </li>
+              )}
+            </ul>
+            <div className="shipment__detail">
+              <div className="shipment__left">
+                <div className="shipment__left__items">
+                  <p>Place of Discharge: </p>
+                  <p>{props.filteredData.port}</p>
                 </div>
-                <div className="shipment__right__box-bottom">
-                  <table className="shipment__right__box-bottom__table">
-                    <tbody>
-                      {props.filteredData.stepOne.isHandle && (
-                        <tr>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={checklistOneHandler}
-                              defaultChecked={props.filteredData.stepOne.isDone}
-                            />
-                            <label>
-                              <p>Arrival Notice: </p>
-                            </label>
-                          </td>
-                          <td>
-                            {checklistState.isStepOneDone &&
-                            checklistState.isStepOneDone ===
-                              props.filteredData.stepOne.isDone ? (
-                              <p>{props.filteredData.stepOne.date}</p>
-                            ) : checklistState.isStepOneDone &&
-                              checklistState.isStepOneDone !==
-                                props.filteredData.stepOne.isDone ? (
-                              <p>{today}</p>
-                            ) : (
-                              <p></p>
-                            )}
-                          </td>
-                        </tr>
-                      )}
-                      {props.filteredData.stepTwo.isHandle && (
-                        <tr>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={checklistTwoHandler}
-                              defaultChecked={props.filteredData.stepTwo.isDone}
-                            />
-                            <label>
-                              <p>Invoice: </p>
-                            </label>
-                          </td>
-                          <td>
-                            {checklistState.isStepTwoDone &&
-                            checklistState.isStepTwoDone ===
-                              props.filteredData.stepTwo.isDone ? (
-                              <p>{props.filteredData.stepTwo.date}</p>
-                            ) : checklistState.isStepTwoDone &&
-                              checklistState.isStepTwoDone !==
-                                props.filteredData.stepTwo.isDone ? (
-                              <p>{today}</p>
-                            ) : (
-                              <p></p>
-                            )}
-                          </td>
-                        </tr>
-                      )}
-                      {props.filteredData.stepThree.isHandle && (
-                        <tr>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={checklistThreeHandler}
-                              defaultChecked={
-                                props.filteredData.stepThree.isDone
-                              }
-                            />
-                            <label>
-                              <p>D/O: </p>
-                            </label>
-                          </td>
-                          <td>
-                            {checklistState.isStepThreeDone &&
-                            checklistState.isStepThreeDone ===
-                              props.filteredData.stepThree.isDone ? (
-                              <p>{props.filteredData.stepThree.date}</p>
-                            ) : checklistState.isStepThreeDone &&
-                              checklistState.isStepThreeDone !==
-                                props.filteredData.stepThree.isDone ? (
-                              <p>{today}</p>
-                            ) : (
-                              <p></p>
-                            )}
-                          </td>
-                        </tr>
-                      )}
+                {props.filteredData.contType !== "BKR" && (
+                  <div className="shipment__left__items">
+                    <p>MBL: </p>
+                    <p>{props.filteredData.mbl.number}</p>
+                  </div>
+                )}
+                <div className="shipment__left__items">
+                  <p>HBL: </p>
+                  <p>{props.filteredData.hbl.number}</p>
+                </div>
+                <div className="shipment__left__items">
+                  <p>Container Number: </p>
+                  <p>{props.filteredData.container}</p>
+                </div>
+                <div className="shipment__left__items">
+                  <p>Vessel: </p>
+                  <p>{`${props.filteredData.vessel} ${props.filteredData.voyage}`}</p>
+                </div>
+                <div className="shipment__left__items">
+                  <p>Available Depot: </p>
+                  <p>{props.filteredData.depot}</p>
+                </div>
 
-                      {props.filteredData.stepFour.isHandle && (
-                        <tr>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={checklistFourHandler}
-                              defaultChecked={
-                                props.filteredData.stepFour.isDone
-                              }
-                            />
-                            <label>
-                              <p>Outturn Report: </p>
-                            </label>
-                          </td>
-                          <td>
-                            {checklistState.isStepFourDone &&
-                            checklistState.isStepFourDone ===
-                              props.filteredData.stepFour.isDone ? (
-                              <p>{props.filteredData.stepFour.date}</p>
-                            ) : checklistState.isStepFourDone &&
-                              checklistState.isStepFourDone !==
-                                props.filteredData.stepFour.isDone ? (
-                              <p>{today}</p>
-                            ) : (
-                              <p></p>
-                            )}
-                          </td>
-                        </tr>
-                      )}
-
-                      {props.filteredData.stepFive.isHandle && (
-                        <tr>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={checklistFiveHandler}
-                              defaultChecked={
-                                props.filteredData.stepFive.isDone
-                              }
-                            />
-                            <label>
-                              <p>Customs Clearance: </p>
-                            </label>
-                          </td>
-                          <td>
-                            {checklistState.isStepFiveDone &&
-                            checklistState.isStepFiveDone ===
-                              props.filteredData.stepFive.isDone ? (
-                              <p>{props.filteredData.stepFive.date}</p>
-                            ) : checklistState.isStepFiveDone &&
-                              checklistState.isStepFiveDone !==
-                                props.filteredData.stepFive.isDone ? (
-                              <p>{today}</p>
-                            ) : (
-                              <p></p>
-                            )}
-                          </td>
-                        </tr>
-                      )}
-
-                      {props.filteredData.stepSix.isHandle && (
-                        <tr>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={checklistSixHandler}
-                              defaultChecked={props.filteredData.stepSix.isDone}
-                            />
-                            <label>
-                              <p>Delivery: </p>
-                            </label>
-                          </td>
-                          <td>
-                            {checklistState.isStepSixDone &&
-                            checklistState.isStepSixDone ===
-                              props.filteredData.stepSix.isDone ? (
-                              <p>{props.filteredData.stepSix.date}</p>
-                            ) : checklistState.isStepSixDone &&
-                              checklistState.isStepSixDone !==
-                                props.filteredData.stepSix.isDone ? (
-                              <p>{today}</p>
-                            ) : (
-                              <p></p>
-                            )}
-                          </td>
-                        </tr>
-                      )}
-
-                      {props.filteredData.stepSeven.isHandle && (
-                        <tr>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={checklistSevenStartHandler}
-                              defaultChecked={
-                                props.filteredData.stepSeven.isStart
-                              }
-                            />
-                            <label>
-                              <p>Storage Start: </p>
-                            </label>
-                          </td>
-                          <td>
-                            {checklistState.isStepSevenStart &&
-                            checklistState.isStepSevenStart ===
-                              props.filteredData.stepSeven.isStart ? (
-                              <p>{props.filteredData.stepSeven.date}</p>
-                            ) : checklistState.isStepSevenStart &&
-                              checklistState.isStepSevenStart !==
-                                props.filteredData.stepSeven.isStart ? (
-                              <p>{today}</p>
-                            ) : (
-                              <p></p>
-                            )}
-                          </td>
-                        </tr>
-                      )}
-
-                      {props.filteredData.stepSeven.isHandle &&
-                        props.filteredData.stepSeven.isStart && (
+                <div className="shipment__left__notes">
+                  <span className="notes-label">Notes: </span>
+                  <p>{props.filteredData.notes}</p>
+                </div>
+              </div>
+              <div className="shipment__right">
+                <div className="shipment__right__box">
+                  <div className="shipment__right__box-top">
+                    <p>Checklist:</p>
+                  </div>
+                  <div className="shipment__right__box-bottom">
+                    <table className="shipment__right__box-bottom__table">
+                      <tbody>
+                        {props.filteredData.stepOne.isHandle && (
                           <tr>
                             <td>
                               <input
                                 type="checkbox"
-                                onChange={checklistSevenEndHandler}
+                                onChange={checklistOneHandler}
                                 defaultChecked={
-                                  props.filteredData.stepSeven.isEnd
+                                  props.filteredData.stepOne.isDone
                                 }
                               />
                               <label>
-                                <p>Storage End: </p>
+                                {props.filteredData.cargoType === "Import" ? (
+                                  <p>Arrival Notice: </p>
+                                ) : (
+                                  <p>Booking Confirmation</p>
+                                )}
                               </label>
                             </td>
                             <td>
-                              {checklistState.isStepSevenEnd &&
-                              checklistState.isStepSevenEnd ===
-                                props.filteredData.stepSeven.isEnd ? (
-                                <p>{props.filteredData.stepSeven.date}</p>
-                              ) : checklistState.isStepSevenEnd &&
-                                checklistState.isStepSevenEnd !==
-                                  props.filteredData.stepSeven.isEnd ? (
+                              {checklistState.isStepOneDone &&
+                              checklistState.isStepOneDone ===
+                                props.filteredData.stepOne.isDone ? (
+                                <p>{props.filteredData.stepOne.date}</p>
+                              ) : checklistState.isStepOneDone &&
+                                checklistState.isStepOneDone !==
+                                  props.filteredData.stepOne.isDone ? (
                                 <p>{today}</p>
                               ) : (
                                 <p></p>
@@ -809,18 +657,236 @@ const Shipment = (props) => {
                             </td>
                           </tr>
                         )}
-                    </tbody>
-                  </table>
+                        {props.filteredData.stepTwo.isHandle && (
+                          <tr>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={checklistTwoHandler}
+                                defaultChecked={
+                                  props.filteredData.stepTwo.isDone
+                                }
+                              />
+                              <label>
+                                <p>Invoice: </p>
+                              </label>
+                            </td>
+                            <td>
+                              {checklistState.isStepTwoDone &&
+                              checklistState.isStepTwoDone ===
+                                props.filteredData.stepTwo.isDone ? (
+                                <p>{props.filteredData.stepTwo.date}</p>
+                              ) : checklistState.isStepTwoDone &&
+                                checklistState.isStepTwoDone !==
+                                  props.filteredData.stepTwo.isDone ? (
+                                <p>{today}</p>
+                              ) : (
+                                <p></p>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+                        {props.filteredData.stepThree.isHandle && (
+                          <tr>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={checklistThreeHandler}
+                                defaultChecked={
+                                  props.filteredData.stepThree.isDone
+                                }
+                              />
+                              <label>
+                                {props.filteredData.cargoType === "Import" ? (
+                                  <p>D/O: </p>
+                                ) : (
+                                  <p>B/L</p>
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              {checklistState.isStepThreeDone &&
+                              checklistState.isStepThreeDone ===
+                                props.filteredData.stepThree.isDone ? (
+                                <p>{props.filteredData.stepThree.date}</p>
+                              ) : checklistState.isStepThreeDone &&
+                                checklistState.isStepThreeDone !==
+                                  props.filteredData.stepThree.isDone ? (
+                                <p>{today}</p>
+                              ) : (
+                                <p></p>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+
+                        {props.filteredData.stepFour.isHandle && (
+                          <tr>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={checklistFourHandler}
+                                defaultChecked={
+                                  props.filteredData.stepFour.isDone
+                                }
+                              />
+                              <label>
+                                {props.filteredData.cargoType === "Import" ? (
+                                  <p>Outturn Report: </p>
+                                ) : (
+                                  <p>Check in Detail</p>
+                                )}
+                              </label>
+                            </td>
+                            <td>
+                              {checklistState.isStepFourDone &&
+                              checklistState.isStepFourDone ===
+                                props.filteredData.stepFour.isDone ? (
+                                <p>{props.filteredData.stepFour.date}</p>
+                              ) : checklistState.isStepFourDone &&
+                                checklistState.isStepFourDone !==
+                                  props.filteredData.stepFour.isDone ? (
+                                <p>{today}</p>
+                              ) : (
+                                <p></p>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+
+                        {props.filteredData.stepFive.isHandle && (
+                          <tr>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={checklistFiveHandler}
+                                defaultChecked={
+                                  props.filteredData.stepFive.isDone
+                                }
+                              />
+                              <label>
+                                <p>Customs Clearance: </p>
+                              </label>
+                            </td>
+                            <td>
+                              {checklistState.isStepFiveDone &&
+                              checklistState.isStepFiveDone ===
+                                props.filteredData.stepFive.isDone ? (
+                                <p>{props.filteredData.stepFive.date}</p>
+                              ) : checklistState.isStepFiveDone &&
+                                checklistState.isStepFiveDone !==
+                                  props.filteredData.stepFive.isDone ? (
+                                <p>{today}</p>
+                              ) : (
+                                <p></p>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+
+                        {props.filteredData.stepSix.isHandle && (
+                          <tr>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={checklistSixHandler}
+                                defaultChecked={
+                                  props.filteredData.stepSix.isDone
+                                }
+                              />
+                              <label>
+                                <p>Delivery: </p>
+                              </label>
+                            </td>
+                            <td>
+                              {checklistState.isStepSixDone &&
+                              checklistState.isStepSixDone ===
+                                props.filteredData.stepSix.isDone ? (
+                                <p>{props.filteredData.stepSix.date}</p>
+                              ) : checklistState.isStepSixDone &&
+                                checklistState.isStepSixDone !==
+                                  props.filteredData.stepSix.isDone ? (
+                                <p>{today}</p>
+                              ) : (
+                                <p></p>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+
+                        {props.filteredData.stepSeven.isHandle && (
+                          <tr>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={checklistSevenStartHandler}
+                                defaultChecked={
+                                  props.filteredData.stepSeven.isStart
+                                }
+                              />
+                              <label>
+                                <p>Storage Start: </p>
+                              </label>
+                            </td>
+                            <td>
+                              {checklistState.isStepSevenStart &&
+                              checklistState.isStepSevenStart ===
+                                props.filteredData.stepSeven.isStart ? (
+                                <p>{props.filteredData.stepSeven.startDate}</p>
+                              ) : checklistState.isStepSevenStart &&
+                                checklistState.isStepSevenStart !==
+                                  props.filteredData.stepSeven.isStart ? (
+                                <p>{today}</p>
+                              ) : (
+                                <p></p>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+
+                        {props.filteredData.stepSeven.isHandle &&
+                          props.filteredData.stepSeven.isStart && (
+                            <tr>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={checklistSevenEndHandler}
+                                  defaultChecked={
+                                    props.filteredData.stepSeven.isEnd
+                                  }
+                                />
+                                <label>
+                                  <p>Storage End: </p>
+                                </label>
+                              </td>
+                              <td>
+                                {checklistState.isStepSevenEnd &&
+                                checklistState.isStepSevenEnd ===
+                                  props.filteredData.stepSeven.isEnd ? (
+                                  <p>{props.filteredData.stepSeven.endDate}</p>
+                                ) : checklistState.isStepSevenEnd &&
+                                  checklistState.isStepSevenEnd !==
+                                    props.filteredData.stepSeven.isEnd ? (
+                                  <p>{today}</p>
+                                ) : (
+                                  <p></p>
+                                )}
+                              </td>
+                            </tr>
+                          )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <div className="shipment__bottom">
           <button onClick={editBtnHandler}>Edit</button>
           <button onClick={deleteBtnHandler}>Delete</button>
         </div>
-      </form>
+      </>
     );
   }
 };

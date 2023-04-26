@@ -317,10 +317,10 @@ export function saveChecklist(data, shipment) {
   }
 }
 
-export function makeShipment(event, shipmentType) {
+export function makeShipment(event, shipmentType, contType) {
   let [mbl, hbl, stepOne, stepTwo, stepThree, stepFour, stepFive, stepSix, stepSeven] = ["", "", "", "", "", "", "", "", ""];
 
-  if (event.target.contType.value === "FAK") {
+  if (contType === "FAK") {
     mbl = event.target.mbl.value;
     hbl = "";
     stepOne = false;
@@ -330,7 +330,7 @@ export function makeShipment(event, shipmentType) {
     stepFive = false;
     stepSix = false;
     stepSeven = false;
-  } else if (event.target.contType.value === "BKR") {
+  } else if (contType === "BKR") {
     mbl = "";
     hbl = event.target.hbl.value;
     stepOne = event.target.stepOne.checked;
@@ -354,7 +354,7 @@ export function makeShipment(event, shipmentType) {
   return {
     ref: event.target.ref.value,
     cargoType: shipmentType,
-    contType: event.target.contType.value,
+    contType: contType,
     schedule: event.target.schedule.value,
     port: event.target.port.value,
     vessel: event.target.vessel.value.toUpperCase(),

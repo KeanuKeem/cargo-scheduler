@@ -1,28 +1,38 @@
 const Shipment = require("../models/Shipment");
-const monthChanger = require("../services/schedule-references");
 const { findShipmentsByDay } = require("../services/findShipment");
-const { makeShipment } = require("../services/makeShipment")
+const { makeShipment } = require("../services/makeShipment");
+const { saveHandling } = require("../services/saveShipmentHandling");
+const { updateShipmentHandler } = require("../services/updateShipment");
+const { removeShipmentHandler } = require("../services/removeShipmentHandler");
+const { removeFakShipment } = require("../services/removeFakShipment");
+const { updateVesselSchedulesHandler } = require("../services/updateVesselSchedule");
+const { getSearchResult } = require("../services/getSearchResult");
 
 const getScheduleByDay = async (req, res, next) => {
   if (req.method === "OPTIONS") {
     return next();
   }
   try {
-    const schedule = await findShipmentsByDay(req.query.month, req.query.year, req.query.type, req.userData.userId);
+    const schedule = await findShipmentsByDay(
+      req.query.month,
+      req.query.year,
+      req.query.type,
+      req.userData.userId
+    );
     res.status(200).send(schedule);
   } catch (err) {
     res.status(500).send(err);
   }
 };
 
-const createShipment = (req, res, next) => {
+const createShipment = async (req, res, next) => {
   if (req.method === "OPTIONS") {
     return next();
   }
   try {
-    const message = makeShipment(req);
+    const message = await makeShipment(req);
     if (message === "successful") {
-      res.status(200);
+      res.status(200).send();
     } else {
       res.status(500).send(message);
     }
@@ -44,342 +54,82 @@ const getShipment = async (req, res) => {
   }
 };
 
-const saveShipment = (req, res) => {
-  const ref = req.body.ref;
+const saveShipment = async (req, res) => {
+  try {
+    const condition = await saveHandling(req);
 
-  const shipment = Shipment.findOneAndUpdate(
-    { ref: ref },
-    {
-      mbl: {
-        number: req.body.mblNumber,
-        isSurr: req.body.isMblSurr,
-        date: req.body.mblSurrDate,
-      },
-      hbl: {
-        number: req.body.hblNumber,
-        isSurr: req.body.isHblSurr,
-        date: req.body.hblSurrDate,
-      },
-      stepOne: {
-        isHandle: req.body.isHandleStepOne,
-        isDone: req.body.isStepOneDone,
-        date: req.body.stepOneValue,
-      },
-      stepTwo: {
-        isHandle: req.body.isHandleStepTwo,
-        isDone: req.body.isStepTwoDone,
-        date: req.body.stepTwoValue,
-      },
-      stepThree: {
-        isHandle: req.body.isHandleStepThree,
-        isDone: req.body.isStepThreeDone,
-        date: req.body.stepThreeValue,
-      },
-      stepFour: {
-        isHandle: req.body.isHandleStepFour,
-        isDone: req.body.isStepFourDone,
-        date: req.body.stepFourValue,
-      },
-      stepFive: {
-        isHandle: req.body.isHandleStepFive,
-        isDone: req.body.isStepFiveDone,
-        date: req.body.stepFiveValue,
-      },
-      stepSix: {
-        isHandle: req.body.isHandleStepSix,
-        isDone: req.body.isStepSixDone,
-        date: req.body.stepSixValue,
-      },
-      stepSeven: {
-        isHandle: req.body.isHandleStepSeven,
-        isStart: req.body.isStepSevenStart,
-        isEnd: req.body.isStepSevenEnd,
-        startDate: req.body.stepSevenStartValue,
-        endDate: req.body.stepSevenEndValue,
-      },
+    if (condition) {
+      res.status(200).send("Saved!");
+    } else {
+      res.status(500).send("Could not save, please try again!");
     }
-  )
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  } catch {
+    res.status(500).send("Server Error, please try again!");
+  }
 };
 
-const updateShipment = (req, res) => {
-  const ref = req.body.ref;
-
-  const shipment = Shipment.findOneAndUpdate(
-    { ref: ref },
-    {
-      ref: req.body.ref,
-      cargoType: req.body.cargoType,
-      contType: req.body.contType,
-      schedule: req.body.schedule,
-      port: req.body.port,
-      vessel: req.body.vessel.toUpperCase(),
-      voyage: req.body.voyage.toUpperCase(),
-      mbl: {
-        number: req.body.mbl.number,
-        isSurr: req.body.mbl.isSurr,
-        date: req.body.mbl.date,
-      },
-      hbl: {
-        number: req.body.hbl.number,
-        isSurr: req.body.hbl.isSurr,
-        date: req.body.hbl.date,
-      },
-      container: req.body.container.toUpperCase(),
-      depot: req.body.depot,
-      notes: req.body.notes,
-      fakShipments: req.body.fakShipments,
-      day: {
-        date: Number(req.body.schedule.slice(8, 10)),
-        month: monthChanger(req.body.schedule.slice(5, 7)),
-        year: Number(req.body.schedule.slice(0, 4)),
-      },
-      stepOne: {
-        isHandle: req.body.stepOne.isHandle,
-        isDone: req.body.stepOne.isDone,
-        date: req.body.stepOne.date,
-      },
-      stepTwo: {
-        isHandle: req.body.stepTwo.isHandle,
-        isDone: req.body.stepTwo.isDone,
-        date: req.body.stepTwo.date,
-      },
-      stepThree: {
-        isHandle: req.body.stepThree.isHandle,
-        isDone: req.body.stepThree.isDone,
-        date: req.body.stepThree.date,
-      },
-      stepFour: {
-        isHandle: req.body.stepFour.isHandle,
-        isDone: req.body.stepFour.isDone,
-        date: req.body.stepFour.date,
-      },
-      stepFive: {
-        isHandle: req.body.stepFive.isHandle,
-        isDone: req.body.stepFive.isDone,
-        date: req.body.stepFive.date,
-      },
-      stepSix: {
-        isHandle: req.body.stepSix.isHandle,
-        isDone: req.body.stepSix.isDone,
-        date: req.body.stepSix.date,
-      },
-      stepSeven: {
-        isHandle: req.body.stepSeven.isHandle,
-        isStart: req.body.stepSeven.isStart,
-        isEnd: req.body.stepSeven.isEnd,
-        startDate: req.body.stepSeven.startDate,
-        endDate: req.body.stepSeven.endDate,
-      },
-    }
-  )
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+const updateShipment = async (req, res) => {
+  const output = await updateShipmentHandler(req);
+  if (output.result) {
+    res.status(200).send("Successfully Updated!");
+  } else {
+    res.status(500).send(output.message);
+  }
 };
 
 const createShipmentInFak = async (req, res) => {
-  const masterID = req.query.id;
+  const message = await makeShipment(req);
 
-  const shipment = await Shipment.findOne({ ref: masterID });
-
-  shipment.fakShipments.push({ ref: req.body.ref });
-
-  await shipment
-    .save()
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-const updateShipmentsInFak = async (req, res) => {
-  const masterID = req.query.id;
-
-  const masterShipment = await Shipment.findOne({ ref: masterID });
-
-  masterShipment.fakShipments.forEach(async (shipmentId) => {
-    Shipment.findOneAndUpdate(
-      { ref: shipmentId.ref },
-      {
-        schedule: req.body.schedule,
-        prevSchedule: req.body.prevSchedule,
-        port: req.body.port,
-        vessel: req.body.vessel.toUpperCase(),
-        voyage: req.body.voyage.toUpperCase(),
-        container: req.body.container.toUpperCase(),
-        depot: req.body.depot,
-        day: {
-          date: Number(req.body.schedule.slice(8, 10)),
-          month: monthChanger(req.body.schedule.slice(5, 7)),
-          year: Number(req.body.schedule.slice(0, 4)),
-        },
-      }
-    ).catch((err) => {
-      res.status(500).send(err);
-    });
-  });
-
-  await Shipment.findOneAndUpdate(
-    { ref: masterID },
-    {
-      schedule: req.body.schedule,
-      prevSchedule: req.body.prevSchedule,
-      port: req.body.port,
-      vessel: req.body.vessel,
-      voyage: req.body.voyage,
-      container: req.body.container,
-      depot: req.body.depot,
-      notes: req.body.notes,
-      day: {
-        date: Number(req.body.schedule.slice(8, 10)),
-        month: monthChanger(req.body.schedule.slice(5, 7)),
-        year: Number(req.body.schedule.slice(0, 4)),
-      },
-    }
-  )
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  if (message === "successful") {
+    res.status(200).send(message);
+  } else {
+    res.status(500).send(message);
+  }
 };
 
 const deleteShipment = async (req, res) => {
-  const ref = req.query.id;
-
-  await Shipment.deleteOne({ ref: ref })
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  const output = await removeShipmentHandler(req);
+  if (output.result) {
+    res.status(200).send("Succesfully Deleted!");
+  } else {
+    res.status(500).send(output.message);
+  }
 };
 
 const deleteShipments = async (req, res) => {
-  const ref = req.query.id;
-
-  const shipment = await Shipment.findOne({ ref: ref });
-
-  shipment.fakShipments.forEach(async (shipmentObj) => {
-    await Shipment.deleteOne({ ref: shipmentObj.ref }).catch((err) => {
-      res.status(500).send(err);
-    });
-  });
-
-  shipment
-    .save()
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-const deleteShipmentInFak = async (req, res) => {
-  const masterId = req.query.mId;
-  const ref = req.query.id;
-
-  const shipment = await Shipment.findOne({ ref: masterId });
-
-  const shipmentIndex = shipment.fakShipments.findIndex((shipmentObj) => {
-    return shipmentObj.ref === ref;
-  });
-
-  shipment.fakShipments.splice(shipmentIndex, shipmentIndex + 1);
-
-  await shipment
-    .save()
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-// const getShipmentsByVessel = async (req, res) => {
-//   const vessel = req.query.vessel.toUpperCase();
-//   const voyage = req.query.voyage.toUpperCase();
-
-//   try {
-//     const shipments = await Shipment.find({ vessel, voyage });
-//     res.status(200).send(shipments);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).send(err);
-//   }
-// };
-
-const updateVesselSchedules = async (req, res) => {
-  try {
-    const vessel = req.body[0].vessel.toUpperCase();
-    const voyage = req.body[0].voyage.toUpperCase();
-    const newSchedule = req.body[0].newSchedule;
-    const date = Number(newSchedule.slice(8, 10));
-    const month = monthChanger(newSchedule.slice(5, 7));
-    const year = Number(newSchedule.slice(0, 4));
-    const cargoType = req.body[0].type;
-
-    if (cargoType === "All") {
-      await Shipment.updateMany(
-        { vessel, voyage },
-        {
-          $set: {
-            schedule: newSchedule,
-            day: {
-              date,
-              month,
-              year,
-            },
-          },
-        }
-      ).then((result) => {
-        res.status(200).send(result);
-      });
-    } else {
-      await Shipment.updateMany(
-        { vessel, voyage, cargoType },
-        {
-          $set: {
-            schedule: newSchedule,
-            day: {
-              date,
-              month,
-              year,
-            },
-          },
-        }
-      ).then((result) => {
-        res.status(200).send(result);
-      });
-    }
-  } catch (err) {
-    res.status(500).send(err);
+  const output = await removeFakShipment(req);
+  if (output.result) {
+    res.status(200).send("Successfully Deleted!");
+  } else {
+    res.status(500).send(output.message);
   }
 };
+
+const updateVesselSchedules = async (req, res) => {
+  const output = await updateVesselSchedulesHandler(req);
+  if (output.result) {
+    res.status(200).send(output.message);
+  } else {
+    res.status(500).send(output.message);
+  }
+};
+
+const getSearch = async (req, res) => {
+  const output = await getSearchResult(req);
+  if (output.result) {
+    res.status(200).send(output.data);
+  } else {
+    res.status(500).send(output.message);
+  }
+}
 
 exports.createShipment = createShipment;
 exports.getShipment = getShipment;
 exports.saveShipment = saveShipment;
 exports.updateShipment = updateShipment;
 exports.createShipmentInFak = createShipmentInFak;
-exports.updateShipmentsInFak = updateShipmentsInFak;
 exports.deleteShipment = deleteShipment;
 exports.deleteShipments = deleteShipments;
-exports.deleteShipmentInFak = deleteShipmentInFak;
 exports.updateVesselSchedules = updateVesselSchedules;
 exports.getScheduleByDay = getScheduleByDay;
+exports.getSearch = getSearch;

@@ -1,14 +1,59 @@
 const Shipment = require("../models/Shipment");
+const monthChanger = require("../services/schedule-references");
+
+const checkEmptyForCreateShipment = (req) => {
+  if (req.body.cargoType === "") {
+    return { value: false, message: "Please select Cargo Type." };
+  }
+  if (req.body.contType === "") {
+    return { value: false, message: "Please select Container Type." };
+  }
+  if (req.body.schedule === "") {
+    return { value: false, message: "Please choose the date." };
+  }
+  if (req.body.port === "") {
+    return {
+      value: false,
+      message: "Arriving or Departuring place cannot be Empty.",
+    };
+  }
+  if (req.body.vessel === "") {
+    return { value: false, message: "Vessel name cannot be Empty." };
+  }
+  if (req.body.voyage === "") {
+    return { value: false, message: "Voyage# cannot be Empty." };
+  }
+  if (req.body.container === "") {
+    return { value: false, message: "Container# cannot be Empty." };
+  }
+  if (req.body.depot === "") {
+    return { value: false, message: "Handling Depot cannot be Empty." };
+  }
+  if (req.body.creator === "") {
+    return { value: false, message: "Please log in and try again!" };
+  } else {
+    return { value: true };
+  }
+};
 
 const makeShipment = async (req) => {
-  const existingShipment = Shipment.findOne({
+  if (req.body.ref === "") {
+    return "Ref# cannot be Empty.";
+  }
+  const existingShipment = await Shipment.findOne({
     ref: req.body.ref,
     creator: req.userData.userId,
   });
+  const checkEmpty = checkEmptyForCreateShipment(req);
+
   if (existingShipment !== null) {
     return "This shipment Ref# already exists!";
+  }
+  if (!checkEmpty.value) {
+    return checkEmpty.message;
   } else {
-    const shipment = new Shipment({
+    try {
+      const shipment = new Shipment({
         ref: req.body.ref,
         cargoType: req.body.cargoType,
         contType: req.body.contType,
@@ -74,16 +119,24 @@ const makeShipment = async (req) => {
         },
         creator: req.userData.userId,
       });
-      await shipment
-        .save()
-        .then(() => {
-          return "successful";
-        })
-        .catch(() => {
-          return "Data could not be saved. Please try again!";
+
+      await shipment.save();
+
+      if (req.body.contType === "LCLFAK") {
+        const masterShipment = await Shipment.findOne({
+          ref: req.query.id,
+          creator: req.userData.userId,
         });
+        masterShipment.fakShipments.push({ref: req.body.ref});
+
+        await masterShipment.save();
+      }
+      
+      return "successful";
+    } catch (err) {
+      return "Save unsuccesful, please try again!";
+    }
   }
-  
 };
 
 exports.makeShipment = makeShipment;

@@ -70,30 +70,6 @@
     margin-left: .5rem;
 }
 
-.btn {
-    background-color: #d1ddff;
-    border: 1px solid #000;
-    border-radius: .5rem;
-    padding: .3rem .8rem;
-    box-shadow: 3px 3px rgba(0, 0, 0, 0.275);
-}
-
-.btn:active {
-    animation: btnClick .1s linear;
-    animation-fill-mode: forwards;
-}
-
-@keyframes btnClick {
-    0% {
-        transform: translate(0, 0);
-        box-shadow: 0 0 rgba(0, 0, 0, 0.275);
-    }
-    100% {
-        transform: translate(3px, 3px);
-        box-shadow: 0 0 rgba(0, 0, 0, 0);
-    }
-}
-
 @keyframes dropVessel {
     0% {
         transform: translate(-50%, -5rem);

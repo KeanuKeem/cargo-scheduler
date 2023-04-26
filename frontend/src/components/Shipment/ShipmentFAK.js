@@ -9,6 +9,7 @@ import "./Shipment.css";
 import "./ShipmentFAK.css";
 import ShipmentForm from "./ShipmentForm";
 import axios from "axios";
+import ShipmentPopup from "./ShipmentPopup";
 
 const ShipmentFAK = (props) => {
   const ctx = useContext(SelectContext);
@@ -17,6 +18,8 @@ const ShipmentFAK = (props) => {
   const [isAdd, setIsAdd] = useState(false);
   const [shipmentData, setShipmentData] = useState([]);
   const [mId, setMId] = useState(props.data.ref);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isDelete, setIsDelete] = useState(false);
 
   const editBtnHandler = () => {
     setIsEdit(true);
@@ -26,13 +29,22 @@ const ShipmentFAK = (props) => {
     setIsAdd(!isAdd);
   };
 
+  const deleteBtnClickHandler = () => {
+    setIsDelete(true);
+  };
+
+  const noBtnClickHandler = () => {
+    setIsDelete(false);
+  };
+
   const shipmentClickHandler = async (event) => {
     event.preventDefault();
 
     props.showBackBtn();
 
     const response = await axios.get(
-      `http://localhost:5000/api/shipment/?id=${event.target.id}`
+      `http://localhost:5000/api/shipment/?id=${event.target.id}`,
+      { headers: { Authorization: "Bearer " + ctx.token } }
     );
     setShipmentData(response.data);
     props.onFakChange();
@@ -63,36 +75,34 @@ const ShipmentFAK = (props) => {
       stepSeven: event.target.stepSeven.checked,
     };
 
-    Promise.all([
-      await axios.post(
+    await axios
+      .post(
         `http://localhost:5000/api/shipment/inFak?id=${props.data.ref}`,
-        shipment
-      ),
-      await axios.post("http://localhost:5000/api/shipment/", shipment),
-    ]).catch((err) => {
-      console.log(err);
-    });
-
-    props.onShipmentAdd(true);
-    setIsAdd(!isAdd);
+        shipment,
+        { headers: { Authorization: "Bearer " + ctx.token } }
+      )
+      .then(() => {
+        props.onShipmentAdd(true);
+        setIsAdd(!isAdd);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data);
+      });
   };
 
   const deleteFakShipmentHandler = async () => {
-    Promise.all([
-      await axios.delete(
-        `http://localhost:5000/api/shipment/fak?id=${props.data.ref}`
-      ),
-      await axios.delete(
-        `http://localhost:5000/api/shipment?id=${props.data.ref}`
-      ),
-    ]).catch(err => {
-      console.log(err);
-    });
-    
+    await axios
+      .delete(`http://localhost:5000/api/shipment/fak?id=${props.data.ref}`, {
+        headers: { Authorization: "Bearer " + ctx.token },
+      })
+
+      .catch((err) => {
+        console.log(err);
+      });
+
     props.onDataEdit(true);
     props.onClose();
   };
-
 
   if (isEdit) {
     return (
@@ -108,7 +118,9 @@ const ShipmentFAK = (props) => {
     return (
       <ShipmentForm
         onFakAdd={onAddShipment}
+        error={errorMessage}
         shipmentType={props.data.cargoType}
+        contTypeState={{ value: props.data.contType }}
         sendFrom="FAK"
       />
     );
@@ -126,6 +138,17 @@ const ShipmentFAK = (props) => {
   } else {
     return (
       <>
+        {isDelete && (
+          <ShipmentPopup
+            type="select"
+            text="Would you really wish to delete this shipment?"
+            buttonOne="Yes"
+            buttonTwo="No"
+            onClickOne={deleteFakShipmentHandler}
+            onClickTwo={noBtnClickHandler}
+          />
+        )}
+
         <div className="shipment__top-menu">
           <ul className="shipment__top-menu-list">
             <li>
@@ -166,22 +189,27 @@ const ShipmentFAK = (props) => {
           </ul>
           <div className="shipment__detail">
             <div className="shipment__left">
-              <div className="shipment__left__label">
+              <div className="shipment__left__items">
                 <p>Place of Discharge: </p>
-                <p>MBL: </p>
-                <p>Container Number: </p>
-                <p>Vessel: </p>
-                <p>Available Depot: </p>
-              </div>
-              <div className="shipment__left__input">
                 <p>{props.data.port}</p>
-
+              </div>
+              <div className="shipment__left__items">
+                <p>MBL: </p>
                 <p>{props.data.mbl.number}</p>
-
+              </div>
+              <div className="shipment__left__items">
+                <p>Container Number: </p>
                 <p>{props.data.container}</p>
+              </div>
+              <div className="shipment__left__items">
+                <p>Vessel: </p>
                 <p>{`${props.data.vessel} ${props.data.voyage}`}</p>
+              </div>
+              <div className="shipment__left__items">
+                <p>Available Depot: </p>
                 <p>{props.data.depot}</p>
               </div>
+
               <div className="shipment__left__notes">
                 <span className="notes-label">Notes: </span>
                 <p>{props.data.notes}</p>
@@ -212,7 +240,7 @@ const ShipmentFAK = (props) => {
         </div>
         <div className="shipment__bottom">
           <button onClick={editBtnHandler}>Edit</button>
-          <button onClick={deleteFakShipmentHandler}>Delete</button>
+          <button onClick={deleteBtnClickHandler}>Delete</button>
         </div>
       </>
     );

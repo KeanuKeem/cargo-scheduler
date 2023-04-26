@@ -43,8 +43,6 @@ const validityCodeRemover= (email, code) => {
     }
 };
 
-console.log(validities, "validities");
-
 exports.validityCodeGenerator = validityCodeGenerator;
 exports.validityCodeChecker = validityCodeChecker;
 exports.validityCodeRemover = validityCodeRemover;

@@ -30,12 +30,12 @@ const TypeSelector = (props) => {
 
   if (props.type === "get") {
     return (
-      <>
+      <div>
         <div
           className={!showDropdown ? "select" : "select-click"}
           onClick={showDropdownHandler}
           tabIndex={clicked ? -1 : 0}
-          {...(clicked ? {} : {onBlur: blurHandler})}
+          {...(clicked ? {} : { onBlur: blurHandler })}
         >
           <h2 className="select__header">{selectedItem}</h2>
           <FontAwesomeIcon
@@ -53,22 +53,40 @@ const TypeSelector = (props) => {
         </div>
         <ul
           className={
-            !showDropdown ? "select__dropdown__hide" : "select__dropdown__show"
+            !showDropdown
+              ? "select__dropdown__hide " + props.className
+              : "select__dropdown__show " + props.className
           }
-          onMouseEnter={() => {setClicked(true)}}
-          onMouseLeave={() => {setClicked(false)}}
+          onMouseEnter={() => {
+            setClicked(true);
+          }}
+          onMouseLeave={() => {
+            setClicked(false);
+          }}
         >
-          <li className={"All" === selectedItem ? "this-type" : ""} onClick={selectItemHandler} id="All">
+          <li
+            className={"All" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="All"
+          >
             All
           </li>
-          <li className={"Import" === selectedItem ? "this-type" : ""} onClick={selectItemHandler} id="Import">
+          <li
+            className={"Import" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="Import"
+          >
             Import
           </li>
-          <li className={"Export" === selectedItem ? "this-type" : ""} onClick={selectItemHandler} id="Export">
+          <li
+            className={"Export" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="Export"
+          >
             Export
           </li>
         </ul>
-      </>
+      </div>
     );
   }
 

@@ -5,8 +5,10 @@ import { getMonth } from "../Reference/Calendar";
 import SelectContext from "../../store/select-context";
 import TypeSelector from "../Calendar/Select/TypeSelector";
 
+import "./Shipment.css";
 import "./ShipmentEdit.css";
 import axios from "axios";
+import ShipmentPopup from "./ShipmentPopup";
 
 const ShipmentEdit = (props) => {
   const ctx = useContext(SelectContext);
@@ -28,6 +30,8 @@ const ShipmentEdit = (props) => {
   const [fiveState, setFiveState] = useState(props.data.stepFive.isHandle);
   const [sixState, setSixState] = useState(props.data.stepSix.isHandle);
   const [sevenState, setSevenState] = useState(props.data.stepSeven.isHandle);
+  const [popup, setPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
   const prevScheduleRef = useRef();
 
@@ -103,6 +107,10 @@ const ShipmentEdit = (props) => {
     setSevenState(event.target.checked);
   };
 
+  const okayBtnHandler = () => {
+    props.onClose();
+  };
+
   const editShipmentHandler = async (event) => {
     event.preventDefault();
     const shipment = {
@@ -172,273 +180,295 @@ const ShipmentEdit = (props) => {
       },
     };
 
-    if (contTypeState === "FAK") {
-      await axios
-        .patch(
-          `http://localhost:5000/api/shipment/fakShipment?id=${props.data.ref}`,
-          shipment
-        )
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      await axios
-        .patch("http://localhost:5000/api/shipment/edit", shipment)
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-
-    props.onDataEdit(true);
-    props.onClose();
+    await axios
+      .patch("http://localhost:5000/api/shipment/edit", shipment, {
+        headers: { Authorization: "Bearer " + ctx.token },
+      })
+      .then((result) => {
+        props.onDataEdit(true);
+        setPopup(true);
+        setPopupMessage(result.data);
+      })
+      .catch((err) => {
+        setPopup(true);
+        setPopupMessage(err.response.data);
+      });
   };
 
   return (
-    <form onSubmit={editShipmentHandler}>
-      <div className="shipmentEdit__top-menu">
-        <ul className="shipmentEdit__top-menu-list">
-          <li>
-            <h1>{props.data.ref}</h1>
-          </li>
-          <li>
-            <p>{props.data.cargoType}</p>
-          </li>
-          <li>
-            <p>
-              {props.data.contType !== "LCLFAK" ? (
-                <TypeSelector
-                  type="contType"
-                  typeHandler={contTypeEditHandler}
-                  default={contTypeState}
-                />
-              ) : (
-                "LCL"
-              )}
-            </p>
-          </li>
-          <li>
-            <p>
-              {props.data.contType !== "LCLFAK" ? (
-                <input
-                  type="date"
-                  min="2023-01-01"
-                  name="eta"
-                  id="eta"
-                  defaultValue={scheduleState}
-                  onChange={scheduleEditHandler}
-                />
-              ) : (
-                props.data.schedule
-              )}
-            </p>
-          </li>
-        </ul>
-        <div className="shipmentEdit__detail">
-          <div className="shipmentEdit__left">
-            <div className="shipmentEdit__left__label">
-              <p>Place of Discharge: </p>
-              {contTypeState === "BKR" ? "" : <p>MBL: </p>}
-              {contTypeState === "FAK" ? "" : <p>HBL: </p>}
-              <p>Container Number: </p>
-              <p>Vessel: </p>
-              <p>Voyage: </p>
-              <p>Available Depot: </p>
-            </div>
-            <div className="shipmentEdit__left__input">
+    <>
+      {popup && (
+        <ShipmentPopup
+          type="notification"
+          text={popupMessage}
+          onClick={okayBtnHandler}
+          button="Okay!"
+        />
+      )}
+      <form onSubmit={editShipmentHandler}>
+        <div className="shipment__top-menu">
+          <ul className="shipment__top-menu-list">
+            <li>
+              <h1>{props.data.ref}</h1>
+            </li>
+            <li>
+              <p>{props.data.cargoType}</p>
+            </li>
+            <li>
+              <p>
+                {props.data.contType !== "LCLFAK" ? (
+                  <TypeSelector
+                    type="contType"
+                    typeHandler={contTypeEditHandler}
+                    default={contTypeState}
+                  />
+                ) : (
+                  "LCL"
+                )}
+              </p>
+            </li>
+            <li>
               <p>
                 {props.data.contType !== "LCLFAK" ? (
                   <input
-                    type="text"
-                    defaultValue={portState}
-                    onChange={portEditHandler}
+                    type="date"
+                    min="2023-01-01"
+                    name="eta"
+                    id="eta"
+                    defaultValue={scheduleState}
+                    onChange={scheduleEditHandler}
                   />
                 ) : (
-                  props.data.port
+                  props.data.schedule
                 )}
               </p>
-              <p>
-                {contTypeState === "BKR" ? (
-                  ""
-                ) : (
-                  <input
-                    type="text"
-                    defaultValue={mblState}
-                    onChange={mblEditHandler}
-                  />
-                )}
-              </p>
-              <p>
-                {contTypeState === "FAK" ? (
-                  ""
-                ) : (
-                  <input
-                    type="text"
-                    name="hbl"
-                    id="hbl"
-                    defaultValue={hblState}
-                    onChange={hblEditHandler}
-                  />
-                )}
-              </p>
-
-              <p>
-                {props.data.contType !== "LCLFAK" ? (
-                  <input
-                    type="text"
-                    defaultValue={contState}
-                    onChange={contEditHandler}
-                  />
-                ) : (
-                  props.data.container
-                )}
-              </p>
-              <p>
-                {props.data.contType !== "LCLFAK" ? (
-                  <input
-                    type="text"
-                    defaultValue={vesselState}
-                    onChange={vesselEditHandler}
-                  />
-                ) : (
-                  props.data.vessel
-                )}
-              </p>
-              <p>
-                {props.data.contType !== "LCLFAK" ? (
-                  <input
-                    type="text"
-                    defaultValue={voyageState}
-                    onChange={voyageEditHandler}
-                  />
-                ) : (
-                  props.data.voyage
-                )}
-              </p>
-              <p>
-                {props.data.contType !== "LCLFAK" ? (
-                  <input
-                    type="text"
-                    defaultValue={depotState}
-                    onChange={depotEditHandler}
-                  />
-                ) : (
-                  props.data.depot
-                )}
-              </p>
-            </div>
-            <div className="shipmentEdit__left__notes">
-              <span className="notes-label">Notes: </span>
-              <p>
-                <textarea
-                  id="note"
-                  name="note"
-                  rows="10"
-                  defaultValue={notesState}
-                  onChange={notesEditHandler}
-                />
-              </p>
-            </div>
-          </div>
-          <div className="shipmentEdit__right">
-            <div className="shipmentEdit__right__box">
-              <div className="shipmentEdit__right__box-top">
-                <p>Checklist:</p>
-              </div>
-              <div className="shipmentEdit__right__box-bottom">
-                <div className="shipmentEdit__right__box-bottom__left">
-                  {props.data.contType === "FAK" ? (
-                    ""
+            </li>
+          </ul>
+          <div className="shipment__detail">
+            <div className="shipment__left">
+              <div className="shipment__left__items">
+                <p>Place of Discharge: </p>
+                <p>
+                  {props.data.contType !== "LCLFAK" ? (
+                    <input
+                      type="text"
+                      defaultValue={portState}
+                      onChange={portEditHandler}
+                    />
                   ) : (
-                    <ul>
-                      <li>
-                        <input
-                          type="checkbox"
-                          onChange={oneEditHandler}
-                          defaultChecked={oneState}
-                        />
-                        <label>
-                          <p>Arrival Notice: </p>
-                        </label>
-                      </li>
-
-                      <li>
-                        <input
-                          type="checkbox"
-                          onChange={twoEditHandler}
-                          defaultChecked={twoState}
-                        />
-                        <label>
-                          <p>Invoice: </p>
-                        </label>
-                      </li>
-
-                      <li>
-                        <input
-                          type="checkbox"
-                          onChange={threeEditHandler}
-                          defaultChecked={threeState}
-                        />
-                        <label>
-                          <p>Delivery Order: </p>
-                        </label>
-                      </li>
-
-                      <li>
-                        <input
-                          type="checkbox"
-                          onChange={fourEditHandler}
-                          defaultChecked={fourState}
-                        />
-                        <label>
-                          <p>Outturn Report: </p>
-                        </label>
-                      </li>
-
-                      <li>
-                        <input
-                          type="checkbox"
-                          onChange={fiveEditHandler}
-                          defaultChecked={fiveState}
-                        />
-                        <label>
-                          <p>Customs Clearance: </p>
-                        </label>
-                      </li>
-
-                      <li>
-                        <input
-                          type="checkbox"
-                          onChange={sixEditHandler}
-                          defaultChecked={sixState}
-                        />
-                        <label>
-                          <p>Delivery: </p>
-                        </label>
-                      </li>
-
-                      <li>
-                        <input
-                          type="checkbox"
-                          onChange={sevenEditHandler}
-                          defaultChecked={sevenState}
-                        />
-                        <label>
-                          <p>Storage: </p>
-                        </label>
-                      </li>
-                    </ul>
+                    props.data.port
                   )}
+                </p>
+              </div>
+              <div className="shipment__left__items">
+                {contTypeState !== "BKR" && <p>MBL: </p>}
+                {contTypeState !== "BKR" && (
+                  <p>
+                    <input
+                      type="text"
+                      defaultValue={mblState}
+                      onChange={mblEditHandler}
+                    />
+                  </p>
+                )}
+              </div>
+              <div className="shipment__left__items">
+                {contTypeState !== "FAK" && <p>HBL: </p>}
+                {contTypeState !== "FAK" && (
+                  <p>
+                    <input
+                      type="text"
+                      name="hbl"
+                      id="hbl"
+                      defaultValue={hblState}
+                      onChange={hblEditHandler}
+                    />
+                  </p>
+                )}
+              </div>
+              <div className="shipment__left__items">
+                <p>Container Number: </p>
+                <p>
+                  {props.data.contType !== "LCLFAK" ? (
+                    <input
+                      type="text"
+                      defaultValue={contState}
+                      onChange={contEditHandler}
+                    />
+                  ) : (
+                    props.data.container
+                  )}
+                </p>
+              </div>
+              <div className="shipment__left__items">
+                <p>Vessel: </p>
+                <p>
+                  {props.data.contType !== "LCLFAK" ? (
+                    <input
+                      type="text"
+                      defaultValue={vesselState}
+                      onChange={vesselEditHandler}
+                    />
+                  ) : (
+                    props.data.vessel
+                  )}
+                </p>
+              </div>
+              <div className="shipment__left__items">
+                <p>Voyage: </p>
+                <p>
+                  {props.data.contType !== "LCLFAK" ? (
+                    <input
+                      type="text"
+                      defaultValue={voyageState}
+                      onChange={voyageEditHandler}
+                    />
+                  ) : (
+                    props.data.voyage
+                  )}
+                </p>
+              </div>
+              <div className="shipment__left__items">
+                <p>Available Depot: </p>
+                <p>
+                  {props.data.contType !== "LCLFAK" ? (
+                    <input
+                      type="text"
+                      defaultValue={depotState}
+                      onChange={depotEditHandler}
+                    />
+                  ) : (
+                    props.data.depot
+                  )}
+                </p>
+              </div>
+
+              <div className="shipment__left__notes">
+                <span className="notes-label">Notes: </span>
+                <p>
+                  <textarea
+                    id="note"
+                    name="note"
+                    rows="10"
+                    defaultValue={notesState}
+                    onChange={notesEditHandler}
+                  />
+                </p>
+              </div>
+            </div>
+            <div className="shipment__right">
+              <div className="shipment__right__box">
+                <div className="shipment__right__box-top">
+                  <p>Checklist:</p>
+                </div>
+                <div className="shipment__right__box-bottom">
+                  <div className="shipment__right__box-bottom__left">
+                    {props.data.contType === "FAK" ? (
+                      ""
+                    ) : (
+                      <ul className="edit__ul">
+                        <li className="edit__li">
+                          <label>
+                            {props.data.cargoType === "Import" ? (
+                              <p>Arrival Notice: </p>
+                            ) : (
+                              <p>Booking Confirmation</p>
+                            )}
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={oneEditHandler}
+                            defaultChecked={oneState}
+                          />
+                        </li>
+
+                        <li className="edit__li">
+                          <label>
+                            <p>Invoice: </p>
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={twoEditHandler}
+                            defaultChecked={twoState}
+                          />
+                        </li>
+
+                        <li className="edit__li">
+                          <label>
+                            {props.data.cargoType === "Import" ? (
+                              <p>Delivery Order: </p>
+                            ) : (
+                              <p>Bill of Lading</p>
+                            )}
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={threeEditHandler}
+                            defaultChecked={threeState}
+                          />
+                        </li>
+
+                        <li className="edit__li">
+                          <label>
+                            {props.data.cargoType === "Import" ? (
+                              <p>Outturn Report: </p>
+                            ) : (
+                              <p>Check in Detail</p>
+                            )}
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={fourEditHandler}
+                            defaultChecked={fourState}
+                          />
+                        </li>
+
+                        <li className="edit__li">
+                          <label>
+                            <p>Customs Clearance: </p>
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={fiveEditHandler}
+                            defaultChecked={fiveState}
+                          />
+                        </li>
+
+                        <li className="edit__li">
+                          <label>
+                            <p>Delivery: </p>
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={sixEditHandler}
+                            defaultChecked={sixState}
+                          />
+                        </li>
+
+                        <li className="edit__li">
+                          <label>
+                            <p>Storage: </p>
+                          </label>
+                          <input
+                            type="checkbox"
+                            onChange={sevenEditHandler}
+                            defaultChecked={sevenState}
+                          />
+                        </li>
+                      </ul>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="shipmentEdit__bottom">
-        <button type="submit">Save</button>
-        <button onClick={props.onCancel}>Cancel</button>
-      </div>
-    </form>
+        <div className="shipment__bottom">
+          <button type="submit">Save</button>
+          <button onClick={props.onCancel}>Cancel</button>
+        </div>
+      </form>
+    </>
   );
 };
 

@@ -31,8 +31,8 @@ const Navbar = (props) => {
 
   const searchRef = useRef();
 
-  const profileHandler = () => {
-    setOnProfile(!onProfile);
+  const profileOpenHandler = () => {
+    setOnProfile(true);
   };
 
   const selectSearchHandler = (event) => {
@@ -78,8 +78,12 @@ const Navbar = (props) => {
       <div className="navbar">
         <h1 className="navbar__logo">Cargo Scheduler</h1>
         <div className="navbar__menu">
-          <Link to="/calendar">Calendar</Link>
-          <Link to="/todo">ToDo</Link>
+          <Link className="navbar__menu__item" to="/calendar">
+            Calendar
+          </Link>
+          <Link className="navbar__menu__item" to="/todo">
+            ToDo
+          </Link>
         </div>
         {isPopup && (
           <ShipmentPopup
@@ -124,15 +128,20 @@ const Navbar = (props) => {
             </div>
           </form>
         </div>
-        <div className="navbar__profile" onClick={profileHandler}>
+        <div className="navbar__profile" onClick={profileOpenHandler}>
           <FontAwesomeIcon
             icon={faUser}
             size="lg"
             style={{ color: "#7868E6" }}
           />
         </div>
+        {onProfile && (
+          <Profile
+            onLogOut={props.onLogOut}
+            setOnProfile={setOnProfile}
+          />
+        )}
       </div>
-      {onProfile && <Profile onLogOut={props.onLogOut} />}
     </>
   );
 };

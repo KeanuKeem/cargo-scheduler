@@ -1,0 +1,33 @@
+.pref__setting {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.pref__setting h3 {
+    font-size: 1.2rem;
+}
+
+.pref__setting__title > * {
+    text-align: center;
+}
+
+.pref__setting__list {
+    display: grid;
+    grid-template-columns: 1fr 4fr 3fr;
+    gap: .6rem;
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 1rem;
+}
+
+.pref__setting__list-stage {
+    display: flex;
+    flex-direction: column;
+}
+
+.pref__setting__list-stage p:last-child {
+    font-size: .85rem;
+}

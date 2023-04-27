@@ -163,6 +163,19 @@ function App() {
               )
             }
           />
+          <Route
+            path="/todo/:dayp/:monthp/:yearp"
+            element={
+              isLogIn ? (
+                <>
+                  <NavbarRoot onLogOut={logoutHandler} />
+                  <TodoPage />
+                </>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
         </Routes>
       </BrowserRouter>
     </SelectContext.Provider>

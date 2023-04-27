@@ -19,8 +19,20 @@ export function getToday() {
 }
 
 // return Month (STR) by the index (INT)
+// eg) 3 => 'April'
 export function getMonth(monthIndex) {
   return months[monthIndex];
+}
+
+// return Month (INT)
+export function getMonthInt(monthStr) {
+  return months.indexOf(monthStr) + 1;
+}
+
+// return Month (STR) by number
+// eg) 4 => 'April'
+export function getMonthStr(monthNum) {
+  return months[monthNum - 1];
 }
 
 // return previous month to current month

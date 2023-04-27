@@ -110,7 +110,6 @@ const ShipmentModal = (props) => {
       console.log(err);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, [props.isShipementClicked, props.shipmentAdded, props.dataEdited]);

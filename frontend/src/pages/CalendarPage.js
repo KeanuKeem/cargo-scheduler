@@ -135,7 +135,7 @@ const CalendarPage = () => {
       <Sidebar />
       {modalState.show && modalState.value === "shipment" && (
         <ShipmentModal
-          filteredData={filteredData}
+
           modalValue={modalState}
           onClose={modalCloseHandler}
           onDataEdit={setDataEdited}

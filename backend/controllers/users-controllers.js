@@ -11,6 +11,9 @@ const {
   findPasswordEmailHandler,
 } = require("../services/findPasswordEmailHandler");
 const { findPasswordStageTwo } = require("../services/findPasswordStageTwo");
+const { getProfileHandler } = require("../services/getProfilehandler");
+const { checkPassword } = require("../services/checkPassword");
+const { updateProfileHandler } = require("../services/updateProfileHandler");
 
 const createAccount = async (req, res) => {
   if (req.body.validity === "one") {
@@ -226,7 +229,36 @@ const findPassword = async (req, res) => {
   }
 };
 
+const getUserProfile = async (req, res) => {
+  const output = await getProfileHandler(req);
+  if (output.result) {
+    res.status(200).send(output.data);
+  } else {
+    res.status(500).send(output.message);
+  }
+};
+
+const updateProfile = async (req, res) => {
+  const passwordMatch = await checkPassword(req);
+  if (passwordMatch) {
+    try {
+      const output = await updateProfileHandler(req);
+      if (output.result) {
+        res.status(200).send(output.message);
+      } else {
+        res.status(500).send(output.message);
+      }
+    } catch {
+      res.status(500).send("Server Error! Please try again later");
+    }
+  } else {
+    res.status(500).send("Password does not match!");
+  }
+};
+
 exports.createAccount = createAccount;
 exports.loginHandler = loginHandler;
 exports.findUsername = findUsername;
 exports.findPassword = findPassword;
+exports.getUserProfile = getUserProfile;
+exports.updateProfile = updateProfile;

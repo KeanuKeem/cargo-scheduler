@@ -1,4 +1,5 @@
 import { useReducer, useContext, useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 
 import axios from "axios";
 
@@ -34,13 +35,28 @@ const modalReducer = (state, action) => {
 
 const TodoPage = () => {
   const ctx = useContext(SelectContext);
+  const { dayp, monthp, yearp } = useParams();
+
   const [filteredData, setFilteredData] = useState([]);
+  const [dateFocused, setDateFocused] = useState("");
   const [dataAdded, setDataAdded] = useState(false);
   const [dataEdited, setDataEdited] = useState(false);
   const [shipmentAdded, setShipmentAdded] = useState(false);
   const [sortBy, setSortBy] = useState("All");
-  const [day, setDay] = useState(ctx.today);
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [day, setDay] = useState(
+    !dayp
+      ? String(ctx.today).length > 1
+        ? String(ctx.today)
+        : "0" + String(ctx.today)
+      : dayp
+  );
+  const [month, setMonth] = useState(
+    !monthp
+      ? String(new Date().getMonth() + 1).length > 1
+        ? String(new Date().getMonth() + 1)
+        : "0" + String(new Date().getMonth() + 1)
+      : monthp
+  );
   const [strMonth, setStrMonth] = useState(ctx.month);
   const [year, setYear] = useState(ctx.year);
   const [isShipmentClicked, setIsShipmentClicked] = useState(false);
@@ -61,7 +77,7 @@ const TodoPage = () => {
     dispatchModal({
       type: "SHIPMENT",
       val: "shipment",
-      id: event.target.id,
+      id: "0+" + event.target.innerText.split(" ")[1],
     });
     setIsShipmentClicked(true);
   };
@@ -83,10 +99,11 @@ const TodoPage = () => {
   };
 
   const dateHandler = () => {
-    setDay(Number(dateRef.current.value.slice(8, 10)));
-    setMonth(Number(dateRef.current.value.slice(5, 7)));
+    setDay(dateRef.current.value.slice(8, 10));
+    setMonth(dateRef.current.value.slice(5, 7));
     setStrMonth(getMonth(Number(dateRef.current.value.slice(5, 7)) - 1));
-    setYear(Number(dateRef.current.value.slice(0, 4)));
+    setYear(dateRef.current.value.slice(0, 4));
+    dateRef.current.blur();
   };
 
   useEffect(() => {
@@ -103,6 +120,7 @@ const TodoPage = () => {
     setDataAdded(false);
     setDataEdited(false);
     setShipmentAdded(false);
+    
   }, [day, month, year, dataAdded, dataEdited, shipmentAdded, sortBy]);
 
   useEffect(() => {
@@ -111,16 +129,18 @@ const TodoPage = () => {
     }
   }, [ctx.searchValue]);
 
-  const brokerageArray = toDoHandler.generateBrokerArray(filteredData, day);
-  const fakArray = toDoHandler.generateFAKArray(filteredData, day);
-  const fclArray = toDoHandler.generateFCLArray(filteredData, day);
-  const lclArray = toDoHandler.generateLCLArray(filteredData, day);
+  const brokerageArray = toDoHandler.generateBrokerArray(
+    filteredData,
+    Number(day)
+  );
+  const fakArray = toDoHandler.generateFAKArray(filteredData, Number(day));
+  const fclArray = toDoHandler.generateFCLArray(filteredData, Number(day));
+  const lclArray = toDoHandler.generateLCLArray(filteredData, Number(day));
 
   return (
     <>
       {modalState.show && modalState.value === "shipment" && (
         <ShipmentModal
-          filteredData={filteredData}
           modalValue={modalState}
           onClose={modalCloseHandler}
           onDataEdit={setDataEdited}
@@ -138,17 +158,17 @@ const TodoPage = () => {
       <Sidebar />
       <div className="todo">
         <div className="todo__top">
-          <TypeSelector type="get" className="todo__dropdown" />
-          <input
-            type="date"
-            ref={dateRef}
-            onChange={dateHandler}
-            defaultValue={
-              String(month).length > 1
-                ? String(year) + "-" + String(month) + "-" + String(day)
-                : String(year) + "-0" + String(month) + "-" + String(day)
-            }
-          />
+          <TypeSelector type="get" onChange={setSortBy} className="todo__dropdown" />
+          <div className="todo__input">
+            <input
+              type="date"
+              ref={dateRef}
+              onChange={dateHandler}
+              defaultValue={
+                String(year) + "-" + String(month) + "-" + String(day)
+              }
+            />
+          </div>
           <SelectBtn onClick={modalAddOpenHandler}>ADD</SelectBtn>
         </div>
         <div className="todo__contents">
@@ -157,7 +177,7 @@ const TodoPage = () => {
             <hr />
             {brokerageArray.map((shipment) => {
               return (
-                <p key={shipment.id}>
+                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );
@@ -168,7 +188,7 @@ const TodoPage = () => {
             <hr />
             {fakArray.map((shipment) => {
               return (
-                <p key={shipment.id}>
+                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );
@@ -179,7 +199,7 @@ const TodoPage = () => {
             <hr />
             {fclArray.map((shipment) => {
               return (
-                <p key={shipment.id}>
+                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );
@@ -190,7 +210,7 @@ const TodoPage = () => {
             <hr />
             {lclArray.map((shipment) => {
               return (
-                <p key={shipment.id}>
+                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );

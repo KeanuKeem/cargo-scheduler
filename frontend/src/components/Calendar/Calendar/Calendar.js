@@ -1,8 +1,12 @@
 // React
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Context
 import SelectContext from "../../../store/select-context";
+
+// Services
+import { getMonthInt } from "../../Reference/Calendar";
 
 // CSS
 import "./Calendar.css";
@@ -15,6 +19,15 @@ const next = ">";
 const Calendar = (props) => {
   const ctx = useContext(SelectContext);
   const [isToday, setIsToday] = useState(false);
+  const [day, setDay] = useState();
+  const [month, setMonth] = useState(
+    String(getMonthInt(String(ctx.month))).length > 1
+      ? String(getMonthInt(ctx.month))
+      : "0" + String(getMonthInt(ctx.month))
+  );
+  const [year, setYear] = useState(String(ctx.year));
+
+  const navigate = useNavigate();
 
   const todayHandler = () => {
     if (ctx.month === ctx.thisMonth && ctx.year === ctx.thisYear) {
@@ -24,10 +37,32 @@ const Calendar = (props) => {
     }
   };
 
-  useEffect(()=> {
+  const linkToToDoHandler = (event) => {
+    if (event.target.innerText.length > 1) {
+      setDay(event.target.innerText);
+    } else {
+      setDay("0" + event.target.innerText);
+    }
+  };
+
+  useEffect(() => {
+    if (day !== undefined) {
+      navigate(`/todo/${day}/${month}/${year}`);
+    }
+  }, [day]);
+
+  useEffect(() => {
+    if (String(getMonthInt(ctx.month)).length > 1) {
+      setMonth(String(getMonthInt(ctx.month)));
+    } else {
+      setMonth("0" + String(getMonthInt(ctx.month)));
+    }
+    setYear(ctx.year);
+  }, [ctx.month, ctx.year]);
+
+  useEffect(() => {
     todayHandler();
   }, [ctx.month, ctx.year]);
-  
 
   return (
     <div className="calendar">
@@ -66,14 +101,16 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
-                    isToday &&
-                    ctx.today === day.value.date
+                    isToday && ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
                   }
                   key={day.key}
                 >
-                  <p className="calendar__table__day-date">
+                  <p
+                    className="calendar__table__day-date"
+                    onClick={linkToToDoHandler}
+                  >
                     {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
@@ -105,14 +142,16 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
-                    isToday &&
-                    ctx.today === day.value.date
+                    isToday && ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
                   }
                   key={day.key}
                 >
-                  <p className="calendar__table__day-date">
+                  <p
+                    className="calendar__table__day-date"
+                    onClick={linkToToDoHandler}
+                  >
                     {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
@@ -144,14 +183,16 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
-                    isToday &&
-                    ctx.today === day.value.date
+                    isToday && ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
                   }
                   key={day.key}
                 >
-                  <p className="calendar__table__day-date">
+                  <p
+                    className="calendar__table__day-date"
+                    onClick={linkToToDoHandler}
+                  >
                     {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
@@ -183,14 +224,16 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
-                    isToday &&
-                    ctx.today === day.value.date
+                    isToday && ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
                   }
                   key={day.key}
                 >
-                  <p className="calendar__table__day-date">
+                  <p
+                    className="calendar__table__day-date"
+                    onClick={linkToToDoHandler}
+                  >
                     {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
@@ -222,14 +265,16 @@ const Calendar = (props) => {
               return (
                 <td
                   className={
-                    isToday &&
-                    ctx.today === day.value.date
+                    isToday && ctx.today === day.value.date
                       ? "calendar__today"
                       : "calendar__table__day"
                   }
                   key={day.key}
                 >
-                  <p className="calendar__table__day-date">
+                  <p
+                    className="calendar__table__day-date"
+                    onClick={linkToToDoHandler}
+                  >
                     {isToday && ctx.today === day.value.date ? (
                       <span>{day.value.date}</span>
                     ) : (
@@ -262,14 +307,16 @@ const Calendar = (props) => {
                 return (
                   <td
                     className={
-                      isToday &&
-                      ctx.today === day.value.date
+                      isToday && ctx.today === day.value.date
                         ? "calendar__today"
                         : "calendar__table__day"
                     }
                     key={day.key}
                   >
-                    <p className="calendar__table__day-date">
+                    <p
+                      className="calendar__table__day-date"
+                      onClick={linkToToDoHandler}
+                    >
                       {isToday && ctx.today === day.value.date ? (
                         <span>{day.value.date}</span>
                       ) : (

@@ -1,0 +1,46 @@
+.profile__error-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 25vh;
+    background-color: #FFF;
+    border: 1px solid;
+    border-radius: .5rem;
+}
+
+.profile__error-popup__top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 3vh;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+    background-color: #7868E6;
+}
+
+.profile__error-popup__text,
+.profile__error-popup__btn {
+    margin: 0 auto;
+    font-size: 1rem;
+    width: fit-content;
+}
+
+.profile__error-popup__text p {
+    margin-top: 9vh;
+}
+
+.profile__error-popup__btn button {
+    padding: .3rem 1rem;
+    font-size: 1rem;
+    margin-top: 6vh;
+    background-color: #EDEEF7;
+    border: 1px solid #B8B5FF;
+    border-radius: .5rem;
+}
+
+.profile__error-popup__btn button:hover {
+    background-color: #bac0fd;
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
 const express = require("express");
 const usersControllers = require("../controllers/users-controllers");
 const router = express.Router();
+const checkAuth = require("../services/check-auth");
 
 router.post(
     "/signup",
@@ -20,6 +21,18 @@ router.post(
 router.post(
     "/findPass",
     usersControllers.findPassword
+);
+
+router.use(checkAuth);
+
+router.get(
+    "/",
+    usersControllers.getUserProfile
+);
+
+router.patch(
+    "/edit/profile",
+    usersControllers.updateProfile
 );
 
 module.exports = router;

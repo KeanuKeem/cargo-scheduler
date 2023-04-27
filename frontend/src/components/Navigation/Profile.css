@@ -1,20 +1,50 @@
-.profile {
-    width: 50%;
-    height: 80vh;
-    background-color: #FFF;
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 12;
-    border: 1px solid;
-}
-
-.profile__menu {
-    width: 60%;
+.profile__top {
+    width: fit-content;
     margin: 0 auto;
+    text-align: center;
 }
 
-.profile__menu p {
-    position: absolute;
-    bottom: 0;
+.profile__top h3 {
+    font-size: 1.2rem;
+    margin: 1rem 0 2rem 0;
+}
+
+.profile__top p {
+    font-size: 1rem;
+}
+
+.profile__items {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 90%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.profile__item {
+    border: 1px solid;
+    border-radius: .5rem;
+    width: fit-content;
+    padding: 2rem;
+    font-size: 1.2rem;
+}
+
+.profile__item:hover {
+    background-color: rgb(234, 234, 234);
+    cursor: pointer;
+}
+
+.profile__item-hovered {
+    animation: hovered .2s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hovered {
+    0% {
+        scale: 1;
+    }
+    100% {
+        scale: 1.4;
+    }
 }

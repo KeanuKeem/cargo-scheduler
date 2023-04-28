@@ -35,4 +35,9 @@ router.patch(
     usersControllers.updateProfile
 );
 
+router.patch(
+    "/edit/pref",
+    usersControllers.updatePreference
+);
+
 module.exports = router;

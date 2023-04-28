@@ -14,6 +14,7 @@ const { findPasswordStageTwo } = require("../services/findPasswordStageTwo");
 const { getProfileHandler } = require("../services/getProfilehandler");
 const { checkPassword } = require("../services/checkPassword");
 const { updateProfileHandler } = require("../services/updateProfileHandler");
+const { updatePreferenceHandler } = require("../services/updatePreferenceHandler");
 
 const createAccount = async (req, res) => {
   if (req.body.validity === "one") {
@@ -256,9 +257,19 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const updatePreference = async (req, res) => {
+  const output = await updatePreferenceHandler(req);
+  if (output.result) {
+    res.status(200).send(output.message);
+  } else {
+    res.status(500).send(output.message);
+  }
+};
+
 exports.createAccount = createAccount;
 exports.loginHandler = loginHandler;
 exports.findUsername = findUsername;
 exports.findPassword = findPassword;
 exports.getUserProfile = getUserProfile;
 exports.updateProfile = updateProfile;
+exports.updatePreference = updatePreference;

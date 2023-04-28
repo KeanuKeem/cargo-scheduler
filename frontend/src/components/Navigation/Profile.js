@@ -73,7 +73,47 @@ const ProfileModal = (props) => {
           )}
         </div>
       </div>
-      {isPref && <PrefSetting />}
+      {isPref && (
+        <PrefSetting
+          fontBase={props.fontBase}
+          backBase={props.backBase}
+          fontOne={props.fontOne}
+          backOne={props.backOne}
+          fontTwo={props.fontTwo}
+          backTwo={props.backTwo}
+          fontThree={props.fontThree}
+          backThree={props.backThree}
+          fontFour={props.fontFour}
+          backFour={props.backFour}
+          fontFive={props.fontFive}
+          backFive={props.backFive}
+          fontSix={props.fontSix}
+          backSix={props.backSix}
+          fontSevenStart={props.fontSevenStart}
+          backSevenStart={props.backSevenStart}
+          fontSevenEnd={props.fontSevenEnd}
+          backSevenEnd={props.backSevenEnd}
+          setFontBase={props.setFontBase}
+          setBackBase={props.setBackBase}
+          setFontOne={props.setFontOne}
+          setBackOne={props.setBackOne}
+          setFontTwo={props.setFontTwo}
+          setBackTwo={props.setBackTwo}
+          setFontThree={props.setFontThree}
+          setBackThree={props.setBackThree}
+          setFontFour={props.setFontFour}
+          setBackFour={props.setBackFour}
+          setFontFive={props.setFontFive}
+          setBackFive={props.setBackFive}
+          setFontSix={props.setFontSix}
+          setBackSix={props.setBackSix}
+          setFontSevenStart={props.setFontSevenStart}
+          setBackSevenStart={props.setBackSevenStart}
+          setFontSevenEnd={props.setFontSevenEnd}
+          setBackSevenEnd={props.setBackSevenEnd}
+          onClose={profileBackHandler}
+        />
+      )}
       {isUser && (
         <UserSetting
           onClose={profileCloseHandler}
@@ -149,10 +189,28 @@ const ProfileModal = (props) => {
 
 const Profile = (props) => {
   const ctx = useContext(SelectContext);
-  
+
   const [firstname, setFirstname] = useState();
   const [lastname, setLastname] = useState();
   const [organisation, setOrganisation] = useState();
+  const [fontBase, setFontBase] = useState("#ffffff");
+  const [backBase, setBackBase] = useState("#000000");
+  const [fontOne, setFontOne] = useState("#ffffff");
+  const [backOne, setBackOne] = useState("#000000");
+  const [fontTwo, setFontTwo] = useState("#ffffff");
+  const [backTwo, setBackTwo] = useState("#000000");
+  const [fontThree, setFontThree] = useState("#ffffff");
+  const [backThree, setBackThree] = useState("#000000");
+  const [fontFour, setFontFour] = useState("#ffffff");
+  const [backFour, setBackFour] = useState("#000000");
+  const [fontFive, setFontFive] = useState("#ffffff");
+  const [backFive, setBackFive] = useState("#000000");
+  const [fontSix, setFontSix] = useState("#ffffff");
+  const [backSix, setBackSix] = useState("#000000");
+  const [fontSevenStart, setFontSevenStart] = useState("#ffffff");
+  const [backSevenStart, setBackSevenStart] = useState("#000000");
+  const [fontSevenEnd, setFontSevenEnd] = useState("#ffffff");
+  const [backSevenEnd, setBackSevenEnd] = useState("#000000");
   const [isError, setIsError] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
 
@@ -164,6 +222,24 @@ const Profile = (props) => {
       setFirstname(response.data.firstname);
       setLastname(response.data.lastname);
       setOrganisation(response.data.organisation);
+      setFontBase(response.data.fontBase);
+      setBackBase(response.data.backBase);
+      setFontOne(response.data.fontOne);
+      setBackOne(response.data.backOne);
+      setFontTwo(response.data.fontTwo);
+      setBackTwo(response.data.backTwo);
+      setFontThree(response.data.fontThree);
+      setBackThree(response.data.backThree);
+      setFontFour(response.data.fontFour);
+      setBackFour(response.data.backFour);
+      setFontFive(response.data.fontFive);
+      setBackFive(response.data.backFive);
+      setFontSix(response.data.fontSix);
+      setBackSix(response.data.backSix);
+      setFontSevenStart(response.data.fontSevenStart);
+      setBackSevenStart(response.data.backSevenStart);
+      setFontSevenEnd(response.data.fontSevenEnd);
+      setBackSevenEnd(response.data.backSevenEnd);
     } catch (err) {
       setPopupMessage(err.response.data);
       setIsError(true);
@@ -177,10 +253,46 @@ const Profile = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <ProfileModal 
+        <ProfileModal
           firstname={firstname}
           lastname={lastname}
           organisation={organisation}
+          fontBase={fontBase}
+          backBase={backBase}
+          fontOne={fontOne}
+          backOne={backOne}
+          fontTwo={fontTwo}
+          backTwo={backTwo}
+          fontThree={fontThree}
+          backThree={backThree}
+          fontFour={fontFour}
+          backFour={backFour}
+          fontFive={fontFive}
+          backFive={backFive}
+          fontSix={fontSix}
+          backSix={backSix}
+          fontSevenStart={fontSevenStart}
+          backSevenStart={backSevenStart}
+          fontSevenEnd={fontSevenEnd}
+          backSevenEnd={backSevenEnd}
+          setFontBase={setFontBase}
+          setBackBase={setBackBase}
+          setFontOne={setFontOne}
+          setBackOne={setBackOne}
+          setFontTwo={setFontTwo}
+          setBackTwo={setBackTwo}
+          setFontThree={setFontThree}
+          setBackThree={setBackThree}
+          setFontFour={setFontFour}
+          setBackFour={setBackFour}
+          setFontFive={setFontFive}
+          setBackFive={setBackFive}
+          setFontSix={setFontSix}
+          setBackSix={setBackSix}
+          setFontSevenStart={setFontSevenStart}
+          setBackSevenStart={setBackSevenStart}
+          setFontSevenEnd={setFontSevenEnd}
+          setBackSevenEnd={setBackSevenEnd}
           isError={isError}
           popupMessage={popupMessage}
           setOnProfile={props.setOnProfile}

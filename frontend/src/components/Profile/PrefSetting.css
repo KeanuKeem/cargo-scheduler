@@ -14,9 +14,21 @@
     text-align: center;
 }
 
+.pref__setting__edit {
+    text-align: center;
+}
+
+.pref__setting__edit button {
+    border: 0px;
+    background-color: transparent;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
 .pref__setting__list {
     display: grid;
-    grid-template-columns: 1fr 4fr 3fr;
+    grid-template-columns: 2fr 1fr 1fr;
     gap: .6rem;
     width: 80%;
     margin: 0 auto;
@@ -30,4 +42,11 @@
 
 .pref__setting__list-stage p:last-child {
     font-size: .85rem;
+}
+
+.pref__setting__list__colour {
+    width: 80%;
+    height: 3vh;
+    border: 1px solid;
+    cursor: pointer;
 }

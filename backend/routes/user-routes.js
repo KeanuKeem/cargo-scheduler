@@ -30,6 +30,11 @@ router.get(
     usersControllers.getUserProfile
 );
 
+router.get(
+    "/fav",
+    usersControllers.getFavourites
+);
+
 router.patch(
     "/edit/profile",
     usersControllers.updateProfile

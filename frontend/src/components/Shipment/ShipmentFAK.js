@@ -1,18 +1,35 @@
-import { useContext, useState } from "react";
-import ShipmentEdit from "./ShipmentEdit";
-import SelectContext from "../../store/select-context";
-import { deleteShipment } from "../Reference/AddShipment";
+import { useContext, useEffect, useReducer, useState } from "react";
+
+import axios from "axios";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 import Shipment from "./Shipment";
+import ShipmentEdit from "./ShipmentEdit";
+import ShipmentForm from "./ShipmentForm";
+import ShipmentPopup from "./ShipmentPopup";
+
+import SelectContext from "../../store/select-context";
+
+import { makeChecklist } from "../Reference/AddShipment";
+import { getToday } from "../Reference/Calendar";
 
 import "./Shipment.css";
 import "./ShipmentFAK.css";
-import ShipmentForm from "./ShipmentForm";
-import axios from "axios";
-import ShipmentPopup from "./ShipmentPopup";
+
+const checklistReducer = (state, action) => {
+  if (action.type === "MBL") {
+    return {
+      isMblSurr: action.isMblSurr,
+      mblSurrDate: action.mblSurrDate,
+    };
+  }
+};
 
 const ShipmentFAK = (props) => {
   const ctx = useContext(SelectContext);
+  const today = getToday();
 
   const [isEdit, setIsEdit] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
@@ -20,9 +37,21 @@ const ShipmentFAK = (props) => {
   const [mId, setMId] = useState(props.data.ref);
   const [errorMessage, setErrorMessage] = useState("");
   const [isDelete, setIsDelete] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(props.data.favourite);
+  const [isSave, setIsSave] = useState(false);
+  const [isPopup, setIsPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+
+  const [checklistState, dispatchChecklistState] = useReducer(
+    checklistReducer,
+    {
+      isMblSurr: props.data.mbl.isSurr,
+      mblSurrDate: props.data.mbl.date,
+    }
+  );
 
   const editBtnHandler = () => {
-    setIsEdit(true);
+    setIsEdit(!isEdit);
   };
 
   const AddBtnHandler = () => {
@@ -35,6 +64,14 @@ const ShipmentFAK = (props) => {
 
   const noBtnClickHandler = () => {
     setIsDelete(false);
+  };
+
+  const mblSurrHandler = () => {
+    dispatchChecklistState({
+      type: "MBL",
+      isMblSurr: !checklistState.isMblSurr,
+      mblSurrDate: today,
+    });
   };
 
   const shipmentClickHandler = async (event) => {
@@ -66,6 +103,7 @@ const ShipmentFAK = (props) => {
       container: props.data.container,
       depot: props.data.depot,
       notes: event.target.notes.value,
+      consoleId: props.data.ref,
       stepOne: event.target.stepOne.checked,
       stepTwo: event.target.stepTwo.checked,
       stepThree: event.target.stepThree.checked,
@@ -76,11 +114,9 @@ const ShipmentFAK = (props) => {
     };
 
     await axios
-      .post(
-        `http://localhost:5000/api/shipment/inFak?id=${props.data.ref}`,
-        shipment,
-        { headers: { Authorization: "Bearer " + ctx.token } }
-      )
+      .post("http://localhost:5000/api/shipment/inFak", shipment, {
+        headers: { Authorization: "Bearer " + ctx.token },
+      })
       .then(() => {
         props.onShipmentAdd(true);
         setIsAdd(!isAdd);
@@ -95,7 +131,6 @@ const ShipmentFAK = (props) => {
       .delete(`http://localhost:5000/api/shipment/fak?id=${props.data.ref}`, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
-
       .catch((err) => {
         console.log(err);
       });
@@ -103,6 +138,40 @@ const ShipmentFAK = (props) => {
     props.onDataEdit(true);
     props.onClose();
   };
+
+  const saveFakHandler = async () => {
+    const shipment = makeChecklist(
+      props.data.ref,
+      props.data.contType,
+      checklistState,
+      isFavourite
+    );
+    await axios
+      .patch("http://localhost:5000/api/shipment/checklist", shipment, {
+        headers: { Authorization: "Bearer " + ctx.token },
+      })
+      .then((result) => {
+        setIsSave(false);
+        setIsPopup(true);
+        setPopupMessage(result.data);
+      })
+      .catch((err) => {
+        setIsSave(false);
+        setIsPopup(true);
+        setPopupMessage(err.response.data);
+      });
+  };
+
+  useEffect(() => {
+    if (
+      props.data.mbl.isSurr !== checklistState.isMblSurr ||
+      props.data.favourite !== isFavourite
+    ) {
+      setIsSave(true);
+    } else {
+      setIsSave(false);
+    }
+  }, [props.data, checklistState, isFavourite]);
 
   if (isEdit) {
     return (
@@ -148,11 +217,42 @@ const ShipmentFAK = (props) => {
             onClickTwo={noBtnClickHandler}
           />
         )}
+        {isPopup && (
+          <ShipmentPopup
+            type="notification"
+            text={popupMessage}
+            button="Okay!"
+            onClick={() => {
+              setIsPopup(false);
+            }}
+          />
+        )}
 
         <div className="shipment__top-menu">
           <ul className="shipment__top-menu-list">
             <li>
               <h1>{props.data.ref}</h1>
+            </li>
+            <li>
+              <p>
+                {isFavourite ? (
+                  <FontAwesomeIcon
+                    className="shipment__favourite"
+                    icon={faStar}
+                    onClick={() => {
+                      setIsFavourite(false);
+                    }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    className="shipment__no-favourite"
+                    icon={faStar}
+                    onClick={() => {
+                      setIsFavourite(true);
+                    }}
+                  />
+                )}
+              </p>
             </li>
             <li>
               <p>{props.data.cargoType}</p>
@@ -174,18 +274,21 @@ const ShipmentFAK = (props) => {
                 <p>MBL Surrendered: </p>
                 <input
                   type="checkbox"
-                  // onChange={checklistMblHandler}
-                  // defaultChecked={checklistState.isMblSurr}
+                  onChange={mblSurrHandler}
+                  defaultChecked={checklistState.isMblSurr}
                 />
               </span>
             </li>
-            {/* {saveBtnShow && (
+            {isSave && (
               <li>
-                <button className="shipment__top-menu-list__btn" type="submit">
+                <button
+                  className="shipment__top-menu-list__btn"
+                  onClick={saveFakHandler}
+                >
                   Save
                 </button>
               </li>
-            )} */}
+            )}
           </ul>
           <div className="shipment__detail">
             <div className="shipment__left">
@@ -222,17 +325,23 @@ const ShipmentFAK = (props) => {
                   {!isAdd && <button onClick={AddBtnHandler}>+</button>}
                 </div>
                 <div className="shipmentFAK__right__box-bottom">
-                  <ul>
+                  <div className="shipmentFAK__right__box-bottom__list">
                     {props.data.fakShipments.map((shipment) => {
                       return (
-                        <li key={shipment.ref}>
-                          <p onClick={shipmentClickHandler} id={shipment.ref}>
-                            {shipment.ref}
-                          </p>
-                        </li>
+                        <p
+                          key={shipment.ref}
+                          style={{
+                            color: shipment.font,
+                            backgroundColor: shipment.back,
+                          }}
+                          onClick={shipmentClickHandler}
+                          id={shipment.ref}
+                        >
+                          {shipment.ref}
+                        </p>
                       );
                     })}
-                  </ul>
+                  </div>
                 </div>
               </div>
             </div>

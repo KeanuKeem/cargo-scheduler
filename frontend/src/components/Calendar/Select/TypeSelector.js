@@ -89,6 +89,42 @@ const TypeSelector = (props) => {
       </div>
     );
   }
+  if (props.type === "bkrType") {
+    return (
+      <select
+        className={props.className}
+        onChange={props.typeHandler}
+        name="bkrType"
+        id="bkrType"
+      >
+        <option value={props.default} hidden>
+          {props.default}
+        </option>
+        <option value="AIR">AIR</option>
+        <option value="SEA">SEA</option>
+      </select>
+    );
+  }
+
+  if (props.type === "add") {
+    return (
+      <select
+        className={props.className}
+        onChange={props.typeHandler}
+        name="contType"
+        id="contType"
+      >
+        <option value={props.default} hidden>
+          {props.default}
+        </option>
+        <option value="FAK">FAK</option>
+        <option value="FCL">FCL</option>
+        <option value="LCL">LCL</option>
+        <option value="BKR">Brokerage</option>
+        <option value="AIR">AIR</option>
+      </select>
+    );
+  }
 
   if (props.type === "contType") {
     return (
@@ -101,12 +137,15 @@ const TypeSelector = (props) => {
         <option value={props.default} hidden>
           {props.default}
         </option>
-        {props.default === "FCL" ||
-          props.default === "LCL" ||
-          props.default === "BKR" || <option value="FAK">FAK</option>}
-        {props.default !== "FAK" && <option value="FCL">FCL</option>}
-        {props.default !== "FAK" && <option value="LCL">LCL</option>}
-        {props.default !== "FAK" && props.shipmentType !== "Export" && (
+        {props.default === "FAK" && <option value="FAK">FAK</option>}
+        {props.default === "AIR" && <option value="AIR">AIR</option>}
+        {props.default !== "FAK" && props.default !== "AIR" && (
+          <option value="FCL">FCL</option>
+        )}
+        {props.default !== "FAK" && props.default !== "AIR" && (
+          <option value="LCL">LCL</option>
+        )}
+        {props.default !== "FAK" && props.default !== "AIR" && (
           <option value="BKR">Brokerage</option>
         )}
       </select>

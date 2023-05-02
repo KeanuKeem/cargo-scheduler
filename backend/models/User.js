@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   favourites: {
-    type: [{ ref: String, color: String }],
+    type: [{ ref: String }],
     default: [],
   },
   preferences: {
@@ -120,6 +120,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: "#000000",
     },
+    fontComplete: {
+        type: String,
+        required: true,
+        default: "#ffffff",
+    },
+    backComplete: {
+        type: String,
+        required: true,
+        default: "#000000",
+    }
   }
 });
 

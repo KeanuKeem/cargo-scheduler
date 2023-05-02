@@ -11,7 +11,30 @@
     padding-top: 1rem;
 }
 
-.shipmentFAK__right__box-bottom ul li {
-    padding: 1rem;
+.shipmentFAK__right__box-bottom__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.shipmentFAK__right__box-bottom__list p {
+    width: fit-content;
+    padding: .2rem 1rem;
+    border-radius: .5rem;
     cursor: pointer;
+}
+
+.shipmentFAK__right__box-bottom ul li p:hover {
+    animation: chosen .2s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes chosen {
+    0% {
+        scale: 1;
+    }
+    100% {
+        scale: 1.1;
+    }
 }

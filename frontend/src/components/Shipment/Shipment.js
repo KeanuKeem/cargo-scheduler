@@ -1,15 +1,14 @@
 import { useContext, useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+
 import SelectContext from "../../store/select-context";
 import ShipmentEdit from "./ShipmentEdit";
 import ShipmentPopup from "./ShipmentPopup";
 
-import {
-  deleteShipment,
-  makeShipmentForChecklist,
-  saveChecklist,
-} from "../Reference/AddShipment";
+import { makeChecklist } from "../Reference/AddShipment";
 import { getToday } from "../Reference/Calendar";
 
 import "./Shipment.css";
@@ -266,6 +265,7 @@ const Shipment = (props) => {
   const [isDelete, setIsDelete] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
+  const [isFavourite, setIsFavourite] = useState(props.filteredData.favourite);
 
   const [checklistState, dispatchChecklistState] = useReducer(
     checklistReducer,
@@ -422,38 +422,13 @@ const Shipment = (props) => {
   const saveChecklistHandler = async (event) => {
     event.preventDefault();
 
-    const shipment = {
-      ref: props.filteredData.ref,
-      mblNumber: props.filteredData.mbl.number,
-      isMblSurr: checklistState.isMblSurr,
-      mblSurrDate: checklistState.mblSurrDate,
-      hblNumber: props.filteredData.hbl.number,
-      isHblSurr: checklistState.isHblSurr,
-      hblSurrDate: checklistState.hblSurrDate,
-      isHandleStepOne: props.filteredData.stepOne.isHandle,
-      isStepOneDone: checklistState.isStepOneDone,
-      stepOneValue: checklistState.stepOneValue,
-      isHandleStepTwo: props.filteredData.stepTwo.isHandle,
-      isStepTwoDone: checklistState.isStepTwoDone,
-      stepTwoValue: checklistState.stepTwoValue,
-      isHandleStepThree: props.filteredData.stepThree.isHandle,
-      isStepThreeDone: checklistState.isStepThreeDone,
-      stepThreeValue: checklistState.stepThreeValue,
-      isHandleStepFour: props.filteredData.stepFour.isHandle,
-      isStepFourDone: checklistState.isStepFourDone,
-      stepFourValue: checklistState.stepFourValue,
-      isHandleStepFive: props.filteredData.stepFive.isHandle,
-      isStepFiveDone: checklistState.isStepFiveDone,
-      stepFiveValue: checklistState.stepFiveValue,
-      isHandleSix: props.filteredData.stepSix.isHandle,
-      isStepSixDone: checklistState.isStepSixDone,
-      stepSixValue: checklistState.stepSixValue,
-      isHandleStepSeven: props.filteredData.stepSeven.isHandle,
-      isStepSevenStart: checklistState.isStepSevenStart,
-      stepSevenStartValue: checklistState.stepSevenStartValue,
-      isStepSevenEnd: checklistState.isStepSevenEnd,
-      stepSevenEndValue: checklistState.stepSevenEndValue,
-    };
+    const shipment = makeChecklist(
+      props.filteredData.ref,
+      props.filteredData.contType,
+      checklistState,
+      isFavourite
+    );
+
     try {
       await axios
         .patch("http://localhost:5000/api/shipment/checklist", shipment, {
@@ -484,13 +459,14 @@ const Shipment = (props) => {
         checklistState.isStepSevenStart ||
       props.filteredData.stepSeven.isEnd !== checklistState.isStepSevenEnd ||
       props.filteredData.mbl.isSurr !== checklistState.isMblSurr ||
-      props.filteredData.hbl.isSurr !== checklistState.isHblSurr
+      props.filteredData.hbl.isSurr !== checklistState.isHblSurr ||
+      props.filteredData.favourite !== isFavourite
     ) {
       setSaveBtnShow(true);
     } else {
       setSaveBtnShow(false);
     }
-  }, [props.filteredData, checklistState]);
+  }, [props.filteredData, checklistState, isFavourite]);
 
   if (isEdit) {
     return (
@@ -529,6 +505,27 @@ const Shipment = (props) => {
                 <h1 className="shipment__id">{props.filteredData.ref}</h1>
               </li>
               <li>
+                <p>
+                  {isFavourite ? (
+                    <FontAwesomeIcon
+                      className="shipment__favourite"
+                      icon={faStar}
+                      onClick={() => {
+                        setIsFavourite(false);
+                      }}
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      className="shipment__no-favourite"
+                      icon={faStar}
+                      onClick={() => {
+                        setIsFavourite(true);
+                      }}
+                    />
+                  )}
+                </p>
+              </li>
+              <li>
                 <p>{props.filteredData.cargoType}</p>
               </li>
               <li>
@@ -549,18 +546,19 @@ const Shipment = (props) => {
                   7
                 )}/${props.filteredData.schedule.slice(0, 4)}`}</p>
               </li>
-              {props.filteredData.contType !== "BKR" && (
-                <li>
-                  <span>
-                    <p>MBL Surrendered: </p>
-                    <input
-                      type="checkbox"
-                      onChange={checklistMblHandler}
-                      defaultChecked={checklistState.isMblSurr}
-                    />
-                  </span>
-                </li>
-              )}
+              {props.filteredData.contType !== "BKR" &&
+                props.filteredData.mbl.number !== "" && (
+                  <li>
+                    <span>
+                      <p>MBL Surrendered: </p>
+                      <input
+                        type="checkbox"
+                        onChange={checklistMblHandler}
+                        defaultChecked={checklistState.isMblSurr}
+                      />
+                    </span>
+                  </li>
+                )}
               <li>
                 <span>
                   <p>HBL Surrendered: </p>
@@ -588,23 +586,34 @@ const Shipment = (props) => {
                   <p>Place of Discharge: </p>
                   <p>{props.filteredData.port}</p>
                 </div>
-                {props.filteredData.contType !== "BKR" && (
-                  <div className="shipment__left__items">
-                    <p>MBL: </p>
-                    <p>{props.filteredData.mbl.number}</p>
-                  </div>
-                )}
+                {props.filteredData.contType !== "BKR" &&
+                  props.filteredData.mbl.number !== "" && (
+                    <div className="shipment__left__items">
+                      <p>MBL: </p>
+                      <p>{props.filteredData.mbl.number}</p>
+                    </div>
+                  )}
                 <div className="shipment__left__items">
                   <p>HBL: </p>
                   <p>{props.filteredData.hbl.number}</p>
                 </div>
+                {props.filteredData.contType !== "AIR" && (
+                  <div className="shipment__left__items">
+                    <p>Container Number: </p>
+                    <p>{props.filteredData.container}</p>
+                  </div>
+                )}
                 <div className="shipment__left__items">
-                  <p>Container Number: </p>
-                  <p>{props.filteredData.container}</p>
-                </div>
-                <div className="shipment__left__items">
-                  <p>Vessel: </p>
-                  <p>{`${props.filteredData.vessel} ${props.filteredData.voyage}`}</p>
+                  {props.filteredData.contType !== "AIR" ? (
+                    <p>Vessel: </p>
+                  ) : (
+                    <p>Flight:</p>
+                  )}
+                  {props.filteredData.contType !== "AIR" ? (
+                    <p>{`${props.filteredData.vessel} ${props.filteredData.voyage}`}</p>
+                  ) : (
+                    <p>{props.filteredData.vessel}</p>
+                  )}
                 </div>
                 <div className="shipment__left__items">
                   <p>Available Depot: </p>

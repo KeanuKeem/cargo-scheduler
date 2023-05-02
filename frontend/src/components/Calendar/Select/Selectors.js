@@ -15,7 +15,6 @@ import SelectBtn from "./SelectBtn";
 import "./Selectors.css";
 import axios from "axios";
 
-
 // -----Selectors-Components----- //
 const Selectors = (props) => {
   const ctx = useContext(SelectContext);
@@ -69,50 +68,51 @@ const Selectors = (props) => {
 
   return (
     <>
-      {isPopup && <ShipmentPopup type="notification" text={popupMessage} button="Okay!" onClick={notificationBtnHandler} />}
+      {isPopup && (
+        <ShipmentPopup
+          type="notification"
+          text={popupMessage}
+          button="Okay!"
+          onClick={notificationBtnHandler}
+        />
+      )}
       <div className={!isVessel ? "selectors" : "selectors__open"}>
         <div className="selectors__left">
           <TypeSelector onChange={props.onSort} type="get" />
         </div>
         <div className="selectors__center">
-          <MonthSelector className="selectors__center-margin" />
-          <YearSelector />
+          <div className="selectors__center-position">
+            <MonthSelector />
+            <YearSelector />
+          </div>
         </div>
         <div className="selectors__right">
-          <SelectBtn onClick={props.onAddBtnClicked}>
-            ADD
-          </SelectBtn>
-        </div>
-        {!isVessel ? (
-          <div className="selectors__vessel">
-            <SelectBtn onClick={updateScheduleBtnHandler}>
-              Vessel Schedule Update
-            </SelectBtn>
+          <div className="selectors__right-position">
+            <SelectBtn onClick={props.onAddBtnClicked}>ADD</SelectBtn>
+            {!isVessel ? (
+              <SelectBtn onClick={updateScheduleBtnHandler}>
+                Vessel Schedule Update
+              </SelectBtn>
+            ) : (
+              <SelectBtn onClick={updateScheduleBtnHandler}>Close</SelectBtn>
+            )}
           </div>
-        ) : (
-          <>
-            <div className="selectors__vessel">
-              <button className="btn" onClick={updateScheduleBtnHandler}>
-                Close
-              </button>
-            </div>
-            <div className="selectors__vessel__show">
-              <form onSubmit={updateScheduleHandler}>
-                <TypeSelector type="get" onChange={setType} />
-                <input
-                  className="selectos__vessel__vessel"
-                  type="text"
-                  ref={vesselRef}
-                  placeholder="Vessel Name"
-                />
-                <input type="text" ref={voyageRef} placeholder="Voyage" />
-                <input type="date" ref={newScheduleRef} />
-                <button className="btn" type="submit">
-                  Update
-                </button>
-              </form>
-            </div>
-          </>
+        </div>
+        {isVessel && (
+          <div className="selectors__vessel__show">
+            <form onSubmit={updateScheduleHandler}>
+              <TypeSelector type="get" onChange={setType} />
+              <input
+                className="selectos__vessel__vessel"
+                type="text"
+                ref={vesselRef}
+                placeholder="Vessel Name"
+              />
+              <input type="text" ref={voyageRef} placeholder="Voyage" />
+              <input type="date" ref={newScheduleRef} />
+              <SelectBtn type="submit">Update</SelectBtn>
+            </form>
+          </div>
         )}
       </div>
     </>

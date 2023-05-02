@@ -21,6 +21,7 @@ const PrefSetting = (props) => {
   const stageSixText = "(Delivery)";
   const stageSevenStartText = "(Storage Start)";
   const stageSevenEndText = "(Storage End)";
+  const completeText = "(All done)";
 
 
   const [isSuccessful, setIsSuccessful] = useState(false);
@@ -48,6 +49,8 @@ const PrefSetting = (props) => {
       backSevenStart: props.backSevenStart,
       fontSevenEnd: props.fontSevenEnd,
       backSevenEnd: props.backSevenEnd,
+      fontComplete: props.fontComplete,
+      backComplete: props.backComplete
     };
     await axios
       .patch("http://localhost:5000/api/user/edit/pref", prefData, {
@@ -323,6 +326,32 @@ const PrefSetting = (props) => {
               defaultValue={props.backSevenEnd}
               onChange={(event) => {
                 props.setBackSevenEnd(event.target.value);
+              }}
+            />
+          </p>
+        </div>
+        <div className="pref__setting__list">
+          <div className="pref__setting__list-stage">
+            <p>Complete: </p>
+            <p>{completeText}</p>
+          </div>
+          <p>
+            <input
+              className="pref__setting__list__colour"
+              type="color"
+              defaultValue={props.fontComplete}
+              onChange={(event) => {
+                props.setFontComplete(event.target.value);
+              }}
+            />
+          </p>
+          <p>
+            <input
+              className="pref__setting__list__colour"
+              type="color"
+              defaultValue={props.backComplete}
+              onChange={(event) => {
+                props.setBackComplete(event.target.value);
               }}
             />
           </p>

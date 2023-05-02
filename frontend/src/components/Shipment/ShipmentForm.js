@@ -5,7 +5,7 @@ import "./ShipmentForm.css";
 
 const ShipmentForm = (props) => {
   const important = "(*) parts cannot be empty!";
-  
+
   return (
     <div className="shipment">
       <h2>Add a shipment</h2>
@@ -23,13 +23,10 @@ const ShipmentForm = (props) => {
           />
         </div>
         <div className="shipment__type-selector">
-          <label>
-            *Container Type:
-          </label>
+          <label>*Container Type:</label>
           <TypeSelector
             type={props.sendFrom}
             typeHandler={props.contSet}
-            shipmentType={props.shipmentType}
             default={props.contTypeState.value}
           />
         </div>

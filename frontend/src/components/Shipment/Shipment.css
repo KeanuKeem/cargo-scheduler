@@ -25,6 +25,16 @@
     margin-left: -1rem;
 }
 
+.shipment__favourite {
+   color: #000;
+   font-size: .9rem;
+}
+
+.shipment__no-favourite {
+    color: #c9c9c9;
+    font-size: .9rem;
+}
+
 .shipment__top-menu-list h1:first-child {
     margin-right: 1rem;
 }

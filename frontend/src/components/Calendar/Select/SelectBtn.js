@@ -2,7 +2,7 @@ import "./SelectBtn.css";
 
 const SelectBtn = (props) => {
   return (
-    <button className="selectBtn" onClick={props.onClick}>
+    <button type={props.type} className="selectBtn" onClick={props.onClick}>
       {props.children}
     </button>
   );

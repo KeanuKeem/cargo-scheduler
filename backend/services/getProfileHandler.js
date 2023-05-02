@@ -27,6 +27,8 @@ const getProfileHandler = async (req) => {
         backSevenStart: user.preferences.backSevenStart,
         fontSevenEnd: user.preferences.fontSevenEnd,
         backSevenEnd: user.preferences.backSevenEnd,
+        fontComplete: user.preferences.fontComplete,
+        backComplete: user.preferences.backComplete
       },
     };
   } else {

@@ -1,6 +1,6 @@
 import { useState, useContext, useRef, useEffect } from "react";
 
-import { editShipment } from "../Reference/AddShipment";
+import { makeEditShipment } from "../Reference/AddShipment";
 import { getMonth } from "../Reference/Calendar";
 import SelectContext from "../../store/select-context";
 import TypeSelector from "../Calendar/Select/TypeSelector";
@@ -23,13 +23,27 @@ const ShipmentEdit = (props) => {
   const [contState, setContState] = useState(props.data.container);
   const [depotState, setDepotState] = useState(props.data.depot);
   const [notesState, setNotesState] = useState(props.data.notes);
-  const [oneState, setOneState] = useState(props.data.stepOne.isHandle);
-  const [twoState, setTwoState] = useState(props.data.stepTwo.isHandle);
-  const [threeState, setThreeState] = useState(props.data.stepThree.isHandle);
-  const [fourState, setFourState] = useState(props.data.stepFour.isHandle);
-  const [fiveState, setFiveState] = useState(props.data.stepFive.isHandle);
-  const [sixState, setSixState] = useState(props.data.stepSix.isHandle);
-  const [sevenState, setSevenState] = useState(props.data.stepSeven.isHandle);
+  const [oneState, setOneState] = useState(
+    props.data.contType !== "FAK" ? props.data.stepOne.isHandle : ""
+  );
+  const [twoState, setTwoState] = useState(
+    props.data.contType !== "FAK" ? props.data.stepTwo.isHandle : ""
+  );
+  const [threeState, setThreeState] = useState(
+    props.data.contType !== "FAK" ? props.data.stepThree.isHandle : ""
+  );
+  const [fourState, setFourState] = useState(
+    props.data.contType !== "FAK" ? props.data.stepFour.isHandle : ""
+  );
+  const [fiveState, setFiveState] = useState(
+    props.data.contType !== "FAK" ? props.data.stepFive.isHandle : ""
+  );
+  const [sixState, setSixState] = useState(
+    props.data.contType !== "FAK" ? props.data.stepSix.isHandle : ""
+  );
+  const [sevenState, setSevenState] = useState(
+    props.data.contType !== "FAK" ? props.data.stepSeven.isHandle : ""
+  );
   const [popup, setPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
 
@@ -113,72 +127,29 @@ const ShipmentEdit = (props) => {
 
   const editShipmentHandler = async (event) => {
     event.preventDefault();
-    const shipment = {
-      ref: props.data.ref,
-      cargoType: props.data.cargoType,
-      contType: contTypeState,
-      schedule: scheduleState,
-      prevSchedule: prevScheduleRef.current,
-      port: portState,
-      vessel: vesselState,
-      voyage: voyageState,
-      mbl: {
-        number: mblState,
-        isSurr: props.data.mbl.isSurr,
-        date: props.data.mbl.date,
-      },
-      hbl: {
-        number: hblState,
-        isSurr: props.data.hbl.isSurr,
-        date: props.data.hbl.date,
-      },
-      container: contState,
-      depot: depotState,
-      notes: notesState,
-      fakShipments: props.data.fakShipments,
-      day: {
-        date: Number(scheduleState.slice(8, 10)),
-        month: getMonth(Number(scheduleState.slice(5, 7))),
-        year: Number(scheduleState.slice(0, 4)),
-      },
-      stepOne: {
-        isHandle: oneState,
-        isDone: props.data.stepOne.isDone,
-        date: props.data.stepOne.date,
-      },
-      stepTwo: {
-        isHandle: twoState,
-        isDone: props.data.stepTwo.isDone,
-        date: props.data.stepTwo.date,
-      },
-      stepThree: {
-        isHandle: threeState,
-        isDone: props.data.stepThree.isDone,
-        date: props.data.stepThree.date,
-      },
-      stepFour: {
-        isHandle: fourState,
-        isDone: props.data.stepFour.isDone,
-        date: props.data.stepFour.date,
-      },
-      stepFive: {
-        isHandle: fiveState,
-        isDone: props.data.stepFive.isDone,
-        date: props.data.stepFive.date,
-      },
-      stepSix: {
-        isHandle: sixState,
-        isDone: props.data.stepSix.isDone,
-        date: props.data.stepSix.date,
-      },
-      stepSeven: {
-        isHandle: sevenState,
-        isStart: props.data.stepSeven.isStart,
-        isEnd: props.data.stepSeven.isEnd,
-        startDate: props.data.stepSeven.startDate,
-        endDate: props.data.stepSeven.endDate,
-      },
-    };
+
+    const shipment = makeEditShipment(
+      props.data.ref,
+      contTypeState,
+      scheduleState,
+      prevScheduleRef.current,
+      portState,
+      vesselState,
+      voyageState,
+      mblState,
+      hblState,
+      contState,
+      depotState,
+      notesState,
+      props.data.fakShipments,
+      oneState,
+      twoState,
+      threeState,
+      fourState,
+      fiveState,
+      sixState,
+      sevenState
+    );
 
     await axios
       .patch("http://localhost:5000/api/shipment/edit", shipment, {
@@ -192,6 +163,7 @@ const ShipmentEdit = (props) => {
       .catch((err) => {
         setPopup(true);
         setPopupMessage(err.response.data);
+        console.log(err);
       });
   };
 
@@ -286,22 +258,28 @@ const ShipmentEdit = (props) => {
                   </p>
                 )}
               </div>
+              {props.data.contType !== "AIR" && (
+                <div className="shipment__left__items">
+                  <p>Container Number: </p>
+                  <p>
+                    {props.data.contType !== "LCLFAK" ? (
+                      <input
+                        type="text"
+                        defaultValue={contState}
+                        onChange={contEditHandler}
+                      />
+                    ) : (
+                      props.data.container
+                    )}
+                  </p>
+                </div>
+              )}
               <div className="shipment__left__items">
-                <p>Container Number: </p>
-                <p>
-                  {props.data.contType !== "LCLFAK" ? (
-                    <input
-                      type="text"
-                      defaultValue={contState}
-                      onChange={contEditHandler}
-                    />
-                  ) : (
-                    props.data.container
-                  )}
-                </p>
-              </div>
-              <div className="shipment__left__items">
-                <p>Vessel: </p>
+                {props.data.contType !== "AIR" ? (
+                  <p>Vessel: </p>
+                ) : (
+                  <p>Flight: </p>
+                )}
                 <p>
                   {props.data.contType !== "LCLFAK" ? (
                     <input
@@ -314,20 +292,22 @@ const ShipmentEdit = (props) => {
                   )}
                 </p>
               </div>
-              <div className="shipment__left__items">
-                <p>Voyage: </p>
-                <p>
-                  {props.data.contType !== "LCLFAK" ? (
-                    <input
-                      type="text"
-                      defaultValue={voyageState}
-                      onChange={voyageEditHandler}
-                    />
-                  ) : (
-                    props.data.voyage
-                  )}
-                </p>
-              </div>
+              {props.data.contType !== "AIR" && (
+                <div className="shipment__left__items">
+                  <p>Voyage: </p>
+                  <p>
+                    {props.data.contType !== "LCLFAK" ? (
+                      <input
+                        type="text"
+                        defaultValue={voyageState}
+                        onChange={voyageEditHandler}
+                      />
+                    ) : (
+                      props.data.voyage
+                    )}
+                  </p>
+                </div>
+              )}
               <div className="shipment__left__items">
                 <p>Available Depot: </p>
                 <p>

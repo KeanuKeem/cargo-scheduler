@@ -33,7 +33,7 @@ const modalReducer = (state, action) => {
   }
 };
 
-const TodoPage = () => {
+const TodoPage = (props) => {
   const ctx = useContext(SelectContext);
   const { dayp, monthp, yearp } = useParams();
 
@@ -120,7 +120,6 @@ const TodoPage = () => {
     setDataAdded(false);
     setDataEdited(false);
     setShipmentAdded(false);
-    
   }, [day, month, year, dataAdded, dataEdited, shipmentAdded, sortBy]);
 
   useEffect(() => {
@@ -136,6 +135,7 @@ const TodoPage = () => {
   const fakArray = toDoHandler.generateFAKArray(filteredData, Number(day));
   const fclArray = toDoHandler.generateFCLArray(filteredData, Number(day));
   const lclArray = toDoHandler.generateLCLArray(filteredData, Number(day));
+  const airArray = toDoHandler.generateAIRArray(filteredData, Number(day));
 
   return (
     <>
@@ -155,10 +155,14 @@ const TodoPage = () => {
           onDataAdd={setDataAdded}
         />
       )}
-      <Sidebar />
+      <Sidebar dataEdited={dataEdited} setDataEdited={setDataEdited} />
       <div className="todo">
         <div className="todo__top">
-          <TypeSelector type="get" onChange={setSortBy} className="todo__dropdown" />
+          <TypeSelector
+            type="get"
+            onChange={setSortBy}
+            className="todo__dropdown"
+          />
           <div className="todo__input">
             <input
               type="date"
@@ -177,7 +181,14 @@ const TodoPage = () => {
             <hr />
             {brokerageArray.map((shipment) => {
               return (
-                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
+                <p
+                  key={shipment.id}
+                  style={{
+                    backgroundColor: shipment.back,
+                    color: shipment.font,
+                  }}
+                  onClick={modalShipmentOpenHandler}
+                >
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );
@@ -188,7 +199,14 @@ const TodoPage = () => {
             <hr />
             {fakArray.map((shipment) => {
               return (
-                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
+                <p
+                  key={shipment.id}
+                  style={{
+                    backgroundColor: shipment.back,
+                    color: shipment.font,
+                  }}
+                  onClick={modalShipmentOpenHandler}
+                >
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );
@@ -199,7 +217,14 @@ const TodoPage = () => {
             <hr />
             {fclArray.map((shipment) => {
               return (
-                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
+                <p
+                  key={shipment.id}
+                  style={{
+                    backgroundColor: shipment.back,
+                    color: shipment.font,
+                  }}
+                  onClick={modalShipmentOpenHandler}
+                >
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );
@@ -210,7 +235,32 @@ const TodoPage = () => {
             <hr />
             {lclArray.map((shipment) => {
               return (
-                <p key={shipment.id} onClick={modalShipmentOpenHandler}>
+                <p
+                  key={shipment.id}
+                  style={{
+                    backgroundColor: shipment.back,
+                    color: shipment.font,
+                  }}
+                  onClick={modalShipmentOpenHandler}
+                >
+                  {"(" + shipment.contType + ") " + shipment.id}
+                </p>
+              );
+            })}
+          </div>
+          <div className="todo__contents__items">
+            <h2>AIR</h2>
+            <hr />
+            {airArray.map((shipment) => {
+              return (
+                <p
+                  key={shipment.id}
+                  style={{
+                    backgroundColor: shipment.back,
+                    color: shipment.font,
+                  }}
+                  onClick={modalShipmentOpenHandler}
+                >
                   {"(" + shipment.contType + ") " + shipment.id}
                 </p>
               );

@@ -24,6 +24,8 @@ const updatePreferenceHandler = async (req) => {
           backSevenStart: req.body.backSevenStart,
           fontSevenEnd: req.body.fontSevenEnd,
           backSevenEnd: req.body.backSevenEnd,
+          fontComplete: req.body.fontComplete,
+          backComplete: req.body.backComplete
         },
       }
     );

@@ -4,7 +4,6 @@ import "./ImportForm.css";
 import TypeSelector from "../Calendar/Select/TypeSelector";
 import ShipmentContext from "../../store/shipment-context";
 
-
 const DetailForm = (props) => {
   const ctxForm = useContext(ShipmentContext);
 
@@ -50,11 +49,19 @@ const DetailForm = (props) => {
 
           {props.sendFrom !== "FAK" && (
             <>
-              <label htmlFor="vessel">*Vessel:</label>
+              {props.contTypeState.type === "AIR" ? (
+                <label htmlFor="vessel">*Flight:</label>
+              ) : (
+                <label htmlFor="vessel">*Vessel:</label>
+              )}
               <input type="text" name="vessel" id="vessel" />
 
-              <label>*Container Number#</label>
-              <input type="text" name="container" id="container" />
+              {props.contTypeState.type !== "AIR" && (
+                <>
+                  <label>*Container Number#</label>
+                  <input type="text" name="container" id="container" />
+                </>
+              )}
 
               <label>
                 {props.shipmentType === "Import"
@@ -76,16 +83,24 @@ const DetailForm = (props) => {
               </label>
               <input type="text" name="port" id="port" />
 
-              <label htmlFor="voyage">*Voyage:</label>
-              <input type="text" name="voyage" id="voyage" />
+              {props.contTypeState.toShowVoyage && (
+                <label htmlFor="voyage">*Voyage:</label>
+              )}
+              {props.contTypeState.toShowVoyage && (
+                <input type="text" name="voyage" id="voyage" />
+              )}
             </>
           )}
 
           {props.contTypeState.toShowMbl && <label>MBL Number#</label>}
-          {props.contTypeState.toShowMbl && <input type="text" name="mbl" id="mbl" />}
+          {props.contTypeState.toShowMbl && (
+            <input type="text" name="mbl" id="mbl" />
+          )}
 
           {props.contTypeState.toShowHbl && <label>HBL Number#</label>}
-          {props.contTypeState.toShowHbl && <input type="text" name="hbl" id="hbl" />}
+          {props.contTypeState.toShowHbl && (
+            <input type="text" name="hbl" id="hbl" />
+          )}
         </div>
       </div>
 

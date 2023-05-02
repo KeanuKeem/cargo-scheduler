@@ -91,265 +91,282 @@ export function deleteShipment(data, shipment) {
   }
 }
 
-export function editShipment(data, shipment) {
-  const toAddShipment = shipment;
-  let date;
-  let prevDay;
-  if (shipment.type === "Import") {
-    date = dateSplit(shipment.eta);
-    prevDay = dateSplit(shipment.prevEta.current);
+export function makeEditShipment(
+  ref,
+  contType,
+  schedule,
+  prevSchedule,
+  port,
+  vessel,
+  voyage,
+  mbl,
+  hbl,
+  cont,
+  depot,
+  notes,
+  fakShipments,
+  one,
+  two,
+  three,
+  four,
+  five,
+  six,
+  seven
+) {
+  if (contType === "FAK") {
+    return {
+      ref,
+      contType,
+      schedule,
+      prevSchedule,
+      port,
+      vessel,
+      voyage,
+      mbl: {
+        number: mbl,
+      },
+      container: cont,
+      depot,
+      notes,
+      fakShipments,
+      stepOne: {
+        isHandle: one,
+      },
+      stepTwo: {
+        isHandle: two,
+      },
+      stepThree: {
+        isHandle: three,
+      },
+      stepFour: {
+        isHandle: four,
+      },
+      stepFive: {
+        isHandle: five,
+      },
+      stepSix: {
+        isHandle: six,
+      },
+      stepSeven: {
+        isHandle: seven,
+      },
+    };
+  } else if (contType === "AIR") {
+    return {
+      ref,
+      contType,
+      schedule,
+      prevSchedule,
+      port,
+      vessel,
+      mbl: {
+        number: mbl,
+      },
+      hbl: {
+        number: hbl,
+      },
+      depot,
+      notes,
+      stepOne: {
+        isHandle: one,
+      },
+      stepTwo: {
+        isHandle: two,
+      },
+      stepThree: {
+        isHandle: three,
+      },
+      stepFour: {
+        isHandle: four,
+      },
+      stepFive: {
+        isHandle: five,
+      },
+      stepSix: {
+        isHandle: six,
+      },
+      stepSeven: {
+        isHandle: seven,
+      },
+    };
+  } else if (contType === "BKR") {
+    return {
+      ref,
+      contType,
+      schedule,
+      prevSchedule,
+      port,
+      vessel,
+      voyage,
+      hbl: {
+        number: hbl,
+      },
+      container: cont,
+      depot,
+      notes,
+      stepOne: {
+        isHandle: one,
+      },
+      stepTwo: {
+        isHandle: two,
+      },
+      stepThree: {
+        isHandle: three,
+      },
+      stepFour: {
+        isHandle: four,
+      },
+      stepFive: {
+        isHandle: five,
+      },
+      stepSix: {
+        isHandle: six,
+      },
+      stepSeven: {
+        isHandle: seven,
+      },
+    };
   } else {
-    date = dateSplit(shipment.cutoff);
-    prevDay = dateSplit(shipment.prevCutoff.current);
-  }
-  const day = date.day;
-
-  const [prevYear, prevMonth, prevDate] = [
-    prevDay.year,
-    prevDay.month,
-    prevDay.day,
-  ];
-
-  const thisMonthData = data.filter(
-    (monthData) => monthData.month === prevMonth && monthData.year === prevYear
-  );
-
-  if (shipment.contType === "LCLFAK") {
-    const thisDayData = thisMonthData[0].shipments.filter(
-      (dayData) => dayData.date === day
-    );
-
-    const currMasterData = thisDayData[0].values.filter(
-      (thisData) => thisData.id === shipment.mId
-    );
-    const currDataIndex = currMasterData[0].fakShipments.findIndex(
-      (thisShipment) => thisShipment.id === shipment.id
-    );
-
-    currMasterData[0].fakShipments[currDataIndex] = shipment;
-  } else {
-    const thisDayData = thisMonthData[0].shipments.filter(
-      (dayData) => dayData.date === prevDate
-    );
-
-    const currDataIndex = thisDayData[0].values.findIndex(
-      (thisData) => thisData.id === shipment.id
-    );
-
-    thisDayData[0].values.splice(currDataIndex, currDataIndex + 1);
-
-    addShipment(data, toAddShipment);
+    return {
+      ref,
+      contType,
+      schedule,
+      prevSchedule,
+      port,
+      vessel,
+      voyage,
+      mbl: {
+        number: mbl,
+      },
+      hbl: {
+        number: hbl,
+      },
+      container: cont,
+      depot,
+      notes,
+      stepOne: {
+        isHandle: one,
+      },
+      stepTwo: {
+        isHandle: two,
+      },
+      stepThree: {
+        isHandle: three,
+      },
+      stepFour: {
+        isHandle: four,
+      },
+      stepFive: {
+        isHandle: five,
+      },
+      stepSix: {
+        isHandle: six,
+      },
+      stepSeven: {
+        isHandle: seven,
+      },
+    };
   }
 }
 
-// [{an: {
-//   isAn: anState,
-//   anDone: props.data.an.anDone,
-//   anDate: props.data.an.anDate,
-// },
-// inv: {
-//   isInv: invState,
-//   invDone: props.data.inv.invDone,
-//   invDate: props.data.inv.invDate,
-// },
-// cclr: {
-//   isCclr: cclrState,
-//   cclrDone: props.data.cclr.cclrDone,
-//   cclrDate: props.data.cclr.cclrDate,
-// },
-// del: {
-//   isDel: delState,
-//   delDone: props.data.del.delDone,
-//   delDate: props.data.del.delDate,
-// },
-// str: {
-//   isStr: strState,
-//   strStarted: props.data.str.strStarted,
-//   strDone: props.data.str.strDone,
-//   strDateStart: props.data.str.strDateStart,
-//   strDateEnd: props.data.str.strDateEnd,
-// }}]
-
-export function saveChecklist(data, shipment) {
-  let thisDay;
-  if (shipment.type === "Import") {
-    thisDay = dateSplit(shipment.eta);
-  } else {
-    thisDay = dateSplit(shipment.cutoff);
+export function makeChecklist(ref, contType, checklistState, favourite) {
+  if (contType === "FAK") {
+    return {
+      ref,
+      contType,
+      isMblSurr: checklistState.isMblSurr,
+      mblSurrDate: checklistState.mblSurrDate,
+      favourite,
+    }
   }
-
-  const [year, month, date] = [thisDay.year, thisDay.month, thisDay.day];
-
-  let currData;
-
-  const thisMonthData = data.filter(
-    (monthData) => monthData.month === month && monthData.year === year
-  );
-
-  const thisDayData = thisMonthData[0].shipments.filter(
-    (dayData) => dayData.date === date
-  );
-
-  if (shipment.contType === "LCLFAK") {
-    const currMasterDataIndex = thisDayData[0].values.findIndex(
-      (thisData) => thisData.id === shipment.mId
-    );
-    const currMasterData = thisDayData[0].values[currMasterDataIndex];
-    const currDataIndex = currMasterData.fakShipments.findIndex(
-      (thisShipment) => thisShipment.id === shipment.id
-    );
-    currData = currMasterData.fakShipments[currDataIndex];
-  } else {
-    const currDataIndex = thisDayData[0].values.findIndex(
-      (thisData) => thisData.id === shipment.id
-    );
-    currData = thisDayData[0].values[currDataIndex];
-  }
-
-  if (shipment.type === "Import") {
-    [
-      currData.an.isAn,
-      currData.an.anDone,
-      currData.an.anDate,
-      currData.inv.isInv,
-      currData.inv.invDone,
-      currData.inv.invDate,
-      currData.do.isDo,
-      currData.do.doDone,
-      currData.do.doDate,
-      currData.outturn.isoutturn,
-      currData.outturn.outturnDone,
-      currData.outturn.outturnDate,
-      currData.cclr.isCclr,
-      currData.cclr.cclrDone,
-      currData.cclr.cclrDate,
-      currData.del.isDel,
-      currData.del.delDone,
-      currData.del.delDate,
-      currData.str.isStr,
-      currData.str.strStarted,
-      currData.str.strDone,
-      currData.str.strDateStart,
-      currData.str.strDateEnd,
-      currData.mbl.isMblSurr,
-      currData.hbl.isHblSurr,
-    ] = [
-      shipment.an.isAn,
-      shipment.an.anDone,
-      shipment.an.anDate,
-      shipment.inv.isInv,
-      shipment.inv.invDone,
-      shipment.inv.invDate,
-      shipment.do.isDo,
-      shipment.do.doDone,
-      shipment.do.doDate,
-      shipment.outturn.isoutturn,
-      shipment.outturn.outturnDone,
-      shipment.outturn.outturnDate,
-      shipment.cclr.isCclr,
-      shipment.cclr.cclrDone,
-      shipment.cclr.cclrDate,
-      shipment.del.isDel,
-      shipment.del.delDone,
-      shipment.del.delDate,
-      shipment.str.isStr,
-      shipment.str.strStarted,
-      shipment.str.strDone,
-      shipment.str.strDateStart,
-      shipment.str.strDateEnd,
-      shipment.mbl.isMblSurr,
-      shipment.hbl.isHblSurr,
-    ];
-  } else {
-    [
-      currData.bc.isBc,
-      currData.bc.bcDone,
-      currData.bc.bcDate,
-      currData.inv.isInv,
-      currData.inv.invDone,
-      currData.inv.invDate,
-      currData.bl.isBl,
-      currData.bl.blDone,
-      currData.bl.blDate,
-      currData.checkIn.isCheckIn,
-      currData.checkIn.checkInDone,
-      currData.checkIn.checkInDate,
-      currData.cclr.isCclr,
-      currData.cclr.cclrDone,
-      currData.cclr.cclrDate,
-      currData.del.isDel,
-      currData.del.delDone,
-      currData.del.delDate,
-      currData.str.isStr,
-      currData.str.strStarted,
-      currData.str.strDone,
-      currData.str.strDateStart,
-      currData.str.strDateEnd,
-      currData.mbl.isMblSurr,
-      currData.hbl.isHblSurr,
-    ] = [
-      shipment.bc.isBc,
-      shipment.bc.bcDone,
-      shipment.bc.bcDate,
-      shipment.inv.isInv,
-      shipment.inv.invDone,
-      shipment.inv.invDate,
-      shipment.bl.isBl,
-      shipment.bl.blDone,
-      shipment.bl.blDate,
-      shipment.checkIn.isCheckIn,
-      shipment.checkIn.checkInDone,
-      shipment.checkIn.checkInDate,
-      shipment.cclr.isCclr,
-      shipment.cclr.cclrDone,
-      shipment.cclr.cclrDate,
-      shipment.del.isDel,
-      shipment.del.delDone,
-      shipment.del.delDate,
-      shipment.str.isStr,
-      shipment.str.strStarted,
-      shipment.str.strDone,
-      shipment.str.strDateStart,
-      shipment.str.strDateEnd,
-      shipment.mbl.isMblSurr,
-      shipment.hbl.isHblSurr,
-    ];
-  }
+  return {
+    ref,
+    contType,
+    isMblSurr: checklistState.isMblSurr,
+    mblSurrDate: checklistState.mblSurrDate,
+    isHblSurr: checklistState.isHblSurr,
+    hblSurrDate: checklistState.hblSurrDate,
+    isStepOneDone: checklistState.isStepOneDone,
+    stepOneValue: checklistState.stepOneValue,
+    isStepTwoDone: checklistState.isStepTwoDone,
+    stepTwoValue: checklistState.stepTwoValue,
+    isStepThreeDone: checklistState.isStepThreeDone,
+    stepThreeValue: checklistState.stepThreeValue,
+    isStepFourDone: checklistState.isStepFourDone,
+    stepFourValue: checklistState.stepFourValue,
+    isStepFiveDone: checklistState.isStepFiveDone,
+    stepFiveValue: checklistState.stepFiveValue,
+    isStepSixDone: checklistState.isStepSixDone,
+    stepSixValue: checklistState.stepSixValue,
+    isStepSevenStart: checklistState.isStepSevenStart,
+    stepSevenStartValue: checklistState.stepSevenStartValue,
+    isStepSevenEnd: checklistState.isStepSevenEnd,
+    stepSevenEndValue: checklistState.stepSevenEndValue,
+    favourite,
+  };
 }
 
 export function makeShipment(event, shipmentType, contType) {
-  let [mbl, hbl, stepOne, stepTwo, stepThree, stepFour, stepFive, stepSix, stepSeven] = ["", "", "", "", "", "", "", "", ""];
-
   if (contType === "FAK") {
-    mbl = event.target.mbl.value;
-    hbl = "";
-    stepOne = false;
-    stepTwo = false;
-    stepThree = false;
-    stepFour = false;
-    stepFive = false;
-    stepSix = false;
-    stepSeven = false;
+    return {
+      ref: event.target.ref.value,
+      cargoType: shipmentType,
+      contType: contType,
+      schedule: event.target.schedule.value,
+      port: event.target.port.value,
+      vessel: event.target.vessel.value.toUpperCase(),
+      voyage: event.target.voyage.value.toUpperCase(),
+      container: event.target.container.value.toUpperCase(),
+      depot: event.target.depot.value,
+      notes: event.target.notes.value,
+      fakShipments: [],
+      mblNumber: event.target.mbl.value,
+    };
   } else if (contType === "BKR") {
-    mbl = "";
-    hbl = event.target.hbl.value;
-    stepOne = event.target.stepOne.checked;
-    stepTwo = event.target.stepTwo.checked;
-    stepThree = event.target.stepThree.checked;
-    stepFour = event.target.stepFour.checked;
-    stepFive = event.target.stepFive.checked;
-    stepSix = event.target.stepSix.checked;
-    stepSeven = event.target.stepSeven.checked;
-  } else {
-    mbl = event.target.mbl.value;
-    hbl = event.target.hbl.value;
-    stepOne = event.target.stepOne.checked;
-    stepTwo = event.target.stepTwo.checked;
-    stepThree = event.target.stepThree.checked;
-    stepFour = event.target.stepFour.checked;
-    stepFive = event.target.stepFive.checked;
-    stepSix = event.target.stepSix.checked;
-    stepSeven = event.target.stepSeven.checked;
+    return {
+      ref: event.target.ref.value,
+      cargoType: shipmentType,
+      contType: contType,
+      schedule: event.target.schedule.value,
+      port: event.target.port.value,
+      vessel: event.target.vessel.value.toUpperCase(),
+      voyage: event.target.voyage.value.toUpperCase(),
+      container: event.target.container.value.toUpperCase(),
+      depot: event.target.depot.value,
+      notes: event.target.notes.value,
+      hblNumber: event.target.hbl.value,
+      stepOne: event.target.stepOne.checked,
+      stepTwo: event.target.stepTwo.checked,
+      stepThree: event.target.stepThree.checked,
+      stepFour: event.target.stepFour.checked,
+      stepFive: event.target.stepFive.checked,
+      stepSix: event.target.stepSix.checked,
+      stepSeven: event.target.stepSeven.checked,
+    };
+  } else if (contType === "AIR") {
+    let mbl = "";
+    if (event.target.mbl.value !== undefined) {
+      mbl = event.target.mbl.value;
+    }
+    return {
+      ref: event.target.ref.value,
+      cargoType: shipmentType,
+      contType: contType,
+      schedule: event.target.schedule.value,
+      port: event.target.port.value,
+      vessel: event.target.vessel.value.toUpperCase(),
+      depot: event.target.depot.value,
+      notes: event.target.notes.value,
+      mblNumber: mbl,
+      hblNumber: event.target.hbl.value,
+      stepOne: event.target.stepOne.checked,
+      stepTwo: event.target.stepTwo.checked,
+      stepThree: event.target.stepThree.checked,
+      stepFour: event.target.stepFour.checked,
+      stepFive: event.target.stepFive.checked,
+      stepSix: event.target.stepSix.checked,
+      stepSeven: event.target.stepSeven.checked,
+    };
   }
   return {
     ref: event.target.ref.value,
@@ -362,16 +379,15 @@ export function makeShipment(event, shipmentType, contType) {
     container: event.target.container.value.toUpperCase(),
     depot: event.target.depot.value,
     notes: event.target.notes.value,
-    fakShipments: [],
-    mblNumber: mbl,
-    hblNumber: hbl,
-    stepOne: stepOne,
-    stepTwo: stepTwo,
-    stepThree: stepThree,
-    stepFour: stepFour,
-    stepFive: stepFive,
-    stepSix: stepSix,
-    stepSeven: stepSeven,
+    mblNumber: event.target.mbl.value,
+    hblNumber: event.target.hbl.value,
+    stepOne: event.target.stepOne.checked,
+    stepTwo: event.target.stepTwo.checked,
+    stepThree: event.target.stepThree.checked,
+    stepFour: event.target.stepFour.checked,
+    stepFive: event.target.stepFive.checked,
+    stepSix: event.target.stepSix.checked,
+    stepSeven: event.target.stepSeven.checked,
   };
 }
 

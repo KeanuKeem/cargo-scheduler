@@ -132,10 +132,9 @@ const CalendarPage = () => {
 
   return (
     <Fragment>
-      <Sidebar />
+      <Sidebar dataEdited={dataEdited} setDataEdited={setDataEdited} />
       {modalState.show && modalState.value === "shipment" && (
         <ShipmentModal
-
           modalValue={modalState}
           onClose={modalCloseHandler}
           onDataEdit={setDataEdited}

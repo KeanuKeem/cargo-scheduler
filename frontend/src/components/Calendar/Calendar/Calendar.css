@@ -17,7 +17,7 @@
 .calendar__table__this-month {
     text-align: center;
     padding: 1rem 0;
-    font-size: 1rem;
+    font-size: 1.2rem;
     border-bottom: 2px solid;
     position: relative;
     background-color: #7868E6;
@@ -37,7 +37,7 @@
 .calendar__table__weekday {
     text-align: center;
     padding: .3rem;
-    font-size: .8rem;
+    font-size: 1rem;
     border: 1px solid;
     background-color: #EDEEF7;
 }
@@ -60,6 +60,7 @@
 }
 
 .calendar__table__day-date {
+    font-size: .9rem;
     display: flex;
     position: absolute;
     top: 10%;
@@ -76,11 +77,12 @@
     height: 3rem;
     font-size: .3rem;
     overflow-y: auto;
-    margin: 1rem auto 0 auto;
+    margin: 1.5rem auto 0 auto;
 }
 
 .calendar__table__shipments-item {
     color: #FFF;
+    font-size: .9rem;
     background-color: rgb(0, 0, 0);
     padding: .2rem 0 .2rem .5rem;
     cursor: pointer;

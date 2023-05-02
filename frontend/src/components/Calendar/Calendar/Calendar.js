@@ -124,6 +124,7 @@ const Calendar = (props) => {
                           <p
                             className="calendar__table__shipments-item"
                             key={item.id}
+                            style={{backgroundColor: item.back, color: item.font}}
                             onClick={props.onShipmentClicked}
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
@@ -165,6 +166,7 @@ const Calendar = (props) => {
                           <p
                             className="calendar__table__shipments-item"
                             key={item.id}
+                            style={{backgroundColor: item.back, color: item.font}}
                             onClick={props.onShipmentClicked}
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
@@ -206,6 +208,7 @@ const Calendar = (props) => {
                           <p
                             className="calendar__table__shipments-item"
                             key={item.id}
+                            style={{backgroundColor: item.back, color: item.font}}
                             onClick={props.onShipmentClicked}
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
@@ -247,6 +250,7 @@ const Calendar = (props) => {
                           <p
                             className="calendar__table__shipments-item"
                             key={item.id}
+                            style={{backgroundColor: item.back, color: item.font}}
                             onClick={props.onShipmentClicked}
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
@@ -288,6 +292,7 @@ const Calendar = (props) => {
                           <p
                             className="calendar__table__shipments-item"
                             key={item.id}
+                            style={{backgroundColor: item.back, color: item.font}}
                             onClick={props.onShipmentClicked}
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
@@ -330,6 +335,7 @@ const Calendar = (props) => {
                             <p
                               className="calendar__table__shipments-item"
                               key={item.id}
+                              style={{backgroundColor: item.back, color: item.font}}
                               onClick={props.onShipmentClicked}
                               id={`${day.value.date}+${item.id}`}
                               name={day.value.date}

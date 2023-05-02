@@ -27,11 +27,15 @@ const shipmentSchema = new mongoose.Schema({
   },
   voyage: {
     type: String,
-    required: true,
+    required: function () {
+      return this.contType !== "AIR";
+    },
   },
   container: {
     type: String,
-    required: true,
+    required: function () {
+      return this.contType !== "AIR";
+    },
   },
   depot: {
     type: String,
@@ -40,9 +44,21 @@ const shipmentSchema = new mongoose.Schema({
   notes: {
     type: String,
   },
+  consoleId : {
+    type: String,
+    required: function () {
+      return this.contType === "LCLFAK";
+    }
+  },
+  favourite: {
+    type: Boolean,
+    default: false,
+  },
   fakShipments: {
-    type: [{ ref: String }],
-    default: [],
+    type: [{ ref: String, font: String, back: String }],
+    required: function () {
+      return this.contType === "FAK";
+    },
   },
   day: {
     date: {
@@ -58,6 +74,12 @@ const shipmentSchema = new mongoose.Schema({
   mbl: {
     number: {
       type: String,
+      required: function () {
+        if (this.contType === "BKR" || this.contType === "AIR") {
+          return false;
+        }
+        return true;
+      },
     },
     isSurr: {
       type: Boolean,
@@ -71,6 +93,9 @@ const shipmentSchema = new mongoose.Schema({
   hbl: {
     number: {
       type: String,
+      required: function () {
+        return this.contType !== "FAK";
+      },
     },
     isSurr: {
       type: Boolean,
@@ -84,12 +109,9 @@ const shipmentSchema = new mongoose.Schema({
   stepOne: {
     isHandle: {
       type: Boolean,
-      default: false,
     },
     isDone: {
       type: Boolean,
-      required: true,
-      default: false,
     },
     date: {
       type: String,
@@ -98,12 +120,9 @@ const shipmentSchema = new mongoose.Schema({
   stepTwo: {
     isHandle: {
       type: Boolean,
-      default: false,
     },
     isDone: {
       type: Boolean,
-      required: true,
-      default: false,
     },
     date: {
       type: String,
@@ -112,12 +131,9 @@ const shipmentSchema = new mongoose.Schema({
   stepThree: {
     isHandle: {
       type: Boolean,
-      default: false,
     },
     isDone: {
       type: Boolean,
-      required: true,
-      default: false,
     },
     date: {
       type: String,
@@ -126,12 +142,9 @@ const shipmentSchema = new mongoose.Schema({
   stepFour: {
     isHandle: {
       type: Boolean,
-      default: false,
     },
     isDone: {
       type: Boolean,
-      required: true,
-      default: false,
     },
     date: {
       type: String,
@@ -140,12 +153,9 @@ const shipmentSchema = new mongoose.Schema({
   stepFive: {
     isHandle: {
       type: Boolean,
-      default: false,
     },
     isDone: {
       type: Boolean,
-      required: true,
-      default: false,
     },
     date: {
       type: String,
@@ -154,12 +164,9 @@ const shipmentSchema = new mongoose.Schema({
   stepSix: {
     isHandle: {
       type: Boolean,
-      default: false,
     },
     isDone: {
       type: Boolean,
-      required: true,
-      default: false,
     },
     date: {
       type: String,
@@ -168,15 +175,12 @@ const shipmentSchema = new mongoose.Schema({
   stepSeven: {
     isHandle: {
       type: Boolean,
-      default: false,
     },
     isStart: {
       type: Boolean,
-      default: false,
     },
     isEnd: {
       type: Boolean,
-      default: false,
     },
     startDate: {
       type: String,

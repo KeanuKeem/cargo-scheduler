@@ -266,6 +266,17 @@ const updatePreference = async (req, res) => {
   }
 };
 
+const getFavourites = async (req, res) => {
+  try {
+    const user = await User.findOne({_id: req.userData.userId});
+    res.status(200).send(user.favourites);
+  } catch {
+    res.status(500).send("Please log in and try again!");
+  }
+  
+
+};
+
 exports.createAccount = createAccount;
 exports.loginHandler = loginHandler;
 exports.findUsername = findUsername;
@@ -273,3 +284,4 @@ exports.findPassword = findPassword;
 exports.getUserProfile = getUserProfile;
 exports.updateProfile = updateProfile;
 exports.updatePreference = updatePreference;
+exports.getFavourites = getFavourites;

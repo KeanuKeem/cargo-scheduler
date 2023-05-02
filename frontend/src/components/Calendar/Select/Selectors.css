@@ -1,31 +1,46 @@
-.selectors {
+.selectors,
+.selectors__open {
     width: 80%;
     height: 2rem;
     margin: 2rem auto 0 auto;
     position: relative;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr;
+    justify-content: center;
 }
 
-.selectors__open {
-    width: 80%;
-    height: 5rem;
-    margin: 2rem auto 0 auto;
+.selectors__center {
     position: relative;
 }
 
-.selectors__left {
+.selectors__center-position {
     position: absolute;
-    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.selectors__right {
+    position: relative;
+}
+
+.selectors__right-position {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    position: absolute;
+    right: 0;
 }
 
 .selectors__vessel {
-    position: absolute;
-    right: 0;
+    margin-left: 2rem;
 }
 
 .selectors__vessel__show {
     position: absolute;
     width: 95%;
-    top: 80%;
+    top: 200%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #FFF;
@@ -45,25 +60,10 @@
     width: 4rem;
 }
 
-.selectors__center {
-    position: absolute;
-    display: flex;
-    right: 30%;
-}
-
-.selectors__center-margin {
-    margin: 0 1rem;
-}
-
-.selectors__right {
-    position: absolute;
-    right: 20%;
-}
-
 .selectors__vessel__show form {
     width: 100%;
     display: flex;
-    margin: 0 auto;
+    justify-content: center;
 }
 
 .selectos__vessel__vessel {

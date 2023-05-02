@@ -33,7 +33,7 @@ const ModalOverlay = (props) => {
           shipmentSet={props.shipmentSet}
           contTypeState={props.contTypeState}
           contSet={props.contSet}
-          sendFrom="contType"
+          sendFrom="add"
           onClose={props.onClose}
           error={props.error}
         />
@@ -49,15 +49,27 @@ const contTypeReducer = (state, action) => {
       value: action.type,
       toShowMbl: true,
       toShowHbl: false,
+      toShowVoyage: true,
       toShowChecklist: false,
     };
   }
-  if (action.type === "FCL" || action.type === "LCL") {
+  if (action.type === "AIR") {
     return {
       type: action.type,
       value: action.type,
       toShowMbl: true,
       toShowHbl: true,
+      toShowVoyage: false,
+      toShowChecklist: true,
+    };
+  }
+  if (action.type !== "BKR") {
+    return {
+      type: action.type,
+      value: action.type,
+      toShowMbl: true,
+      toShowHbl: true,
+      toShowVoyage: true,
       toShowChecklist: true,
     };
   }
@@ -66,6 +78,7 @@ const contTypeReducer = (state, action) => {
     value: action.type,
     toShowMbl: false,
     toShowHbl: true,
+    toShowVoyage: true,
     toShowChecklist: true,
   };
 };
@@ -81,6 +94,7 @@ const ShipmentAddModal = (props) => {
     value: "",
     toShowMbl: false,
     toShowHbl: false,
+    toShowVoyage: false,
     toShowChecklist: false,
   });
 

@@ -93,6 +93,8 @@ const ProfileModal = (props) => {
           backSevenStart={props.backSevenStart}
           fontSevenEnd={props.fontSevenEnd}
           backSevenEnd={props.backSevenEnd}
+          fontComplete={props.fontComplete}
+          backComplete={props.backComplete}
           setFontBase={props.setFontBase}
           setBackBase={props.setBackBase}
           setFontOne={props.setFontOne}
@@ -111,6 +113,8 @@ const ProfileModal = (props) => {
           setBackSevenStart={props.setBackSevenStart}
           setFontSevenEnd={props.setFontSevenEnd}
           setBackSevenEnd={props.setBackSevenEnd}
+          setFontComplete={props.setFontComplete}
+          setBackComplete={props.setBackComplete}
           onClose={profileBackHandler}
         />
       )}
@@ -211,6 +215,8 @@ const Profile = (props) => {
   const [backSevenStart, setBackSevenStart] = useState("#000000");
   const [fontSevenEnd, setFontSevenEnd] = useState("#ffffff");
   const [backSevenEnd, setBackSevenEnd] = useState("#000000");
+  const [fontComplete, setFontComplete] = useState("#ffffff");
+  const [backComplete, setBackComplete] = useState("#000000");
   const [isError, setIsError] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
 
@@ -240,6 +246,8 @@ const Profile = (props) => {
       setBackSevenStart(response.data.backSevenStart);
       setFontSevenEnd(response.data.fontSevenEnd);
       setBackSevenEnd(response.data.backSevenEnd);
+      setFontComplete(response.data.fontComplete);
+      setBackComplete(response.data.backComplete);
     } catch (err) {
       setPopupMessage(err.response.data);
       setIsError(true);
@@ -275,6 +283,8 @@ const Profile = (props) => {
           backSevenStart={backSevenStart}
           fontSevenEnd={fontSevenEnd}
           backSevenEnd={backSevenEnd}
+          fontComplete={fontComplete}
+          backComplete={backComplete}
           setFontBase={setFontBase}
           setBackBase={setBackBase}
           setFontOne={setFontOne}
@@ -293,6 +303,8 @@ const Profile = (props) => {
           setBackSevenStart={setBackSevenStart}
           setFontSevenEnd={setFontSevenEnd}
           setBackSevenEnd={setBackSevenEnd}
+          setFontComplete={setFontComplete}
+          setBackComplete={setBackComplete}
           isError={isError}
           popupMessage={popupMessage}
           setOnProfile={props.setOnProfile}

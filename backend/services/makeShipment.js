@@ -1,4 +1,5 @@
 const Shipment = require("../models/Shipment");
+const User = require("../models/User");
 const monthChanger = require("../services/schedule-references");
 
 const checkEmptyForCreateShipment = (req) => {
@@ -53,87 +54,314 @@ const makeShipment = async (req) => {
     return checkEmpty.message;
   } else {
     try {
-      const shipment = new Shipment({
-        ref: req.body.ref,
-        cargoType: req.body.cargoType,
-        contType: req.body.contType,
-        schedule: req.body.schedule,
-        port: req.body.port,
-        vessel: req.body.vessel.toUpperCase(),
-        voyage: req.body.voyage.toUpperCase(),
-        container: req.body.container.toUpperCase(),
-        depot: req.body.depot,
-        notes: req.body.notes,
-        fakShipments: [],
-        day: {
-          date: Number(req.body.schedule.slice(8, 10)),
-          month: monthChanger(req.body.schedule.slice(5, 7)),
-          year: Number(req.body.schedule.slice(0, 4)),
-        },
-        mbl: {
-          number: req.body.mblNumber,
-          isSurr: false,
-          date: "",
-        },
-        hbl: {
-          number: req.body.hblNumber,
-          isSurr: false,
-          date: "",
-        },
-        stepOne: {
-          isHandle: req.body.stepOne,
-          isDone: false,
-          date: "",
-        },
-        stepTwo: {
-          isHandle: req.body.stepTwo,
-          isDone: false,
-          date: "",
-        },
-        stepThree: {
-          isHandle: req.body.stepThree,
-          isDone: false,
-          date: "",
-        },
-        stepFour: {
-          isHandle: req.body.stepFour,
-          isDone: false,
-          date: "",
-        },
-        stepFive: {
-          isHandle: req.body.stepFive,
-          isDone: false,
-          date: "",
-        },
-        stepSix: {
-          isHandle: req.body.stepSix,
-          isDone: false,
-          date: "",
-        },
-        stepSeven: {
-          isHandle: req.body.stepSeven,
-          isStart: false,
-          isEnd: false,
-          startDate: "",
-          endDate: "",
-        },
-        creator: req.userData.userId,
-      });
+      let shipment;
+      if (req.body.contType === "FAK") {
+        shipment = new Shipment({
+          ref: req.body.ref,
+          cargoType: req.body.cargoType,
+          contType: req.body.contType,
+          schedule: req.body.schedule,
+          port: req.body.port,
+          vessel: req.body.vessel.toUpperCase(),
+          voyage: req.body.voyage.toUpperCase(),
+          container: req.body.container.toUpperCase(),
+          depot: req.body.depot,
+          notes: req.body.notes,
+          fakShipments: [],
+          day: {
+            date: Number(req.body.schedule.slice(8, 10)),
+            month: monthChanger(req.body.schedule.slice(5, 7)),
+            year: Number(req.body.schedule.slice(0, 4)),
+          },
+          mbl: {
+            number: req.body.mblNumber,
+            isSurr: false,
+            date: "",
+          },
+          creator: req.userData.userId,
+        });
+      } else if (req.body.contType === "AIR") {
+        shipment = new Shipment({
+          ref: req.body.ref,
+          cargoType: req.body.cargoType,
+          contType: req.body.contType,
+          schedule: req.body.schedule,
+          port: req.body.port,
+          vessel: req.body.vessel.toUpperCase(),
+          depot: req.body.depot,
+          notes: req.body.notes,
+          day: {
+            date: Number(req.body.schedule.slice(8, 10)),
+            month: monthChanger(req.body.schedule.slice(5, 7)),
+            year: Number(req.body.schedule.slice(0, 4)),
+          },
+          mbl: {
+            number: req.body.mblNumber,
+            isSurr: false,
+            date: "",
+          },
+          hbl: {
+            number: req.body.hblNumber,
+            isSurr: false,
+            date: "",
+          },
+          stepOne: {
+            isHandle: req.body.stepOne,
+            isDone: false,
+            date: "",
+          },
+          stepTwo: {
+            isHandle: req.body.stepTwo,
+            isDone: false,
+            date: "",
+          },
+          stepThree: {
+            isHandle: req.body.stepThree,
+            isDone: false,
+            date: "",
+          },
+          stepFour: {
+            isHandle: req.body.stepFour,
+            isDone: false,
+            date: "",
+          },
+          stepFive: {
+            isHandle: req.body.stepFive,
+            isDone: false,
+            date: "",
+          },
+          stepSix: {
+            isHandle: req.body.stepSix,
+            isDone: false,
+            date: "",
+          },
+          stepSeven: {
+            isHandle: req.body.stepSeven,
+            isStart: false,
+            isEnd: false,
+            startDate: "",
+            endDate: "",
+          },
+          creator: req.userData.userId,
+        });
+      } else if (req.body.contType === "BKR") {
+        shipment = new Shipment({
+          ref: req.body.ref,
+          cargoType: req.body.cargoType,
+          contType: req.body.contType,
+          schedule: req.body.schedule,
+          port: req.body.port,
+          vessel: req.body.vessel.toUpperCase(),
+          voyage: req.body.voyage.toUpperCase(),
+          container: req.body.container.toUpperCase(),
+          depot: req.body.depot,
+          notes: req.body.notes,
+          day: {
+            date: Number(req.body.schedule.slice(8, 10)),
+            month: monthChanger(req.body.schedule.slice(5, 7)),
+            year: Number(req.body.schedule.slice(0, 4)),
+          },
+          hbl: {
+            number: req.body.hblNumber,
+            isSurr: false,
+            date: "",
+          },
+          stepOne: {
+            isHandle: req.body.stepOne,
+            isDone: false,
+            date: "",
+          },
+          stepTwo: {
+            isHandle: req.body.stepTwo,
+            isDone: false,
+            date: "",
+          },
+          stepThree: {
+            isHandle: req.body.stepThree,
+            isDone: false,
+            date: "",
+          },
+          stepFour: {
+            isHandle: req.body.stepFour,
+            isDone: false,
+            date: "",
+          },
+          stepFive: {
+            isHandle: req.body.stepFive,
+            isDone: false,
+            date: "",
+          },
+          stepSix: {
+            isHandle: req.body.stepSix,
+            isDone: false,
+            date: "",
+          },
+          stepSeven: {
+            isHandle: req.body.stepSeven,
+            isStart: false,
+            isEnd: false,
+            startDate: "",
+            endDate: "",
+          },
+          creator: req.userData.userId,
+        });
+      } else if (req.body.contType === "LCLFAK") {
+        shipment = new Shipment({
+          ref: req.body.ref,
+          cargoType: req.body.cargoType,
+          contType: req.body.contType,
+          schedule: req.body.schedule,
+          port: req.body.port,
+          vessel: req.body.vessel.toUpperCase(),
+          voyage: req.body.voyage.toUpperCase(),
+          container: req.body.container.toUpperCase(),
+          depot: req.body.depot,
+          notes: req.body.notes,
+          consoleId: req.body.consoleId,
+          day: {
+            date: Number(req.body.schedule.slice(8, 10)),
+            month: monthChanger(req.body.schedule.slice(5, 7)),
+            year: Number(req.body.schedule.slice(0, 4)),
+          },
+          mbl: {
+            number: req.body.mblNumber,
+            isSurr: false,
+            date: "",
+          },
+          hbl: {
+            number: req.body.hblNumber,
+            isSurr: false,
+            date: "",
+          },
+          stepOne: {
+            isHandle: req.body.stepOne,
+            isDone: false,
+            date: "",
+          },
+          stepTwo: {
+            isHandle: req.body.stepTwo,
+            isDone: false,
+            date: "",
+          },
+          stepThree: {
+            isHandle: req.body.stepThree,
+            isDone: false,
+            date: "",
+          },
+          stepFour: {
+            isHandle: req.body.stepFour,
+            isDone: false,
+            date: "",
+          },
+          stepFive: {
+            isHandle: req.body.stepFive,
+            isDone: false,
+            date: "",
+          },
+          stepSix: {
+            isHandle: req.body.stepSix,
+            isDone: false,
+            date: "",
+          },
+          stepSeven: {
+            isHandle: req.body.stepSeven,
+            isStart: false,
+            isEnd: false,
+            startDate: "",
+            endDate: "",
+          },
+          creator: req.userData.userId,
+        });
+      } else {
+        shipment = new Shipment({
+          ref: req.body.ref,
+          cargoType: req.body.cargoType,
+          contType: req.body.contType,
+          schedule: req.body.schedule,
+          port: req.body.port,
+          vessel: req.body.vessel.toUpperCase(),
+          voyage: req.body.voyage.toUpperCase(),
+          container: req.body.container.toUpperCase(),
+          depot: req.body.depot,
+          notes: req.body.notes,
+          day: {
+            date: Number(req.body.schedule.slice(8, 10)),
+            month: monthChanger(req.body.schedule.slice(5, 7)),
+            year: Number(req.body.schedule.slice(0, 4)),
+          },
+          mbl: {
+            number: req.body.mblNumber,
+            isSurr: false,
+            date: "",
+          },
+          hbl: {
+            number: req.body.hblNumber,
+            isSurr: false,
+            date: "",
+          },
+          stepOne: {
+            isHandle: req.body.stepOne,
+            isDone: false,
+            date: "",
+          },
+          stepTwo: {
+            isHandle: req.body.stepTwo,
+            isDone: false,
+            date: "",
+          },
+          stepThree: {
+            isHandle: req.body.stepThree,
+            isDone: false,
+            date: "",
+          },
+          stepFour: {
+            isHandle: req.body.stepFour,
+            isDone: false,
+            date: "",
+          },
+          stepFive: {
+            isHandle: req.body.stepFive,
+            isDone: false,
+            date: "",
+          },
+          stepSix: {
+            isHandle: req.body.stepSix,
+            isDone: false,
+            date: "",
+          },
+          stepSeven: {
+            isHandle: req.body.stepSeven,
+            isStart: false,
+            isEnd: false,
+            startDate: "",
+            endDate: "",
+          },
+          creator: req.userData.userId,
+        });
+      }
 
       await shipment.save();
 
       if (req.body.contType === "LCLFAK") {
         const masterShipment = await Shipment.findOne({
-          ref: req.query.id,
+          ref: req.body.consoleId,
           creator: req.userData.userId,
         });
-        masterShipment.fakShipments.push({ref: req.body.ref});
+        const user = await User.findOne({
+          _id: req.userData.userId,
+        });
+        masterShipment.fakShipments.push({
+          ref: req.body.ref,
+          font: user.preferences.fontBase,
+          back: user.preferences.backBase,
+        });
 
         await masterShipment.save();
       }
-      
+
       return "successful";
     } catch (err) {
+      console.log(err);
       return "Save unsuccesful, please try again!";
     }
   }

@@ -1,7 +1,6 @@
 import { useState, useContext, useRef, useEffect } from "react";
 
 import { makeEditShipment } from "../Reference/AddShipment";
-import { getMonth } from "../Reference/Calendar";
 import SelectContext from "../../store/select-context";
 import TypeSelector from "../Calendar/Select/TypeSelector";
 
@@ -152,7 +151,7 @@ const ShipmentEdit = (props) => {
     );
 
     await axios
-      .patch("http://localhost:5000/api/shipment/edit", shipment, {
+      .patch("https://cargo-scheduler.onrender.com/api/shipment/edit", shipment, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
       .then((result) => {

@@ -80,7 +80,7 @@ const ShipmentFAK = (props) => {
     props.showBackBtn();
 
     const response = await axios.get(
-      `http://localhost:5000/api/shipment/?id=${event.target.id}`,
+      `https://cargo-scheduler.onrender.com/api/shipment/?id=${event.target.id}`,
       { headers: { Authorization: "Bearer " + ctx.token } }
     );
     setShipmentData(response.data);
@@ -114,7 +114,7 @@ const ShipmentFAK = (props) => {
     };
 
     await axios
-      .post("http://localhost:5000/api/shipment/inFak", shipment, {
+      .post("https://cargo-scheduler.onrender.com/api/shipment/inFak", shipment, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
       .then(() => {
@@ -128,7 +128,7 @@ const ShipmentFAK = (props) => {
 
   const deleteFakShipmentHandler = async () => {
     await axios
-      .delete(`http://localhost:5000/api/shipment/fak?id=${props.data.ref}`, {
+      .delete(`https://cargo-scheduler.onrender.com/api/shipment/fak?id=${props.data.ref}`, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
       .catch((err) => {
@@ -190,6 +190,9 @@ const ShipmentFAK = (props) => {
         error={errorMessage}
         shipmentType={props.data.cargoType}
         contTypeState={{ value: props.data.contType }}
+        onClose={() => {
+          setIsAdd(false);
+        }}
         sendFrom="FAK"
       />
     );

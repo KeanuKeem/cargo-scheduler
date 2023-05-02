@@ -26,7 +26,7 @@ const Sidebar = (props) => {
   useEffect(() => {
     const fetchFav = async () => {
       try {
-        const favRes = await axios.get("http://localhost:5000/api/user/fav", {
+        const favRes = await axios.get("https://cargo-scheduler.onrender.com/api/user/fav", {
           headers: { Authorization: "Bearer " + ctx.token },
         });
         setFav(favRes.data);

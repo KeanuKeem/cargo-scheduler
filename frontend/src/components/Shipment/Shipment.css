@@ -28,11 +28,13 @@
 .shipment__favourite {
    color: #000;
    font-size: .9rem;
+   cursor: pointer;
 }
 
 .shipment__no-favourite {
     color: #c9c9c9;
     font-size: .9rem;
+    cursor: pointer;
 }
 
 .shipment__top-menu-list h1:first-child {
@@ -45,6 +47,36 @@
 
 .shipment__top-menu-list li span p {
     margin-right: .5rem;
+}
+
+.shipment__mbl,
+.shipment__hbl {
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+    position: relative;
+}
+
+.shipment__mbl__show,
+.shipment__hbl__show {
+    width: 200%;
+    height: 10vh;
+    background-color: #FFF;
+    border: 1px solid;
+    border-radius: .5rem;
+    position: absolute;
+    top: 100%;
+    left: -50%;
+    z-index: 15;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.242);
+}
+
+.shipment__mbl__show > *,
+.shipment__hbl__show > * {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .shipment__top-menu-list__btn {
@@ -203,4 +235,80 @@
     right: 8%;
     top: 50%;
     transform: translateY(-50%);
+}
+
+@media screen and (max-width: 1200px) {
+    .shipment__top-menu-list__btn {
+        position: absolute;
+        top: 0;
+        right: 2%;
+        border: 1px solid #B8B5FF;
+        background-color: #B8B5FF;
+        border-radius: 1rem;
+        padding: .2rem 1rem;
+        cursor: pointer;
+    }
+    .shipment__right__box {
+        width: 95%;
+        margin: 0 auto;
+        height: 27rem;
+        background-color: rgb(223, 223, 223);
+        border-radius: 2%;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.242);
+    }
+    .shipment__left__notes {
+        border: 1px solid #000;
+        width: 90%;
+        height: 12rem;
+        border-radius: 2%;
+        margin: 1rem 0 0 1.5rem;
+        position: relative;
+        left: -5%;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .shipment__id {
+        font-size: 1.2rem;
+        margin-left: -2.5rem;
+    }
+    .shipment__top-menu-list {   
+        border-bottom: 1px solid gray;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+    .shipment__top-menu-list h1:first-child {
+        margin-right: 0;
+    }
+    .shipment__top-menu-list li {
+        margin: 0 .5rem;
+    }
+    .shipment__top-menu-list__btn {
+        position: absolute;
+        top: 270%;
+        right: 5%;
+        border: 1px solid #B8B5FF;
+        background-color: #B8B5FF;
+        border-radius: 1rem;
+        padding: .2rem 1rem;
+        cursor: pointer;
+    }
+    .shipment__left__items {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .shipment__left__items p {
+        padding: 0;
+    }
+    .shipment__bottom button:last-child{
+        position: absolute;
+        right: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 }

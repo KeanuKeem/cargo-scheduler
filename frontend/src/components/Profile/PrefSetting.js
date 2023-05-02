@@ -53,7 +53,7 @@ const PrefSetting = (props) => {
       backComplete: props.backComplete
     };
     await axios
-      .patch("http://localhost:5000/api/user/edit/pref", prefData, {
+      .patch("https://cargo-scheduler.onrender.com/api/user/edit/pref", prefData, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
       .then((result) => {

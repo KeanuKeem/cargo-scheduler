@@ -63,3 +63,16 @@
     overflow: auto;
     height: inherit;
 }
+
+@media screen and (max-width: 1000px) {
+    .modal__top-bar {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%);
+        z-index: 101;
+        height: 2.5vh;
+        background-color: #240fac;
+    }
+}

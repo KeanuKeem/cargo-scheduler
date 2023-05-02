@@ -216,7 +216,7 @@ const Profile = (props) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/user", {
+      const response = await axios.get("https://cargo-scheduler.onrender.com/api/user", {
         headers: { Authorization: "Bearer " + ctx.token },
       });
       setFirstname(response.data.firstname);

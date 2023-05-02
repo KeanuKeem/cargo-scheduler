@@ -114,7 +114,7 @@ const ShipmentAddModal = (props) => {
     const shipment = makeShipment(event, shipmentType, contTypeState.value);
 
     await axios
-      .post("http://localhost:5000/api/shipment/", shipment, {
+      .post("https://cargo-scheduler.onrender.com/api/shipment/", shipment, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
       .then((result) => {

@@ -101,3 +101,32 @@
     background-color: #EDEEF7;
     cursor: pointer;
 }
+
+@media screen and (max-width: 1200px) {
+    .navbar__logo {
+        color: #FFF;
+        width: 20%;
+        font-size: 1.3rem;
+        margin: auto 0;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .navbar__logo {
+        color: #FFF;
+        width: 20%;
+        font-size: 1.15rem;
+        margin: auto 0;
+        text-align: center;
+    }
+    .navbar__menu {
+        margin: auto 0 auto 3rem;
+    }
+    .navbar__search {
+        position: absolute;
+        top: 50%;
+        right: 8%;
+        transform: translate(-50%, -50%);
+    }
+}

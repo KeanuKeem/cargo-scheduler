@@ -88,3 +88,22 @@
         opacity: 1
     }
 }
+
+@media screen and (max-width: 1200px) {
+    .selectors,
+    .selectors__open {
+        width: 80%;
+        height: 2rem;
+        margin: 2rem auto 0 auto;
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 2fr 2fr;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .selectors {
+        visibility: hidden;
+    }
+}

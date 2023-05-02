@@ -18,8 +18,6 @@ import { getMonthInt } from "../../Reference/Calendar";
 import "./Calendar.css";
 
 const dayArray = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-const prev = "<";
-const next = ">";
 
 // -----Calendar-Components----- //
 const Calendar = (props) => {

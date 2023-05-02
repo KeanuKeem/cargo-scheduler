@@ -65,7 +65,7 @@ const Navbar = (props) => {
 
     await axios
       .get(
-        `http://localhost:5000/api/shipment/search?id=${event.target.search.value}`,
+        `https://cargo-scheduler.onrender.com/api/shipment/search?id=${event.target.search.value}`,
         { headers: { Authorization: "Bearer " + ctx.token } }
       )
       .then((result) => {

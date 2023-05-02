@@ -15,3 +15,12 @@
 .edit__li:first-child {
     margin-top: 3rem;
 }
+
+@media screen and (max-width: 1200px) {
+    .edit__li {
+        display: grid;
+        grid-template-columns: 6fr 1fr;
+        gap: 1rem;
+        width: 80%;
+    }
+}

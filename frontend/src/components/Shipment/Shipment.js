@@ -266,6 +266,8 @@ const Shipment = (props) => {
   const [isSaved, setIsSaved] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [isFavourite, setIsFavourite] = useState(props.filteredData.favourite);
+  const [showMblSurr, setShowMblSurr] = useState(false);
+  const [showHblSurr, setShowHblSurr] = useState(false);
 
   const [checklistState, dispatchChecklistState] = useReducer(
     checklistReducer,
@@ -301,7 +303,7 @@ const Shipment = (props) => {
     if (props.filteredData.contType === "LCLFAK") {
       await axios
         .delete(
-          `http://localhost:5000/api/shipment?mId=${props.mId}&id=${props.filteredData.ref}`,
+          `https://cargo-scheduler.onrender.com/api/shipment?mId=${props.mId}&id=${props.filteredData.ref}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         )
         .catch((err) => {
@@ -313,7 +315,7 @@ const Shipment = (props) => {
     } else {
       await axios
         .delete(
-          `http://localhost:5000/api/shipment?mId=&id=${props.filteredData.ref}`,
+          `https://cargo-scheduler.onrender.com/api/shipment?mId=&id=${props.filteredData.ref}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         )
         .then(() => {
@@ -431,7 +433,7 @@ const Shipment = (props) => {
 
     try {
       await axios
-        .patch("http://localhost:5000/api/shipment/checklist", shipment, {
+        .patch("https://cargo-scheduler.onrender.com/api/shipment/checklist", shipment, {
           headers: { Authorization: "Bearer " + ctx.token },
         })
         .then((result) => {
@@ -549,25 +551,59 @@ const Shipment = (props) => {
               {props.filteredData.contType !== "BKR" &&
                 props.filteredData.mbl.number !== "" && (
                   <li>
-                    <span>
-                      <p>MBL Surrendered: </p>
-                      <input
-                        type="checkbox"
-                        onChange={checklistMblHandler}
-                        defaultChecked={checklistState.isMblSurr}
-                      />
-                    </span>
+                    <div className="shipment__mbl">
+                      <span>
+                        <p
+                          onMouseEnter={() => {
+                            setShowMblSurr(true);
+                          }}
+                          onMouseLeave={() => {
+                            setShowMblSurr(false);
+                          }}
+                        >
+                          MBL Surrendered:{" "}
+                        </p>
+                        <input
+                          type="checkbox"
+                          onChange={checklistMblHandler}
+                          defaultChecked={checklistState.isMblSurr}
+                        />
+                      </span>
+                      {props.filteredData.mbl.isSurr && showMblSurr && (
+                        <div className="shipment__mbl__show">
+                          <p>
+                            MBL Surrendered on: {props.filteredData.hbl.date}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </li>
                 )}
               <li>
-                <span>
-                  <p>HBL Surrendered: </p>
-                  <input
-                    type="checkbox"
-                    onChange={checklistHblHandler}
-                    defaultChecked={checklistState.isHblSurr}
-                  />
-                </span>
+                <div className="shipment__hbl">
+                  <span>
+                    <p
+                      onMouseEnter={() => {
+                        setShowHblSurr(true);
+                      }}
+                      onMouseLeave={() => {
+                        setShowHblSurr(false);
+                      }}
+                    >
+                      HBL Surrendered:{" "}
+                    </p>
+                    <input
+                      type="checkbox"
+                      onChange={checklistHblHandler}
+                      defaultChecked={checklistState.isHblSurr}
+                    />
+                  </span>
+                  {props.filteredData.hbl.isSurr && showHblSurr && (
+                    <div className="shipment__hbl__show">
+                      <p>HBL Surrendered on: {props.filteredData.hbl.date}</p>
+                    </div>
+                  )}
+                </div>
               </li>
               {saveBtnShow && (
                 <li>

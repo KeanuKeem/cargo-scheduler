@@ -11,7 +11,7 @@ const {
   findPasswordEmailHandler,
 } = require("../services/findPasswordEmailHandler");
 const { findPasswordStageTwo } = require("../services/findPasswordStageTwo");
-const { getProfileHandler } = require("../services/getProfilehandler");
+const { getProfileHandler } = require("../services/getProfileHandler");
 const { checkPassword } = require("../services/checkPassword");
 const { updateProfileHandler } = require("../services/updateProfileHandler");
 const { updatePreferenceHandler } = require("../services/updatePreferenceHandler");

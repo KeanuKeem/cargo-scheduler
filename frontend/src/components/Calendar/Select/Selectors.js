@@ -78,7 +78,11 @@ const Selectors = (props) => {
       )}
       <div className={!isVessel ? "selectors" : "selectors__open"}>
         <div className="selectors__left">
-          <TypeSelector onChange={props.onSort} type="get" />
+          <TypeSelector
+            className="selectors__left__drop"
+            onChange={props.onSort}
+            type="get"
+          />
         </div>
         <div className="selectors__center">
           <div className="selectors__center-position">
@@ -101,7 +105,11 @@ const Selectors = (props) => {
         {isVessel && (
           <div className="selectors__vessel__show">
             <form onSubmit={updateScheduleHandler}>
-              <TypeSelector type="get" onChange={setType} />
+              <TypeSelector
+                className="selectors__vessel__drop"
+                type="get"
+                onChange={setType}
+              />
               <input
                 className="selectos__vessel__vessel"
                 type="text"

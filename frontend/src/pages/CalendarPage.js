@@ -14,6 +14,9 @@ import Selectors from "../components/Calendar/Select/Selectors";
 import ShipmentModal from "../components/Shipment/ShipmentModal";
 import ShipmentAddModal from "../components/Shipment/ShipmentAddModal";
 import Sidebar from "../components/Sidebar/Sidebar";
+import Loading from "./Loading";
+
+// Context
 import SelectContext from "../store/select-context";
 
 // Refence Functions
@@ -25,6 +28,7 @@ import {
 
 // CSS
 import "./CalendarPage.css";
+
 
 const modalReducer = (state, action) => {
   if (action.type === "ADD") {
@@ -51,15 +55,17 @@ const CalendarPage = () => {
   const [dataEdited, setDataEdited] = useState(false);
   const [shipmentAdded, setShipmentAdded] = useState(false);
   const [sortBy, setSortBy] = useState("All");
-  const [isShipmentClicked, setIsShipmentClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(
           `http://localhost:5000/api/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
+        setIsLoading(false);
         setFilteredData(response.data);
       } catch (err) {}
     };
@@ -67,7 +73,7 @@ const CalendarPage = () => {
     setDataAdded(false);
     setDataEdited(false);
     setShipmentAdded(false);
-  }, [ctx.month, ctx.year, dataAdded, dataEdited, shipmentAdded, sortBy]);
+  }, [ctx.month, ctx.year, dataAdded, dataEdited, shipmentAdded, sortBy, ctx.token]);
 
   const [modalState, dispatchModal] = useReducer(modalReducer, {
     value: "",
@@ -103,7 +109,6 @@ const CalendarPage = () => {
       val: "shipment",
       id: event.target.id,
     });
-    setIsShipmentClicked(true);
   };
 
   const searchShipmentOpenHandler = () => {
@@ -112,12 +117,10 @@ const CalendarPage = () => {
       val: "shipment",
       id: "0+" + ctx.searchValue,
     });
-    setIsShipmentClicked(true);
   };
 
   const modalCloseHandler = () => {
     dispatchModal({ type: "CLOSE" });
-    setIsShipmentClicked(false);
     ctx.setIsSearch(false);
     ctx.setSearchValue();
   };
@@ -132,6 +135,7 @@ const CalendarPage = () => {
 
   return (
     <Fragment>
+      {isLoading && <Loading />}
       <Sidebar dataEdited={dataEdited} setDataEdited={setDataEdited} />
       {modalState.show && modalState.value === "shipment" && (
         <ShipmentModal

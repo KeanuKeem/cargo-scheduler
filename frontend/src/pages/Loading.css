@@ -1,0 +1,37 @@
+.loading {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.32);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+}
+
+
+.loading p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #FFF;
+    display: flex;
+    flex-direction: row;
+}
+
+.loading__selected {
+    animation: loadingJump .3s linear;
+}
+
+@keyframes loadingJump {
+    0% {
+        transform: translate(0, -50%);
+    }
+    50% {
+        transform: translate(0, -80%);
+    }
+    100% {
+        transform: translate(0, -50%);
+    }
+}

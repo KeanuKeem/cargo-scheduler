@@ -27,12 +27,6 @@ const ProfileModal = (props) => {
   const [isPrefHover, setIsPrefHover] = useState(false);
   const [isLogoutHover, setIsLogoutHover] = useState(false);
 
-  const profileCloseHandler = () => {
-    props.setOnProfile(false);
-    setIsUser(false);
-    setIsPref(false);
-  };
-
   const profileBackHandler = () => {
     setIsUser(false);
     setIsPref(false);
@@ -47,13 +41,13 @@ const ProfileModal = (props) => {
   }, [isUser, isPref]);
 
   return (
-    <div className="profile">
+    <div className={props.profileClass}>
       {props.isError && <ErrorPopup text={props.popupMessage} />}
       <div className="profile__top-bar">
         <div className="profile__top-bar__item">
           <FontAwesomeIcon
             className="profile__top-bar__exit"
-            onClick={profileCloseHandler}
+            onClick={props.profileClickHandler}
             icon={faCircleXmark}
           />
           {isUser ? (
@@ -120,7 +114,7 @@ const ProfileModal = (props) => {
       )}
       {isUser && (
         <UserSetting
-          onClose={profileCloseHandler}
+          onClose={props.profileClickHandler}
           isUser={isUser}
           firstname={props.firstname}
           lastname={props.lastname}
@@ -307,8 +301,10 @@ const Profile = (props) => {
           setBackComplete={setBackComplete}
           isError={isError}
           popupMessage={popupMessage}
+          profileClickHandler={props.profileClickHandler}
           setOnProfile={props.setOnProfile}
           onLogOut={props.onLogOut}
+          profileClass={props.profileClass}
         />,
         document.getElementById("overlay-root")
       )}

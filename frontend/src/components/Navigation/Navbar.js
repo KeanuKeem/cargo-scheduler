@@ -15,10 +15,6 @@ import Profile from "./Profile";
 // CSS
 import "./Navbar.css";
 
-const SearchBackdrop = (props) => {
-  return <div onClick={props.onClick} className="navbar__backdrop"></div>;
-};
-
 // -----Navbar-Components----- //
 const Navbar = (props) => {
   const ctx = useContext(SelectContext);
@@ -28,17 +24,26 @@ const Navbar = (props) => {
   const [searchMessage, setSearchMessage] = useState("");
   const [isPopup, setIsPopup] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
+  const [profileClass, setProfileClass] = useState("profile");
 
   const searchRef = useRef();
-
-  const profileOpenHandler = () => {
-    setOnProfile(true);
-  };
 
   const selectSearchHandler = (event) => {
     ctx.setSearchValue(event.target.id);
     ctx.setIsSearch(true);
     setIsSearch(false);
+  };
+
+  const profileClickHandler = () => {
+    if (onProfile) {
+      setProfileClass("hideProfile");
+      setTimeout(() => {
+        setOnProfile(false);
+      }, 500);
+    } else {
+      setOnProfile(true);
+      setProfileClass("profile");
+    }
   };
 
   useEffect(() => {
@@ -128,7 +133,7 @@ const Navbar = (props) => {
             </div>
           </form>
         </div>
-        <div className="navbar__profile" onClick={profileOpenHandler}>
+        <div className="navbar__profile" onClick={profileClickHandler}>
           <FontAwesomeIcon
             icon={faUser}
             size="lg"
@@ -138,7 +143,8 @@ const Navbar = (props) => {
         {onProfile && (
           <Profile
             onLogOut={props.onLogOut}
-            setOnProfile={setOnProfile}
+            profileClickHandler={profileClickHandler}
+            profileClass={profileClass}
           />
         )}
       </div>

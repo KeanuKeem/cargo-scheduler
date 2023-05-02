@@ -24,13 +24,18 @@
     color: #FFF;
 }
 
-.calendar__table__prev-btn {
+.calendar__table__prev-btn,
+.calendar__table__next-btn {
     position: absolute;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.calendar__table__prev-btn {
     left: 5%;
 }
 
 .calendar__table__next-btn {
-    position: absolute;
     right: 5%;
 }
 

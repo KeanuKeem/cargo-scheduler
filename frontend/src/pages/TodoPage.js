@@ -10,6 +10,7 @@ import TypeSelector from "../components/Calendar/Select/TypeSelector";
 import SelectBtn from "../components/Calendar/Select/SelectBtn";
 import ShipmentAddModal from "../components/Shipment/ShipmentAddModal";
 import ShipmentModal from "../components/Shipment/ShipmentModal";
+import Loading from "./Loading";
 
 import { getMonth } from "../components/Reference/Calendar";
 import toDoHandler from "../components/Reference/toDoHandler";
@@ -43,6 +44,7 @@ const TodoPage = (props) => {
   const [dataEdited, setDataEdited] = useState(false);
   const [shipmentAdded, setShipmentAdded] = useState(false);
   const [sortBy, setSortBy] = useState("All");
+  const [isLoading, setIsLoading] = useState(false);
   const [day, setDay] = useState(
     !dayp
       ? String(ctx.today).length > 1
@@ -109,10 +111,12 @@ const TodoPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(
           `http://localhost:5000/api/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
+        setIsLoading(false);
         setFilteredData(response.data);
       } catch (err) {}
     };
@@ -139,6 +143,7 @@ const TodoPage = (props) => {
 
   return (
     <>
+      {isLoading && <Loading />}
       {modalState.show && modalState.value === "shipment" && (
         <ShipmentModal
           modalValue={modalState}

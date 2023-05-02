@@ -9,6 +9,10 @@
     justify-content: center;
 }
 
+.selectors__left__drop {
+    top: 90%;
+}
+
 .selectors__center {
     position: relative;
 }
@@ -64,6 +68,10 @@
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+.selectors__vessel__drop {
+    top: 75%;
 }
 
 .selectos__vessel__vessel {

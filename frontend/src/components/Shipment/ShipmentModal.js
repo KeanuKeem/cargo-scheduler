@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 
 import Shipment from "./Shipment";
 import ShipmentFAK from "./ShipmentFAK";
+import Loading from "../../pages/Loading";
 
 import SelectContext from "../../store/select-context";
 
@@ -39,6 +40,7 @@ const ModalOverlay = (props) => {
   if (props.filteredData.contType === "FAK") {
     return (
       <div className="modal">
+        {props.isLoading && <Loading />}
         <div className="modal__top-bar">
           {showBackBtn && (
             <FontAwesomeIcon
@@ -73,6 +75,7 @@ const ModalOverlay = (props) => {
 
   return (
     <div className="modal">
+      {props.isLoading && <Loading />}
       <div className="modal__top-bar">
         <FontAwesomeIcon
           className="modal__top-bar__exit"
@@ -96,15 +99,18 @@ const ModalOverlay = (props) => {
 const ShipmentModal = (props) => {
   const ctx = useContext(SelectContext);
   const [filteredData, setFilteredData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const id = props.modalValue.id.split("+")[1];
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(
         `http://localhost:5000/api/shipment/?id=${id}`,
         { headers: { Authorization: "Bearer " + ctx.token } }
       );
+      setIsLoading(false);
       setFilteredData(response.data);
     } catch (err) {
       console.log(err);
@@ -126,6 +132,7 @@ const ShipmentModal = (props) => {
           onClose={props.onClose}
           onDataEdit={props.onDataEdit}
           onShipmentAdd={props.onShipmentAdd}
+          isLoading={isLoading}
         />,
         document.getElementById("overlay-root")
       )}

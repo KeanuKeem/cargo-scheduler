@@ -303,7 +303,7 @@ const Shipment = (props) => {
     if (props.filteredData.contType === "LCLFAK") {
       await axios
         .delete(
-          `https://cargo-scheduler.onrender.com/api/shipment?mId=${props.mId}&id=${props.filteredData.ref}`,
+          process.env.REACT_APP_BACKEND_URL + `/shipment?mId=${props.mId}&id=${props.filteredData.ref}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         )
         .catch((err) => {
@@ -315,7 +315,7 @@ const Shipment = (props) => {
     } else {
       await axios
         .delete(
-          `https://cargo-scheduler.onrender.com/api/shipment?mId=&id=${props.filteredData.ref}`,
+          process.env.REACT_APP_BACKEND_URL + `/shipment?mId=&id=${props.filteredData.ref}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         )
         .then(() => {
@@ -433,7 +433,7 @@ const Shipment = (props) => {
 
     try {
       await axios
-        .patch("https://cargo-scheduler.onrender.com/api/shipment/checklist", shipment, {
+        .patch(process.env.REACT_APP_BACKEND_URL + "/shipment/checklist", shipment, {
           headers: { Authorization: "Bearer " + ctx.token },
         })
         .then((result) => {

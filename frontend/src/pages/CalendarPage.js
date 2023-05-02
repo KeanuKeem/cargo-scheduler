@@ -62,7 +62,7 @@ const CalendarPage = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://cargo-scheduler.onrender.com/api/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`,
+          process.env.REACT_APP_BACKEND_URL+`/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
         setIsLoading(false);

@@ -31,7 +31,7 @@ const UserSetting = (props) => {
         password: event.target.password.value,
       };
       const response = await axios.patch(
-        "https://cargo-scheduler.onrender.com/api/user/edit/profile",
+        process.env.REACT_APP_BACKEND_URL + "/user/edit/profile",
         userData,
         { headers: { Authorization: "Bearer " + ctx.token } }
       );

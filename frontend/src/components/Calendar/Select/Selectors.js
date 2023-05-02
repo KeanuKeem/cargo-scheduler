@@ -51,7 +51,7 @@ const Selectors = (props) => {
     };
 
     await axios
-      .patch("https://cargo-scheduler.onrender.com/api/shipment/vessel", detail, {
+      .patch(process.env.REACT_APP_BACKEND_URL + "/shipment/vessel", detail, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
       .then((result) => {

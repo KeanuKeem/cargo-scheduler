@@ -113,7 +113,7 @@ const TodoPage = (props) => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://cargo-scheduler.onrender.com/api/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}`,
+          process.env.REACT_APP_BACKEND_URL + `/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
         setIsLoading(false);

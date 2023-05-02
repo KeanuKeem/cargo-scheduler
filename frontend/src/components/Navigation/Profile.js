@@ -216,9 +216,12 @@ const Profile = (props) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("https://cargo-scheduler.onrender.com/api/user", {
-        headers: { Authorization: "Bearer " + ctx.token },
-      });
+      const response = await axios.get(
+        process.env.REACT_APP_BACKEND_URL + "/user",
+        {
+          headers: { Authorization: "Bearer " + ctx.token },
+        }
+      );
       setFirstname(response.data.firstname);
       setLastname(response.data.lastname);
       setOrganisation(response.data.organisation);

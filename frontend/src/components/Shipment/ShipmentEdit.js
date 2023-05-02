@@ -151,7 +151,7 @@ const ShipmentEdit = (props) => {
     );
 
     await axios
-      .patch("https://cargo-scheduler.onrender.com/api/shipment/edit", shipment, {
+      .patch(process.env.REACT_APP_BACKEND_URL + "/shipment/edit", shipment, {
         headers: { Authorization: "Bearer " + ctx.token },
       })
       .then((result) => {

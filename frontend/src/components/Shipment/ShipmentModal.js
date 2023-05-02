@@ -107,7 +107,7 @@ const ShipmentModal = (props) => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `https://cargo-scheduler.onrender.com/api/shipment/?id=${id}`,
+        process.env.REACT_APP_BACKEND_URL + `/shipment/?id=${id}`,
         { headers: { Authorization: "Bearer " + ctx.token } }
       );
       setIsLoading(false);

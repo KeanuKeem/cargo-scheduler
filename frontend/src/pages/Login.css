@@ -127,6 +127,10 @@
 }
 
 @media (max-width: 500px) {
+    .logging {
+        width: 80%;
+        top: 15%;
+    }
     .login {
         height: 55vh;
     }

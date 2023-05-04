@@ -33,12 +33,9 @@
     top: 15%;
 }
 
-.show {
-    animation: spin .3s linear;
-}
-
+.show,
 .hide {
-    animation: spin-back .3s linear;
+    animation: spin .3s linear;
 }
 
 .selectMonth__dropdown,
@@ -55,20 +52,18 @@
 }
 
 .selectMonth__dropdown {
-    visibility: hidden;
+    display: none;
 }
 
 .selectMonth__dropdown__hide {
     animation: hideDropdown .4s linear;
-    animation-fill-mode: forwards;
 }
 
 .selectMonth__dropdown__show {
     padding: .2rem;
     margin-left: 3px;
     margin-top: 3px;
-    animation: showDropdown 0.4s linear;
-    visibility: visible;
+    animation: showDropdown .4s linear;
     box-shadow: 3px 3px rgba(0, 0, 0, 0.259);
 }
 
@@ -86,15 +81,6 @@
 }
 
 @keyframes spin {
-    0% {
-        transform: rotateX(180deg);
-    }
-    100% {
-        transform: rotateX(0deg);
-    }
-}
-
-@keyframes spin-back {
     0% {
         transform: rotateX(180deg);
     }

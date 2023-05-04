@@ -16,27 +16,38 @@ const MonthSelector = (props) => {
   const ctx = useContext(SelectContext);
 
   const [selectedMonth, setSelectedMonth] = useState(ctx.thisMonth);
-  const [initialMonth, setInitialMonth] = useState(true);
-  const [showDropdownMonth, setShowDropdownMonth] = useState(false);
   const [animationEnd, setAnimationEnd] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [selectMonthClass, setSelectMonthClass] = useState("selectMonth");
+  const [arrowClass, setArrowClass] = useState("selectMonth__arrow");
+  const [dropdownClass, setDropdownClass] = useState("selectMonth__dropdown");
 
   const showDropdownMonthHandler = () => {
-    setShowDropdownMonth(!showDropdownMonth);
-    setInitialMonth(false);
+    setSelectMonthClass("selectMonth-click");
+    setArrowClass("selectMonth__arrow show");
+    setDropdownClass("selectMonth__dropdown__show");
     setAnimationEnd(!animationEnd);
   };
 
   const selectMonthHandler = (event) => {
     setSelectedMonth(event.target.id);
     ctx.setMonth(event.target.id);
-    setShowDropdownMonth(!showDropdownMonth);
+    setSelectMonthClass("selectMonth");
+    setArrowClass("selectMonth__arrow hide");
+    setDropdownClass("selectMonth__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("selectMonth__dropdown");
+    }, 400);
     setAnimationEnd(false);
   };
 
   const blurHandler = () => {
-    setInitialMonth(false);
-    setShowDropdownMonth(false);
+    setSelectMonthClass("selectMonth");
+    setArrowClass("selectMonth__arrow hide");
+    setDropdownClass("selectMonth__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("selectMonth__dropdown");
+    }, 400);
     setAnimationEnd(false);
   };
 
@@ -51,7 +62,7 @@ const MonthSelector = (props) => {
   return (
     <div className={props.className}>
       <div
-        className={!showDropdownMonth ? "selectMonth" : "selectMonth-click"}
+        className={selectMonthClass}
         onClick={showDropdownMonthHandler}
         tabIndex={clicked ? -1 : 0}
         {...(clicked ? {} : { onBlur: blurHandler })}
@@ -59,26 +70,16 @@ const MonthSelector = (props) => {
       >
         <h2 className="selectMonth__header">{selectedMonth}</h2>
         <FontAwesomeIcon
-          className={
-            !showDropdownMonth && initialMonth
-              ? "selectMonth__arrow"
-              : showDropdownMonth && !initialMonth
-              ? "selectMonth__arrow show"
-              : "selectMonth__arrow hide"
+          className={arrowClass}
+          icon={
+            arrowClass === "selectMonth__arrow show" ? faCaretUp : faCaretDown
           }
-          icon={showDropdownMonth ? faCaretUp : faCaretDown}
           size="lg"
           style={{ color: "#000000" }}
         />
       </div>
       <ul
-        className={
-          !showDropdownMonth && initialMonth
-            ? "selectMonth__dropdown"
-            : !showDropdownMonth && !initialMonth
-            ? "selectMonth__dropdown__hide"
-            : "selectMonth__dropdown__show"
-        }
+        className={dropdownClass}
         onMouseEnter={() => {
           setClicked(true);
         }}

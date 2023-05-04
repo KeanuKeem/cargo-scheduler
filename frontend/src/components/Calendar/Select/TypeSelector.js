@@ -7,56 +7,65 @@ import "./TypeSelector.css";
 
 // -----TypeSelector-Components----- //
 const TypeSelector = (props) => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [initial, setInitial] = useState(true);
   const [selectedItem, setSelectedItem] = useState(props.defaultText);
   const [clicked, setClicked] = useState(false);
+  const [selectClass, setSelectClass] = useState("select");
+  const [arrowClass, setArrowClass] = useState("select__arrow");
+  const [dropdownClass, setDropdownClass] = useState("select__dropdown");
+  const [animationEnd, setAnimationEnd] = useState(false);
 
   const showDropdownHandler = () => {
-    setShowDropdown(!showDropdown);
-    setInitial(false);
+    setSelectClass("select-click");
+    setArrowClass("select__arrow show");
+    setDropdownClass("select__dropdown__show");
+    setAnimationEnd(false);
   };
 
   const selectItemHandler = (event) => {
     setSelectedItem(event.target.id);
-    setShowDropdown(!showDropdown);
     props.onChange(event.target.id);
+    setSelectClass("select");
+    setArrowClass("select__arrow hide");
+    setDropdownClass("select__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("select__dropdown");
+    }, 400);
+    setAnimationEnd(false);
   };
 
   const blurHandler = () => {
-    setShowDropdown(false);
-    setInitial(false);
+    setSelectClass("select");
+    setArrowClass("select__arrow hide");
+    setDropdownClass("select__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("select__dropdown");
+    }, 400);
+  };
+
+  const animationStateHandler = () => {
+    setAnimationEnd(true);
   };
 
   if (props.type === "get") {
     return (
       <div>
         <div
-          className={!showDropdown ? "select" : "select-click"}
+          className={selectClass}
           onClick={showDropdownHandler}
           tabIndex={clicked ? -1 : 0}
           {...(clicked ? {} : { onBlur: blurHandler })}
+          onAnimationEnd={animationStateHandler}
         >
           <h2 className="select__header">{selectedItem}</h2>
           <FontAwesomeIcon
-            className={
-              !showDropdown && initial
-                ? "select__arrow"
-                : showDropdown && !initial
-                ? "select__arrow show"
-                : "select__arrow hide"
-            }
-            icon={showDropdown ? faCaretUp : faCaretDown}
+            className={arrowClass}
+            icon={arrowClass === "select__arrow show" ? faCaretUp : faCaretDown}
             size="lg"
             style={{ color: "#000000" }}
           />
         </div>
         <ul
-          className={
-            !showDropdown
-              ? "select__dropdown__hide " + props.className
-              : "select__dropdown__show " + props.className
-          }
+          className={dropdownClass + " " + props.className}
           onMouseEnter={() => {
             setClicked(true);
           }}
@@ -182,31 +191,22 @@ const TypeSelector = (props) => {
     return (
       <div>
         <div
-          className={!showDropdown ? "select" : "select-click"}
+          className={selectClass}
           onClick={showDropdownHandler}
           tabIndex={clicked ? -1 : 0}
           {...(clicked ? {} : { onBlur: blurHandler })}
+          animationEnd={animationStateHandler}
         >
           <h2 className="select__header">{selectedItem}</h2>
           <FontAwesomeIcon
-            className={
-              !showDropdown && initial
-                ? "select__arrow"
-                : showDropdown && !initial
-                ? "select__arrow show"
-                : "select__arrow hide"
-            }
-            icon={showDropdown ? faCaretUp : faCaretDown}
+            className={arrowClass}
+            icon={arrowClass === "select__arrow show" ? faCaretUp : faCaretDown}
             size="lg"
             style={{ color: "#000000" }}
           />
         </div>
         <ul
-          className={
-            !showDropdown
-              ? "select__dropdown__hide " + props.className
-              : "select__dropdown__show " + props.className
-          }
+          className={dropdownClass + " " + props.className}
           onMouseEnter={() => {
             setClicked(true);
           }}

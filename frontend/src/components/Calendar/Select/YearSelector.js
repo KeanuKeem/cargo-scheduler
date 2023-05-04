@@ -19,26 +19,45 @@ const YearSelector = () => {
   const ctx = useContext(SelectContext);
 
   const [selectedYear, setSelectedYear] = useState(ctx.thisYear);
-  const [showDropdownYear, setShowDropdownYear] = useState(false);
-  const [initialYear, setInitialYear] = useState(true);
   const [clicked, setClicked] = useState(false);
+  const [animationEnd, setAnimationEnd] = useState(false);
+  const [selectYearClass, setSelectYearClass] = useState("selectYear");
+  const [arrowClass, setArrowClass] = useState("selectYear__arrow");
+  const [dropdownClass, setDropdownClass] = useState("selectYear__dropdown");
 
   const yearArray = getSelectYearArray(ctx.thisYear);
 
   const showDropdownYearHandler = () => {
-    setInitialYear(false);
-    setShowDropdownYear(!showDropdownYear);
+    setSelectYearClass("selectYear-click");
+    setArrowClass("selectYear__arrow show");
+    setDropdownClass("selectYear__dropdown__show");
+    setAnimationEnd(false);
   };
 
   const selectYearHandler = (event) => {
     setSelectedYear(event.target.value);
     ctx.setYear(event.target.value);
-    setShowDropdownYear(!showDropdownYear);
+    setSelectYearClass("selectYear");
+    setArrowClass("selectYear__arrow hide");
+    setDropdownClass("selectYear__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("selectYear__dropdown");
+    }, 400);
+    setAnimationEnd(false);
   };
 
   const blurHandler = (event) => {
-    setShowDropdownYear(false);
-    setInitialYear(false);
+    setSelectYearClass("selectYear");
+    setArrowClass("selectYear__arrow hide");
+    setDropdownClass("selectYear__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("selectYear__dropdown");
+    }, 400);
+    setAnimationEnd(false);
+  };
+
+  const animationStateHandler = () => {
+    setAnimationEnd(true);
   };
 
   useEffect(() => {
@@ -48,31 +67,24 @@ const YearSelector = () => {
   return (
     <>
       <div
-        className={!showDropdownYear ? "selectYear" : "selectYear-click"}
+        className={selectYearClass}
         onClick={showDropdownYearHandler}
         tabIndex={clicked ? -1 : 0}
         {...(clicked ? {} : { onBlur: blurHandler })}
+        onAnimationEnd={animationStateHandler}
       >
         <h2 className="selectYear__header">{selectedYear}</h2>
         <FontAwesomeIcon
-          className={
-            !showDropdownYear && initialYear
-              ? "selectYear__arrow"
-              : showDropdownYear && !initialYear
-              ? "selectYear__arrow show"
-              : "selectYear__arrow hide"
+          className={arrowClass}
+          icon={
+            arrowClass === "selectYear__arrow show" ? faCaretUp : faCaretDown
           }
-          icon={showDropdownYear ? faCaretUp : faCaretDown}
           size="lg"
           style={{ color: "#000000" }}
         />
       </div>
       <ul
-        className={
-          !showDropdownYear
-            ? "selectYear__dropdown__hide"
-            : "selectYear__dropdown__show"
-        }
+        className={dropdownClass}
         onMouseEnter={() => {
           setClicked(true);
         }}

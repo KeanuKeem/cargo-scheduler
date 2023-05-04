@@ -19,7 +19,7 @@
 }
 
 .todo__dropdown {
-    top: 7.5%;
+    top: 3.8rem;
 }
 
 .todo__input {
@@ -77,6 +77,10 @@
     border-top: 1px solid;
 }
 
+.todo__contents__sm__items hr {
+    border-bottom: 1px solid;
+}
+
 .todo__contents__items p {
     padding: .3rem 0;
     font-size: .9rem;
@@ -128,7 +132,7 @@
         visibility: visible;
     }
     .todo__typeDropdown {
-        top: 105%;
+        top: 3.8rem;
         z-index: 10;
     }
     .todo__contents {
@@ -146,7 +150,6 @@
         transform: translateX(-50%);
     }
     .todo__contents__sm__items > :last-child {
-        width: 70%;
         border-radius: .4rem;
         margin: .5rem auto;
         padding: .1rem 0;

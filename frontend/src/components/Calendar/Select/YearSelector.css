@@ -33,12 +33,13 @@
     top: 15%;
 }
 
-.show {
-    animation: spin .3s linear;
+.show,
+.hide {
+    animation: spin .4s linear;
 }
 
-.hide {
-    animation: spin-back .3s linear;
+.selectYear__dropdown {
+    display: none;
 }
 
 .selectYear__dropdown__hide,
@@ -50,20 +51,19 @@
     width: 5rem;
     z-index: 10;
     padding: .2rem;
-    top: 110%;
+    top: 100%;
+    right: 0;
 }
 
 .selectYear__dropdown__hide {
-    animation: hideDropdown .3s linear;
-    visibility: hidden;
+    animation: hideDropdown .4s linear;
 }
 
 .selectYear__dropdown__show {
     right: 0;
     margin-left: 3px;
     margin-top: 3px;
-    animation: showDropdown .1s linear;
-    visibility: visible;
+    animation: showDropdown .4s linear;
     box-shadow: 3px 3px rgba(0, 0, 0, 0.259);
 }
 
@@ -81,15 +81,6 @@
 }
 
 @keyframes spin {
-    0% {
-        transform: rotateX(180deg);
-    }
-    100% {
-        transform: rotateX(0deg);
-    }
-}
-
-@keyframes spin-back {
     0% {
         transform: rotateX(180deg);
     }

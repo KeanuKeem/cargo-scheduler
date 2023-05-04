@@ -11,11 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-<<<<<<< HEAD
-  res.setHeader("Access-Control-Allow-Origin", "https://cargo-scheduler.onrender.com");
-=======
-  res.setHeader("Access-Control-Allow-Origin", "*");
->>>>>>> 6b8ddaa (Access-Control back to action for testing)
+  res.setHeader("Access-Control-Allow-Origin", process.env.DOMAIN_NAME);
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"

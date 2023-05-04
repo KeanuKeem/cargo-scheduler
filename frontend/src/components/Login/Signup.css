@@ -52,6 +52,12 @@
     margin-top: 1rem;
 }
 
-
+@media (max-width: 1000px) and (max-height: 500px) {
+    .signup__form__btn {
+        width: 70%;
+        margin-top: 1rem;
+        padding-bottom: 1rem;
+    }
+}
 
 

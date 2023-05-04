@@ -5,12 +5,18 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faMagnifyingGlass,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 
 import SelectContext from "../../store/select-context";
 
 import ShipmentPopup from "../Shipment/ShipmentPopup";
 import Profile from "./Profile";
+import Menubar from "../Sidebar/Menubar";
+import Sidebar from "../Sidebar/Sidebar";
 
 // CSS
 import "./Navbar.css";
@@ -25,6 +31,7 @@ const Navbar = (props) => {
   const [isPopup, setIsPopup] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const [profileClass, setProfileClass] = useState("profile");
+  const [onMenubar, setOnMenubar] = useState(false);
 
   const searchRef = useRef();
 
@@ -65,7 +72,8 @@ const Navbar = (props) => {
 
     await axios
       .get(
-        process.env.REACT_APP_BACKEND_URL + `/shipment/search?id=${event.target.search.value}`,
+        process.env.REACT_APP_BACKEND_URL +
+          `/shipment/search?id=${event.target.search.value}`,
         { headers: { Authorization: "Bearer " + ctx.token } }
       )
       .then((result) => {
@@ -133,6 +141,19 @@ const Navbar = (props) => {
             </div>
           </form>
         </div>
+        <div className="navbar__menubar">
+          <FontAwesomeIcon
+            onClick={() => {
+              if (onMenubar) {
+                setOnMenubar(false);
+              } else {
+                setOnMenubar(true);
+              }
+            }}
+            icon={faBars}
+            style={{ color: "#7868E6" }}
+          />
+        </div>
         <div className="navbar__profile" onClick={profileClickHandler}>
           <FontAwesomeIcon
             icon={faUser}
@@ -140,6 +161,11 @@ const Navbar = (props) => {
             style={{ color: "#7868E6" }}
           />
         </div>
+        {onMenubar && (
+          <Menubar
+            setOnMenubar={setOnMenubar}
+          />
+        )}
         {onProfile && (
           <Profile
             onLogOut={props.onLogOut}

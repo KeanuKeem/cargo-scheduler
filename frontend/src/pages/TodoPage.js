@@ -62,6 +62,8 @@ const TodoPage = (props) => {
   const [strMonth, setStrMonth] = useState(ctx.month);
   const [year, setYear] = useState(ctx.year);
   const [isShipmentClicked, setIsShipmentClicked] = useState(false);
+  const [showType, setShowType] = useState("BKR");
+  const [typeArray, setTypeArray] = useState([]);
 
   const dateRef = useRef();
 
@@ -113,7 +115,8 @@ const TodoPage = (props) => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}`,
+          process.env.REACT_APP_BACKEND_URL +
+            `/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
         setIsLoading(false);
@@ -131,6 +134,20 @@ const TodoPage = (props) => {
       searchShipmentOpenHandler();
     }
   }, [ctx.searchValue]);
+
+  useEffect(() => {
+    if (showType === "BKR") {
+      setTypeArray(brokerageArray);
+    } else if (showType === "FCL") {
+      setTypeArray(fclArray);
+    } else if (showType === "FAK") {
+      setTypeArray(fakArray);
+    } else if (showType === "LCL") {
+      setTypeArray(lclArray);
+    } else {
+      setTypeArray(airArray);
+    }
+  }, [showType]);
 
   const brokerageArray = toDoHandler.generateBrokerArray(
     filteredData,
@@ -165,6 +182,7 @@ const TodoPage = (props) => {
         <div className="todo__top">
           <TypeSelector
             type="get"
+            defaultText={sortBy}
             onChange={setSortBy}
             className="todo__dropdown"
           />
@@ -178,9 +196,36 @@ const TodoPage = (props) => {
               }
             />
           </div>
-          <SelectBtn onClick={modalAddOpenHandler}>ADD</SelectBtn>
+          <div className="todo__type">
+            <SelectBtn onClick={modalAddOpenHandler}>ADD</SelectBtn>
+            <TypeSelector
+              type="getType"
+              defaultText={showType}
+              onChange={setShowType}
+              className="todo__typeDropdown"
+            />
+          </div>
+          
         </div>
         <div className="todo__contents">
+          <div className="todo__contents__sm__items">
+            <h2>{showType === "BKR"? "Brokerage" : showType}</h2>
+            <hr />
+            {typeArray.map((shipment) => {
+              return (
+                <p
+                  key={shipment.id}
+                  style={{
+                    backgroundColor: shipment.back,
+                    color: shipment.font,
+                  }}
+                  onClick={modalShipmentOpenHandler}
+                >
+                  {"(" + shipment.contType + ") " + shipment.id}
+                </p>
+              );
+            })}
+          </div>
           <div className="todo__contents__items">
             <h2>Brokerage</h2>
             <hr />

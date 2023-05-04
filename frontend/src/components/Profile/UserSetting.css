@@ -55,3 +55,49 @@
     color: #FFF;
     cursor: pointer;
 }
+
+@media (max-width: 1000px) {
+    .user__setting__items {
+        width: 100%;
+    }
+    .user__setting__item {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        font-size: 1rem;
+        align-items: center;
+    }
+}
+
+@media (max-width: 1000px) and (max-height: 500px) {
+    .user__setting__heading h3 {
+        margin-top: 1rem;
+        font-size: .9rem;
+    }
+    .user__setting__item {
+        gap: .5rem;
+        margin: 2rem;
+        font-size: .8rem;
+    }
+    .user__setting__bottom__btn {
+        margin-top: 2rem;
+        padding: .3rem .6rem;
+        width: 10rem;
+        font-size: .8rem;
+    }
+}
+
+@media (max-width: 750px) {
+    .user__setting__heading h3 {
+        font-size: 1rem;
+    }
+    .user__setting__item {
+        gap: .5rem;
+        margin: 2rem;
+        font-size: .85rem;
+    }
+    .user__setting__bottom__btn {
+        width: 8rem;
+        font-size: .8rem;
+    }
+}

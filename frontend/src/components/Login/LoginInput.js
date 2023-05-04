@@ -72,7 +72,7 @@ const LoginInput = (props) => {
           onBlur={blurHandler}
         />
         <p
-          className={passwordClass}
+          className={passwordClass + props.className}
           onClick={passwordShowHandler}
         >
           {showText}

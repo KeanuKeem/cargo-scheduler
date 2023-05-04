@@ -41,6 +41,7 @@ const ShipmentFAK = (props) => {
   const [isSave, setIsSave] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+  const [showMblSurr, setShowMblSurr] = useState(false);
 
   const [checklistState, dispatchChecklistState] = useReducer(
     checklistReducer,
@@ -128,9 +129,13 @@ const ShipmentFAK = (props) => {
 
   const deleteFakShipmentHandler = async () => {
     await axios
-      .delete(process.env.REACT_APP_BACKEND_URL + `/shipment/fak?id=${props.data.ref}`, {
-        headers: { Authorization: "Bearer " + ctx.token },
-      })
+      .delete(
+        process.env.REACT_APP_BACKEND_URL +
+          `/shipment/fak?id=${props.data.ref}`,
+        {
+          headers: { Authorization: "Bearer " + ctx.token },
+        }
+      )
       .catch((err) => {
         console.log(err);
       });
@@ -234,7 +239,7 @@ const ShipmentFAK = (props) => {
         <div className="shipment__top-menu">
           <ul className="shipment__top-menu-list">
             <li>
-              <h1>{props.data.ref}</h1>
+              <h1 className="shipment__id">{props.data.ref}</h1>
             </li>
             <li>
               <p>
@@ -273,14 +278,30 @@ const ShipmentFAK = (props) => {
               )}`}</p>
             </li>
             <li>
-              <span>
-                <p>MBL Surrendered: </p>
-                <input
-                  type="checkbox"
-                  onChange={mblSurrHandler}
-                  defaultChecked={checklistState.isMblSurr}
-                />
-              </span>
+              <div className="shipment__mbl">
+                <span>
+                  <p
+                    onMouseEnter={() => {
+                      setShowMblSurr(true);
+                    }}
+                    onMouseLeave={() => {
+                      setShowMblSurr(false);
+                    }}
+                  >
+                    MBL Surrendered:{" "}
+                  </p>
+                  <input
+                    type="checkbox"
+                    onChange={mblSurrHandler}
+                    defaultChecked={checklistState.isMblSurr}
+                  />
+                </span>
+                {props.data.mbl.isSurr && showMblSurr && (
+                  <div className="shipment__mbl__show">
+                    <p>MBL Surrendered on: {props.data.mbl.date}</p>
+                  </div>
+                )}
+              </div>
             </li>
             {isSave && (
               <li>
@@ -295,6 +316,23 @@ const ShipmentFAK = (props) => {
           </ul>
           <div className="shipment__detail">
             <div className="shipment__left">
+              <div className="shipment__left__sm__items">
+                <p
+                  onMouseEnter={() => {
+                    setShowMblSurr(true);
+                  }}
+                  onMouseLeave={() => {
+                    setShowMblSurr(false);
+                  }}
+                >
+                  MBL Surrendered:{" "}
+                </p>
+                <input
+                  type="checkbox"
+                  onChange={mblSurrHandler}
+                  defaultChecked={checklistState.isMblSurr}
+                />
+              </div>
               <div className="shipment__left__items">
                 <p>Place of Discharge: </p>
                 <p>{props.data.port}</p>

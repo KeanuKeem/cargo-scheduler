@@ -31,7 +31,7 @@
     border-top-right-radius: .5rem;
     border-bottom-right-radius: .5rem;
     width: 2rem;
-    padding: .5rem;
+    padding: .47rem;
     position: absolute;
     background-color: #EDEEF7;
     cursor: pointer;
@@ -44,8 +44,8 @@
 }
 
 .passwordShow-pushed {
-    top: 3px;
-    right: -3px;
+    top: 3.85px;
+    right: -2.5px;
 }
 
 .loginInput:focus {
@@ -79,5 +79,26 @@
     100% {
         top: 3px;
         right: -3px;
+    }
+}
+
+@media (max-width: 1000px) and (min-height: 1000px) {
+    .passwordShow-pushed {
+        top: 3px;
+        right: -2.5px;
+    }
+}
+
+@media (max-width: 1000px) and (max-height: 500px) {
+    .passwordShow-pushed {
+        top: 2.85px;
+        right: -2.7px;
+    }
+}
+
+@media (max-width: 750px) {
+    .passwordShow-pushed {
+        top: 3px;
+        right: -2.95px;
     }
 }

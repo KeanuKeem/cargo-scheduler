@@ -6,6 +6,7 @@
     position: absolute;
     top: 8vh;
     left: 20%;
+    overflow-y: hidden;
 }
 
 .todo__top {
@@ -39,6 +40,10 @@
     box-shadow: none;
 }
 
+.todo__type > :last-child {
+    visibility: hidden;
+}
+
 .todo__contents {
     width: 80%;
     height: 70vh;
@@ -47,9 +52,11 @@
     flex-direction: row;
     gap: 1rem;
     justify-content: center;
+    overflow: auto;
 }
 
-.todo__contents__items {
+.todo__contents__items,
+.todo__contents__sm__items {
     width: 25%;
     display: flex;
     flex-direction: column;
@@ -57,9 +64,15 @@
     border-radius: .5rem;
     box-shadow: 3px 3px rgba(0, 0, 0, 0.275);
     text-align: center;
+    overflow-y: hidden;
 }
 
-.todo__contents__items hr {
+.todo__contents__sm__items {
+    display: none;
+}
+
+.todo__contents__items hr,
+.todo__contents__sm__items hr {
     margin-bottom: 1rem;
     border-top: 1px solid;
 }
@@ -80,5 +93,65 @@
     }
     100% {
         transform: translate(3px, 3px);
+    }
+}
+
+@media (max-width: 1000px) and (max-height: 500px) {
+    .todo__type > :first-child {
+        display: none;
+    }
+    .todo__items
+    .todo__contents__items h2 {
+        font-size: .9rem;
+    }
+    .todo__contents__items p {
+        font-size: .8rem;
+    }
+}
+
+@media (max-width: 750px) {
+    .todo {
+        width: 100%;
+        left: 0;
+    }
+    .todo__top {
+        width: 90%;
+        gap: .5rem;
+    }
+    .todo__input input {
+        width: 8rem;
+    }
+    .todo__type > :first-child {
+        display: none;
+    }
+    .todo__type > :last-child {
+        visibility: visible;
+    }
+    .todo__typeDropdown {
+        top: 105%;
+        z-index: 10;
+    }
+    .todo__contents {
+        width: 80%;
+        height: 70vh;
+        margin: 0 auto;
+        position: relative;
+    }
+    .todo__contents__sm__items {
+        display: block;
+        width: 80%;
+        height: 69vh;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .todo__contents__sm__items > :last-child {
+        width: 70%;
+        border-radius: .4rem;
+        margin: .5rem auto;
+        padding: .1rem 0;
+    }
+    .todo__contents__items {
+        visibility: hidden;
     }
 }

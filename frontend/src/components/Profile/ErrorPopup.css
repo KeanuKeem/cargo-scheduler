@@ -44,3 +44,9 @@
     background-color: #bac0fd;
     cursor: pointer;
 }
+
+@media (max-width: 750px) {
+    .profile__error-popup__btn button {
+        font-size: .8rem;
+    }
+}

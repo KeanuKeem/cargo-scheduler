@@ -50,3 +50,11 @@
     width: 70%;
 }
 
+@media (max-width: 1000px) and (max-height: 500px) {
+    .findUser__form__btn {
+        position: static;
+        transform: translateX(0);
+        margin-top: 1rem;
+        padding-bottom: 1rem;
+    }
+}

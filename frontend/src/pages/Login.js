@@ -8,10 +8,9 @@ import LoginInput from "../components/Login/LoginInput";
 import LoginBtn from "../components/Login/LoginBtn";
 import FindUsername from "../components/Login/FindUsername";
 import FindPassword from "../components/Login/FindPassword";
+import Logging from "../components/Login/Logging";
 
 import "./Login.css";
-
-
 
 const minimiseReducer = (state, action) => {
   if (action.type === "SIGNUP_MIN") {
@@ -40,21 +39,21 @@ const minimiseReducer = (state, action) => {
       signup: state.value,
       username: action.value,
       password: state.value,
-    }
+    };
   }
   if (action.type === "PASS_MIN") {
     return {
       signup: state.value,
       username: state.value,
       password: action.value,
-    }
+    };
   }
   if (action.type === "PASS_CLOSE") {
     return {
       signup: state.value,
       username: state.value,
       password: action.value,
-    }
+    };
   }
 };
 
@@ -122,14 +121,14 @@ const Login = (props) => {
       value: false,
     });
     setIsPassword(false);
-  }
+  };
 
   const minimisePassHandler = () => {
     dispatchIsMinimised({
       type: "PASS_MIN",
       value: true,
     });
-  }
+  };
 
   return (
     <>
@@ -189,6 +188,11 @@ const Login = (props) => {
           isSignUp || isUsername || isPassword ? "back-opened" : "back"
         }
       >
+        {props.isLoggingIn && (
+          <div className="logging">
+            <Logging text="Logging in.." />
+          </div>
+        )}
         <div className="login">
           <div className="header">
             <h1>Cargo Scheduler</h1>
@@ -206,6 +210,7 @@ const Login = (props) => {
             <div className="login__form__input">
               <LoginInput type="text" id="username" placeholder="Username" />
               <LoginInput
+                className="login__form__password"
                 type="password"
                 id="password"
                 placeholder="Password"

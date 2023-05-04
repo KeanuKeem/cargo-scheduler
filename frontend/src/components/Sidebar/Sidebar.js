@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
   faAnglesDown,
-  faAnglesUp,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 import SelectContext from "../../store/select-context";
@@ -22,13 +22,17 @@ const Sidebar = (props) => {
   const [showFav, setShowFav] = useState(false);
   const [favClass, setFavClass] = useState("sidebar__list__header__arrow");
   const [itemClass, setItemClass] = useState("sidebar__list__items");
+  const [sidebarClass, setSidebarClass] = useState("sidebar-show");
 
   useEffect(() => {
     const fetchFav = async () => {
       try {
-        const favRes = await axios.get(process.env.REACT_APP_BACKEND_URL + "/user/fav", {
-          headers: { Authorization: "Bearer " + ctx.token },
-        });
+        const favRes = await axios.get(
+          process.env.REACT_APP_BACKEND_URL + "/user/fav",
+          {
+            headers: { Authorization: "Bearer " + ctx.token },
+          }
+        );
         setFav(favRes.data);
       } catch {}
     };
@@ -51,8 +55,21 @@ const Sidebar = (props) => {
     }
   };
 
+  const sidebarCloseHandler = () => {
+    setSidebarClass("sidebar-show__closing");
+    setTimeout(() => {
+      setSidebarClass("sidebar-show");
+      ctx.setIsSidebar(false);
+    }, 400);
+  };
+
   return (
-    <div className="sidebar">
+    <div className={ctx.isSidebar ? sidebarClass : "sidebar"}>
+      <div className={ctx.isSidebar ? "sidebar-show__top" : "sidebar-hide__top"}>
+        {ctx.isSidebar && (
+          <FontAwesomeIcon onClick={sidebarCloseHandler} icon={faCircleXmark} />
+        )}
+      </div>
       <div className="sidebar__list">
         <div className="sidebar__list__header" onClick={favClickHandler}>
           <FontAwesomeIcon style={{ color: "#000000" }} icon={faStar} />
@@ -81,6 +98,8 @@ const Sidebar = (props) => {
                   onClick={(event) => {
                     ctx.setSearchValue(event.target.id);
                     ctx.setIsSearch(true);
+                    setSidebarClass("sidebar-show");
+                    ctx.setIsSidebar(false);
                   }}
                 >
                   {shipment.ref}

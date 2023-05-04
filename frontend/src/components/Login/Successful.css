@@ -44,3 +44,30 @@
     width: 50%;
     margin: 0 auto;
 }
+
+@media (max-width: 1000px) and (max-height: 500px) {
+    .successful {
+        height: 45vh;
+        width: 50%;
+    }
+    .successful__body {
+        width: 90%;
+        margin: 13vh auto 4vh auto;
+    }
+    .successful__btn {
+        width: 50%;
+        margin: 2rem auto 0 auto;
+    }
+}
+
+@media (max-width: 750px) {
+    .successful {
+        height: 30vh;
+        width: 80%;
+    }
+    .successful__body {
+        width: 90%;
+        margin: 10vh auto 4vh auto;
+    }
+}
+

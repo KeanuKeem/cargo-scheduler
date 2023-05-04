@@ -62,13 +62,36 @@
     left: 60%;
 }
 
-
-
 @keyframes show {
     0% {
         opacity: 0;
     }
     100% {
         opacity: 1;
+    }
+}
+
+@media (max-width: 1000px) and (max-height: 500px) {
+    .popup {
+        width: 60%;
+        height: 30vh;
+    }
+    .popup__text {
+        font-size: .9rem;
+    }
+    .popup__btn,
+    .popup__btn-one,
+    .popup__btn-two {
+        font-size: .75rem;
+    }
+}
+
+@media (max-width: 750px) {
+    .popup {
+        width: 90%;
+        height: 20vh;
+    }
+    .popup__text {
+        font-size: .9rem;
     }
 }

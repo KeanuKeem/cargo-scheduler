@@ -1,12 +1,11 @@
 // React
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
 
 // Components
-import CalendarPage from "./pages/CalendarPage";
-import NavbarRoot from "./pages/NavbarRoot";
 import Login from "./pages/Login";
+import Loading from "./pages/Loading";
 
 // Context
 import SelectContext from "./store/select-context";
@@ -16,7 +15,10 @@ import { getMonth } from "./components/Reference/Calendar";
 
 // CSS
 import "./App.css";
-import TodoPage from "./pages/TodoPage";
+
+const CalendarPage = lazy(() => import("./pages/CalendarPage"));
+const TodoPage = lazy(() => import("./pages/TodoPage"));
+const NavbarRoot = lazy(() => import("./pages/NavbarRoot"));
 
 const date = new Date();
 const dateMonth = date.getMonth();
@@ -36,6 +38,8 @@ function App() {
   const [userId, setUserId] = useState();
   const [isSearch, setIsSearch] = useState(false);
   const [searchValue, setSearchValue] = useState();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isSidebar, setIsSidebar] = useState(false);
   const [isLogIn, setIsLogIn] = useState(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
     if (
@@ -65,11 +69,12 @@ function App() {
     };
 
     try {
+      setIsLoggingIn(true);
       const result = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/user/login",
         userDetail
       );
-
+      setIsLoggingIn(false);
       if (result.status === 200) {
         setToken(result.data.token);
         const tokenExpirationDate = new Date(
@@ -89,7 +94,13 @@ function App() {
         return true;
       }
     } catch (err) {
-      setLoginError(err.response.data);
+      if (err.response.status === 404) {
+        setLoginError("Service is currently unavailable!");
+      } else if (err.response.status === "CORS error") {
+        setLoginError("Your access point is not valid!");
+      } else {
+        setLoginError(err.response.data);
+      }
     }
     return false;
   };
@@ -112,6 +123,11 @@ function App() {
     }
   }, [token, tokenExpirationDate]);
 
+  useEffect(() => {
+    setIsLoggingIn(false);
+  
+  }, [loginError]);
+
   return (
     <SelectContext.Provider
       value={{
@@ -126,6 +142,8 @@ function App() {
         loginError,
         isSearch,
         searchValue,
+        isSidebar,
+        setIsSidebar,
         setIsSearch,
         setSearchValue,
         onMonthChange: monthSelectHandler,
@@ -134,49 +152,65 @@ function App() {
         setYear: setYear,
       }}
     >
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login onLogIn={loginHandler} />} />
-          <Route
-            path="/calendar"
-            element={
-              isLogIn ? (
-                <>
-                  <NavbarRoot onLogOut={logoutHandler} />
-                  <CalendarPage />
-                </>
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
-          <Route
-            path="/todo"
-            element={
-              isLogIn ? (
-                <>
-                  <NavbarRoot onLogOut={logoutHandler} />
-                  <TodoPage />
-                </>
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
-          <Route
-            path="/todo/:dayp/:monthp/:yearp"
-            element={
-              isLogIn ? (
-                <>
-                  <NavbarRoot onLogOut={logoutHandler} />
-                  <TodoPage />
-                </>
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
-        </Routes>
+      <BrowserRouter basename="/">
+        <Suspense
+          fallback={
+            <div>
+              <Loading />
+            </div>
+          }
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Login isLoggingIn={isLoggingIn} onLogIn={loginHandler} />
+              }
+            />
+
+            <Route
+              path="/calendar"
+              element={
+                isLogIn ? (
+                  <>
+                    <NavbarRoot onLogOut={logoutHandler} />
+                    <CalendarPage />
+                  </>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+
+            <Route
+              path="/todo"
+              element={
+                isLogIn ? (
+                  <>
+                    <NavbarRoot onLogOut={logoutHandler} />
+                    <TodoPage />
+                  </>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+
+            <Route
+              path="/todo/:dayp/:monthp/:yearp"
+              element={
+                isLogIn ? (
+                  <>
+                    <NavbarRoot onLogOut={logoutHandler} />
+                    <TodoPage />
+                  </>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </SelectContext.Provider>
   );

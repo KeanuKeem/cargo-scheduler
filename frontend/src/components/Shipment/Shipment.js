@@ -303,7 +303,8 @@ const Shipment = (props) => {
     if (props.filteredData.contType === "LCLFAK") {
       await axios
         .delete(
-          process.env.REACT_APP_BACKEND_URL + `/shipment?mId=${props.mId}&id=${props.filteredData.ref}`,
+          process.env.REACT_APP_BACKEND_URL +
+            `/shipment?mId=${props.mId}&id=${props.filteredData.ref}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         )
         .catch((err) => {
@@ -315,7 +316,8 @@ const Shipment = (props) => {
     } else {
       await axios
         .delete(
-          process.env.REACT_APP_BACKEND_URL + `/shipment?mId=&id=${props.filteredData.ref}`,
+          process.env.REACT_APP_BACKEND_URL +
+            `/shipment?mId=&id=${props.filteredData.ref}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         )
         .then(() => {
@@ -433,9 +435,13 @@ const Shipment = (props) => {
 
     try {
       await axios
-        .patch(process.env.REACT_APP_BACKEND_URL + "/shipment/checklist", shipment, {
-          headers: { Authorization: "Bearer " + ctx.token },
-        })
+        .patch(
+          process.env.REACT_APP_BACKEND_URL + "/shipment/checklist",
+          shipment,
+          {
+            headers: { Authorization: "Bearer " + ctx.token },
+          }
+        )
         .then((result) => {
           setSaveBtnShow(false);
           setIsSaved(true);
@@ -572,7 +578,7 @@ const Shipment = (props) => {
                       {props.filteredData.mbl.isSurr && showMblSurr && (
                         <div className="shipment__mbl__show">
                           <p>
-                            MBL Surrendered on: {props.filteredData.hbl.date}
+                            MBL Surrendered on: {props.filteredData.mbl.date}
                           </p>
                         </div>
                       )}
@@ -618,6 +624,40 @@ const Shipment = (props) => {
             </ul>
             <div className="shipment__detail">
               <div className="shipment__left">
+                <div className="shipment__left__sm__items">
+                  <p
+                    onMouseEnter={() => {
+                      setShowMblSurr(true);
+                    }}
+                    onMouseLeave={() => {
+                      setShowMblSurr(false);
+                    }}
+                  >
+                    MBL Surrendered:
+                  </p>
+                  <input
+                    type="checkbox"
+                    onChange={checklistMblHandler}
+                    defaultChecked={checklistState.isMblSurr}
+                  />
+                </div>
+                <div className="shipment__left__sm__items">
+                  <p
+                    onMouseEnter={() => {
+                      setShowHblSurr(true);
+                    }}
+                    onMouseLeave={() => {
+                      setShowHblSurr(false);
+                    }}
+                  >
+                    HBL Surrendered:
+                  </p>
+                  <input
+                    type="checkbox"
+                    onChange={checklistHblHandler}
+                    defaultChecked={checklistState.isHblSurr}
+                  />
+                </div>
                 <div className="shipment__left__items">
                   <p>Place of Discharge: </p>
                   <p>{props.filteredData.port}</p>

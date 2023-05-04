@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-const regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
 const usernameValidator = async (username) => {
   const user = await User.findOne({username});

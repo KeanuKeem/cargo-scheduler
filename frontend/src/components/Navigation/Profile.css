@@ -8,6 +8,7 @@
     right: 0;
     z-index: 12;
     border: 1px solid;
+    overflow: auto;
 }
 
 .profile {
@@ -113,5 +114,49 @@
     }
     100% {
         transform: translateX(100%);
+    }
+}
+
+@media (max-width: 1000px) {
+    .profile,
+    .hideProfile {
+        width: 50%;
+    }
+    .profile__items {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 1000px) and (max-height: 500px) {
+    .profile__top h3 {
+        font-size: 1rem;
+    }
+    .profile__item {
+        font-size: .9rem;
+        padding: 1.2rem;
+    }
+    .profile__top-bar__exit,
+    .profile__top-bar__back {
+        font-size: .7rem;
+    }
+}
+
+@media (max-width: 750px) {
+    .profile,
+    .hideProfile {
+        width: 70%;
+        overflow: auto;
+}
+    .profile__top {
+        width: 80%;
+    }
+    .profile__top h3 {
+        font-size: .9rem;
+    }
+    .profile__item {
+        padding: 1rem;
+        font-size: 1rem;
     }
 }

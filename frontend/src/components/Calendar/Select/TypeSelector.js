@@ -9,7 +9,7 @@ import "./TypeSelector.css";
 const TypeSelector = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [initial, setInitial] = useState(true);
-  const [selectedItem, setSelectedItem] = useState("All");
+  const [selectedItem, setSelectedItem] = useState(props.defaultText);
   const [clicked, setClicked] = useState(false);
 
   const showDropdownHandler = () => {
@@ -175,6 +175,82 @@ const TypeSelector = (props) => {
         <option value="Import">Import</option>
         <option value="Export">Export</option>
       </select>
+    );
+  }
+
+  if (props.type === "getType") {
+    return (
+      <div>
+        <div
+          className={!showDropdown ? "select" : "select-click"}
+          onClick={showDropdownHandler}
+          tabIndex={clicked ? -1 : 0}
+          {...(clicked ? {} : { onBlur: blurHandler })}
+        >
+          <h2 className="select__header">{selectedItem}</h2>
+          <FontAwesomeIcon
+            className={
+              !showDropdown && initial
+                ? "select__arrow"
+                : showDropdown && !initial
+                ? "select__arrow show"
+                : "select__arrow hide"
+            }
+            icon={showDropdown ? faCaretUp : faCaretDown}
+            size="lg"
+            style={{ color: "#000000" }}
+          />
+        </div>
+        <ul
+          className={
+            !showDropdown
+              ? "select__dropdown__hide " + props.className
+              : "select__dropdown__show " + props.className
+          }
+          onMouseEnter={() => {
+            setClicked(true);
+          }}
+          onMouseLeave={() => {
+            setClicked(false);
+          }}
+        >
+          <li
+            className={"BKR" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="BKR"
+          >
+            BKR
+          </li>
+          <li
+            className={"FAK" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="FAK"
+          >
+            FAK
+          </li>
+          <li
+            className={"FCL" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="FCL"
+          >
+            FCL
+          </li>
+          <li
+            className={"LCL" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="LCL"
+          >
+            LCL
+          </li>
+          <li
+            className={"AIR" === selectedItem ? "this-type" : ""}
+            onClick={selectItemHandler}
+            id="AIR"
+          >
+            AIR
+          </li>
+        </ul>
+      </div>
     );
   }
 };

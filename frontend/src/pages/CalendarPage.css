@@ -6,4 +6,19 @@
     top: 8vh;
     right: 0;
     z-index: -2;
+    overflow-y: auto;
+}
+
+@media (max-width: 1000px) {
+    .contents {
+        width: 90%;
+        right: -5%;
+    }
+}
+
+@media (max-width: 750px) {
+    .contents {
+        width: 100%;
+        left: 0;
+    }
 }

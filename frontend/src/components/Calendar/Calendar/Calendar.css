@@ -97,19 +97,38 @@
     margin-top: .3rem;
 }
 
-@media screen and (max-width: 1200px) {
+@media (max-width: 1200px) {
     .calendar__table__day-date,
     .calendar__table__shipments-item {
         font-size: .8rem;
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media (max-width: 1000px) {
     .calendar {
         width: 80%;
         margin: 0 auto;
-        position: relative;
-        z-index: -1;
-        background-color: #FFF;
+    }
+    .calendar__table {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 1000px) and (max-height: 500px) {
+    .calendar__table {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 750px) {
+    .calendar {
+        width: 90%;
+        margin: 0 auto;
+    }
+    .calendar__table {
+        margin-top: .5rem;
+    }
+    .calendar__table__shipments-item {
+        font-size: .5rem;
     }
 }

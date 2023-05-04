@@ -64,15 +64,21 @@
     height: inherit;
 }
 
-@media screen and (max-width: 1000px) {
+@media (min-height: 1000px) and (max-width: 1000px) {
     .modal__top-bar {
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%);
-        z-index: 101;
         height: 2.5vh;
-        background-color: #240fac;
+    }
+}
+
+@media (max-width: 750px) {
+    .modal__contents {
+        overflow-x: hidden;
+    }
+    .modal__top-bar {
+        height: 3vh;
+    }
+    .modal__top-bar__back {
+        left: 8%;
+        font-size: .85rem;
     }
 }

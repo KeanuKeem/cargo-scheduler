@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  expiryDate: {
+    type: Date,
+    required: true,
+  },
   favourites: {
     type: [{ ref: String }],
     default: [],

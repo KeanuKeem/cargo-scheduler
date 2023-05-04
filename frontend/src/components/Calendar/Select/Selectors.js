@@ -81,6 +81,7 @@ const Selectors = (props) => {
           <TypeSelector
             className="selectors__left__drop"
             onChange={props.onSort}
+            defaultText="All"
             type="get"
           />
         </div>
@@ -108,6 +109,7 @@ const Selectors = (props) => {
               <TypeSelector
                 className="selectors__vessel__drop"
                 type="get"
+                defaultText="All"
                 onChange={setType}
               />
               <input

@@ -12,7 +12,7 @@ const SignupSuccessful = (props) => {
           </div>
           <div className="successful__body">
             <p>Thanks for signing up!</p>
-            <p>Please go ahead and log in!</p>
+            <p>Please note the account expires in 24hours!</p>
           </div>
           <div className="successful__btn">
             <LoginBtn

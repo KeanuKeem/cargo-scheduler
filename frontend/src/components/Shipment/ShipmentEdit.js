@@ -180,7 +180,7 @@ const ShipmentEdit = (props) => {
         <div className="shipment__top-menu">
           <ul className="shipment__top-menu-list">
             <li>
-              <h1>{props.data.ref}</h1>
+              <h1 className="shipment__id">{props.data.ref}</h1>
             </li>
             <li>
               <p>{props.data.cargoType}</p>

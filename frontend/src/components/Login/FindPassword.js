@@ -26,7 +26,7 @@ const FindPassword = (props) => {
     };
 
     await axios
-      .post("http://localhost:5000/api/user/findPass", userDetail)
+      .post(process.env.REACT_APP_BACKEND_URL + "/user/findPass", userDetail)
       .then((result) => {
         if (result.status === 200) {
           setSubmitError("");
@@ -52,7 +52,7 @@ const FindPassword = (props) => {
     };
 
     await axios
-      .post("http://localhost:5000/api/user/findPass", userDetail)
+      .post(process.env.REACT_APP_BACKEND_URL + "/user/findPass", userDetail)
       .then((result) => {
         if (result.status === 200) {
           setIsSuccessful(true);

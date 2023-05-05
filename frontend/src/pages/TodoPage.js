@@ -62,7 +62,7 @@ const TodoPage = (props) => {
   const [strMonth, setStrMonth] = useState(ctx.month);
   const [year, setYear] = useState(ctx.year);
   const [isShipmentClicked, setIsShipmentClicked] = useState(false);
-  const [showType, setShowType] = useState("BKR");
+  const [showType, setShowType] = useState("");
   const [typeArray, setTypeArray] = useState([]);
 
   const dateRef = useRef();
@@ -121,12 +121,14 @@ const TodoPage = (props) => {
         );
         setIsLoading(false);
         setFilteredData(response.data);
+        setShowType("BKR");
       } catch (err) {}
     };
     fetchData();
     setDataAdded(false);
     setDataEdited(false);
     setShipmentAdded(false);
+
   }, [day, month, year, dataAdded, dataEdited, shipmentAdded, sortBy]);
 
   useEffect(() => {
@@ -200,7 +202,7 @@ const TodoPage = (props) => {
             <SelectBtn onClick={modalAddOpenHandler}>ADD</SelectBtn>
             <TypeSelector
               type="getType"
-              defaultText={showType}
+              defaultText="BKR"
               onChange={setShowType}
               className="todo__typeDropdown"
             />

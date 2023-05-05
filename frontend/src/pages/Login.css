@@ -146,5 +146,6 @@
         flex-direction: column;
         gap: .5rem;
         margin-top: -1rem;
+        color: #000;
     }
 }

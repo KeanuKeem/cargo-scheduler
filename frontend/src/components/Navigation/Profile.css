@@ -148,7 +148,11 @@
     .hideProfile {
         width: 70%;
         overflow: auto;
-}
+    
+    }
+    .profile__top-bar {
+        height: 5vh;
+    }
     .profile__top {
         width: 80%;
     }
@@ -158,5 +162,14 @@
     .profile__item {
         padding: 1rem;
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .profile__top-bar {
+        height: 3.5vh;
+    }
+    .profile__top-bar__item > * {
+        font-size: .8rem;
     }
 }

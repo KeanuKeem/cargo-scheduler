@@ -35,6 +35,10 @@
     padding-top: 1rem;
 }
 
+.pref__setting__list:last-child {
+    padding-bottom: 4rem;
+}
+
 .pref__setting__list-stage {
     display: flex;
     flex-direction: column;

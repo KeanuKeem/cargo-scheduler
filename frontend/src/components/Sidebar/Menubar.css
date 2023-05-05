@@ -18,14 +18,14 @@
 
 .menubar__top {
     width: 100%;
-    height: 3vh;
+    height: 5vh;
     background-color: #240fac;
     position: relative;
 }
 
 .menubar__top > * {
     color: #FF0000;
-    font-size: .9rem;
+    font-size: .8rem;
     position: absolute;
     left: 5%;
     top: 50%;
@@ -65,5 +65,11 @@
     }
     100% {
         transform: translateX(-100%);
+    }
+}
+
+@media (max-width: 500px) {
+    .menubar__top {
+        height: 3.5vh;
     }
 }

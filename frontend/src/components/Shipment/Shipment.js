@@ -624,7 +624,13 @@ const Shipment = (props) => {
             </ul>
             <div className="shipment__detail">
               <div className="shipment__left">
-                <div className="shipment__left__sm__items">
+                <div
+                  className={
+                    props.filteredData.contType === "BKR"
+                      ? "sm__hide"
+                      : "shipment__left__sm__items"
+                  }
+                >
                   <p
                     onMouseEnter={() => {
                       setShowMblSurr(true);
@@ -641,7 +647,13 @@ const Shipment = (props) => {
                     defaultChecked={checklistState.isMblSurr}
                   />
                 </div>
-                <div className="shipment__left__sm__items">
+                <div
+                  className={
+                    props.filteredData.contType === "FAK"
+                      ? "sm__hide"
+                      : "shipment__left__sm__items"
+                  }
+                >
                   <p
                     onMouseEnter={() => {
                       setShowHblSurr(true);

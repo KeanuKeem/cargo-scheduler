@@ -64,9 +64,9 @@
     height: inherit;
 }
 
-@media (min-height: 1000px) and (max-width: 1000px) {
+@media (max-width: 1000px) and (max-height: 500px) {
     .modal__top-bar {
-        height: 2.5vh;
+        height: 5vh;
     }
 }
 
@@ -75,10 +75,16 @@
         overflow-x: hidden;
     }
     .modal__top-bar {
-        height: 3vh;
+        height: 5vh;
     }
     .modal__top-bar__back {
         left: 8%;
         font-size: .85rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .modal__top-bar {
+        height: 2.5vh;
     }
 }

@@ -64,6 +64,12 @@
     height: inherit;
 }
 
+@media (max-width: 1200px) {
+    .modal__top-bar {
+        height: 2.5vh;
+    }
+}
+
 @media (max-width: 1000px) and (max-height: 500px) {
     .modal__top-bar {
         height: 5vh;

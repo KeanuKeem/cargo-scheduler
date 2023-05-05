@@ -21,6 +21,7 @@
 .pref__setting__edit button {
     border: 0px;
     background-color: transparent;
+    width: fit-content;
     font-size: 1.2rem;
     margin: 1rem 0;
     cursor: pointer;
@@ -72,5 +73,9 @@
     }
     .pref__setting__list p {
         font-size: .8rem;
+    }
+    .pref__setting form {
+        overflow-y: auto;
+        margin-bottom: 4rem;
     }
 }

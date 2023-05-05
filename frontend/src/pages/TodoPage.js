@@ -64,6 +64,7 @@ const TodoPage = (props) => {
   const [isShipmentClicked, setIsShipmentClicked] = useState(false);
   const [showType, setShowType] = useState("");
   const [typeArray, setTypeArray] = useState([]);
+  const [dateEdited, setDateEdited] = useState(false);
 
   const dateRef = useRef();
 
@@ -103,6 +104,7 @@ const TodoPage = (props) => {
   };
 
   const dateHandler = () => {
+    setDateEdited(true);
     setDay(dateRef.current.value.slice(8, 10));
     setMonth(dateRef.current.value.slice(5, 7));
     setStrMonth(getMonth(Number(dateRef.current.value.slice(5, 7)) - 1));
@@ -128,6 +130,7 @@ const TodoPage = (props) => {
     setDataAdded(false);
     setDataEdited(false);
     setShipmentAdded(false);
+    setDateEdited(false);
 
   }, [day, month, year, dataAdded, dataEdited, shipmentAdded, sortBy]);
 
@@ -149,7 +152,7 @@ const TodoPage = (props) => {
     } else {
       setTypeArray(airArray);
     }
-  }, [showType]);
+  }, [showType, dateEdited]);
 
   const brokerageArray = toDoHandler.generateBrokerArray(
     filteredData,

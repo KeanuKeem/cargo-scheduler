@@ -15,10 +15,14 @@ const saveHandling = async (req) => {
           favourite: req.body.favourite,
         }
       );
-
       if (req.body.favourite) {
         const user = await User.findOne({ _id: req.userData.userId });
-        user.favourites.push({ ref: req.body.ref });
+        const userFav= user.favourites.filter(fav => {
+          fav.ref === req.body.ref
+        });
+        if (userFav.length === 0) {
+          user.favourites.push({ ref: req.body.ref });
+        }
         user.save();
       } else {
         const user = await User.findOne({ _id: req.userData.userId });
@@ -67,7 +71,12 @@ const saveHandling = async (req) => {
 
       if (req.body.favourite) {
         const user = await User.findOne({ _id: req.userData.userId });
-        user.favourites.push({ ref: req.body.ref });
+        const userFav= user.favourites.filter(fav => {
+          return fav.ref === req.body.ref;
+        });
+        if (userFav.length === 0) {
+          user.favourites.push({ ref: req.body.ref });
+        }
         user.save();
       } else {
         const user = await User.findOne({ _id: req.userData.userId });

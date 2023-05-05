@@ -11,7 +11,7 @@ const ShipmentForm = (props) => {
       <h2>Add a shipment</h2>
       <p>Please select which type of cargo you are handling!</p>
       <p>{important}</p>
-      {props.error !== "" && <p>{props.error}</p>}
+      {props.error !== "" && <p className="shipment__error">{props.error}</p>}
 
       <div className="shipment__type">
         <div className="shipment__type-selector">

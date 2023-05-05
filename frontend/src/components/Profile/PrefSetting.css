@@ -18,10 +18,8 @@
     text-align: center;
 }
 
-.pref__setting__edit button {
+.pref__setting__edit > * {
     border: 0px;
-    background-color: transparent;
-    width: fit-content;
     font-size: 1.2rem;
     margin: 1rem 0;
     cursor: pointer;

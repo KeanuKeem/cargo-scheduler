@@ -5,7 +5,19 @@
 }
 
 .shipment h2 {
-    margin-top: 5rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+}
+
+.shipment p {
+    margin-top: .2rem;
+    font-size: .9rem;
+}
+
+.shipment__error {
+    color: #FF0000;
+    font-weight: bold;
+    padding-top: .4rem;
 }
 
 .shipment__type {
@@ -13,6 +25,10 @@
     flex-direction: row;
     gap: 1rem;
     margin-top: 1rem;
+}
+
+.shipment label {
+    font-size: .9rem;
 }
 
 .shipment__type-selector {

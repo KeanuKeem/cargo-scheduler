@@ -41,7 +41,7 @@ const Signup = (props) => {
 
     let result;
     await axios
-      .post("http://localhost:5000/api/user/signup", userDetail)
+      .post(process.env.REACT_APP_BACKEND_URL + "/user/signup", userDetail)
       .then((response) => {
         result = response;
       })
@@ -85,7 +85,7 @@ const Signup = (props) => {
 
     let result;
     await axios
-      .post("http://localhost:5000/api/user/signup", userDetail)
+      .post(process.env.REACT_APP_BACKEND_URL + "/user/signup", userDetail)
       .then((response) => {
         result = response;
       })

@@ -23,7 +23,6 @@ const PrefSetting = (props) => {
   const stageSevenEndText = "(Storage End)";
   const completeText = "(All done)";
 
-
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [isError, setIsError] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
@@ -50,7 +49,7 @@ const PrefSetting = (props) => {
       fontSevenEnd: props.fontSevenEnd,
       backSevenEnd: props.backSevenEnd,
       fontComplete: props.fontComplete,
-      backComplete: props.backComplete
+      backComplete: props.backComplete,
     };
     await axios
       .patch(process.env.REACT_APP_BACKEND_URL + "/user/edit/pref", prefData, {
@@ -88,11 +87,9 @@ const PrefSetting = (props) => {
         <h3>Preference Setting</h3>
         <p>Stage completion display colours</p>
       </div>
-      <form onSubmit={savePrefHandler}>
+      <form>
         <div className="pref__setting__edit">
-          <button type="submit">
-            <FontAwesomeIcon icon={faFloppyDisk} />
-          </button>
+          <FontAwesomeIcon onClick={savePrefHandler} icon={faFloppyDisk} />
         </div>
         <div className="pref__setting__list">
           <p></p>

@@ -24,7 +24,7 @@ const FindUsername = (props) => {
     };
 
     await axios
-      .post("http://localhost:5000/api/user/findUser", usernameDetail)
+      .post(process.env.REACT_APP_BACKEND_URL + "/user/findUser", usernameDetail)
       .then((result) => {
         if (result.status === 200) {
           setIsSuccessful(true);

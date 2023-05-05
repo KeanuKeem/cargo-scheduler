@@ -149,7 +149,7 @@
         left: 50%;
         transform: translateX(-50%);
     }
-    .todo__contents__sm__items > :last-child {
+    .todo__contents__sm__items p {
         border-radius: .4rem;
         margin: .5rem auto;
         padding: .1rem 0;

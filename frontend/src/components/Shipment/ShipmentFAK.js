@@ -363,7 +363,7 @@ const ShipmentFAK = (props) => {
               <div className="shipment__right__box">
                 <div className="shipment__right__box-top">
                   <p>Shipments:</p>
-                  {!isAdd && <button onClick={AddBtnHandler}>+</button>}
+                  {!isAdd && <button className="addBtn" onClick={AddBtnHandler}>+</button>}
                 </div>
                 <div className="shipmentFAK__right__box-bottom">
                   <div className="shipmentFAK__right__box-bottom__list">

@@ -80,6 +80,7 @@ const updateShipmentHandler = async (req) => {
           "mbl.number": req.body.mbl.number,
           "hbl.number": req.body.hbl.number,
           depot: req.body.depot,
+          notes: req.body.notes,
           "stepOne.isHandle": req.body.stepOne.isHandle,
           "stepTwo.isHandle": req.body.stepTwo.isHandle,
           "stepThree.isHandle": req.body.stepThree.isHandle,

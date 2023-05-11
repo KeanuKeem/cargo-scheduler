@@ -152,9 +152,13 @@ const ShipmentFAK = (props) => {
       isFavourite
     );
     await axios
-      .patch("http://localhost:5000/api/shipment/checklist", shipment, {
-        headers: { Authorization: "Bearer " + ctx.token },
-      })
+      .patch(
+        process.env.REACT_APP_BACKEND_URL + "/shipment/checklist",
+        shipment,
+        {
+          headers: { Authorization: "Bearer " + ctx.token },
+        }
+      )
       .then((result) => {
         setIsSave(false);
         setIsPopup(true);

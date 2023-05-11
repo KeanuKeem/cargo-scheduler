@@ -18,6 +18,7 @@ const getScheduleByDay = async (req, res, next) => {
       req.query.month,
       req.query.year,
       req.query.type,
+      req.query.shipType,
       req.userData.userId
     );
     res.status(200).send(schedule);

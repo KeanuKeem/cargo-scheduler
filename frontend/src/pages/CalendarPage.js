@@ -29,7 +29,6 @@ import {
 // CSS
 import "./CalendarPage.css";
 
-
 const modalReducer = (state, action) => {
   if (action.type === "ADD") {
     return { value: action.val, show: true };
@@ -55,6 +54,7 @@ const CalendarPage = () => {
   const [dataEdited, setDataEdited] = useState(false);
   const [shipmentAdded, setShipmentAdded] = useState(false);
   const [sortBy, setSortBy] = useState("All");
+  const [shipType, setShipType] = useState("All");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -62,7 +62,8 @@ const CalendarPage = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          process.env.REACT_APP_BACKEND_URL+`/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}`,
+          process.env.REACT_APP_BACKEND_URL +
+            `/shipment/day?month=${ctx.month}&year=${ctx.year}&type=${sortBy}&shipType=${shipType}`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
         setIsLoading(false);
@@ -73,7 +74,16 @@ const CalendarPage = () => {
     setDataAdded(false);
     setDataEdited(false);
     setShipmentAdded(false);
-  }, [ctx.month, ctx.year, dataAdded, dataEdited, shipmentAdded, sortBy, ctx.token]);
+  }, [
+    ctx.month,
+    ctx.year,
+    dataAdded,
+    dataEdited,
+    shipmentAdded,
+    sortBy,
+    shipType,
+    ctx.token,
+  ]);
 
   const [modalState, dispatchModal] = useReducer(modalReducer, {
     value: "",
@@ -157,6 +167,7 @@ const CalendarPage = () => {
         <Selectors
           data={filteredData}
           onSort={setSortBy}
+          onType={setShipType}
           onDataEdit={setDataEdited}
           onAddBtnClicked={modalAddOpenHandler}
         />

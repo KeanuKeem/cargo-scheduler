@@ -117,7 +117,7 @@ const TodoPage = () => {
         setIsLoading(true);
         const response = await axios.get(
           process.env.REACT_APP_BACKEND_URL +
-            `/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}`,
+            `/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}&shipType=All`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
         setIsLoading(false);

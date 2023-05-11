@@ -9,6 +9,12 @@
     justify-content: center;
 }
 
+.selectors__left {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
 .selectors__left__drop {
     top: 90%;
 }
@@ -92,7 +98,16 @@
 @media (max-width: 1200px) {
     .selectors,
     .selectors__open {
-        grid-template-columns: 1fr 2fr 2fr;
+        grid-template-columns: 1fr 2.5fr 3fr;
+    }
+    .selectors__left {
+        gap: .5rem;
+    }
+    .selectors__center-position {
+        gap: .5rem;
+    }
+    .selectors__right-position {
+        gap: .5rem;
     }
 }
 
@@ -100,6 +115,9 @@
     .selectors,
     .selectors__open {
         grid-template-columns: 1fr 2fr 2.5fr;
+    }
+    .selectors__left > :last-child {
+        display: none
     }
     .selectors__center-position {
         gap: .5rem;

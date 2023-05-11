@@ -84,6 +84,13 @@ const Selectors = (props) => {
             defaultText="All"
             type="get"
           />
+          <TypeSelector
+            className="selectors__left__drop"
+            onChange={props.onType}
+            defaultText="Type"
+            allShow={true}
+            type="getType"
+          />
         </div>
         <div className="selectors__center">
           <div className="selectors__center-position">

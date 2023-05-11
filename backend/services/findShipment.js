@@ -105,8 +105,7 @@ const findIsHandleIndex = (shipment) => {
   });
   if (foundIndex) {
     return index;
-  } 
-
+  }
 };
 
 const findColours = async (shipment, userId) => {
@@ -119,7 +118,7 @@ const findColours = async (shipment, userId) => {
       font: user.preferences.fontBase,
       back: user.preferences.backBase,
     };
-  } else if (index === array.length-2) {
+  } else if (index === array.length - 2) {
     return {
       font: user.preferences.fontComplete,
       back: user.preferences.backComplete,
@@ -235,21 +234,40 @@ const makeSchedule = async (schedule, month, year, userId) => {
   return finalSchedule;
 };
 
-const findShipmentsByDay = async (month, year, type, userId) => {
+const findShipmentsByDay = async (month, year, type, shipType, userId) => {
   let schedule;
   if (type === "All") {
-    schedule = await Shipment.find({
-      "day.month": month,
-      "day.year": year,
-      creator: userId,
-    });
+    if (shipType === "All" || shipType === "Type") {
+      schedule = await Shipment.find({
+        "day.month": month,
+        "day.year": year,
+        creator: userId,
+      });
+    } else {
+      schedule = await Shipment.find({
+        "day.month": month,
+        "day.year": year,
+        contType: shipType,
+        creator: userId,
+      });
+    }
   } else {
-    schedule = await Shipment.find({
-      "day.month": month,
-      "day.year": year,
-      cargoType: type,
-      creator: userId,
-    });
+    if (shipType === "All" || shipType === "Type") {
+      schedule = await Shipment.find({
+        "day.month": month,
+        "day.year": year,
+        cargoType: type,
+        creator: userId,
+      });
+    } else {
+      schedule = await Shipment.find({
+        "day.month": month,
+        "day.year": year,
+        cargoType: type,
+        contType: shipType,
+        creator: userId,
+      });
+    }
   }
 
   return makeSchedule(schedule, month, year, userId);

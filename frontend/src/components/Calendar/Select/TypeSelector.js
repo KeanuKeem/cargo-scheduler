@@ -214,6 +214,19 @@ const TypeSelector = (props) => {
             setClicked(false);
           }}
         >
+          {props.allShow && (
+            <li
+              className={
+                "All" === selectedItem || "Type" === selectedItem
+                  ? "this-type"
+                  : ""
+              }
+              onClick={selectItemHandler}
+              id="Type"
+            >
+              All
+            </li>
+          )}
           <li
             className={"BKR" === selectedItem ? "this-type" : ""}
             onClick={selectItemHandler}

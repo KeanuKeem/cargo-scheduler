@@ -16,7 +16,7 @@ const loginCheckHandler = async (req) => {
       const valid = await bcrypt.compare(req.body.password, user.password);
       if (valid) {
         token = jwt.sign({ userId: user._id }, process.env.SESSION_KEY, {
-          expiresIn: "1h",
+          expiresIn: "12h",
         });
         return { result: true, json: { userId: user._id, token: token } };
       } else {

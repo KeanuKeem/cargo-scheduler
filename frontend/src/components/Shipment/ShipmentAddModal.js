@@ -86,7 +86,6 @@ const contTypeReducer = (state, action) => {
 const ShipmentAddModal = (props) => {
   const ctx = useContext(SelectContext);
   const [shipmentType, setShipmentType] = useState("Select cargo type");
-  const [contType, setContType] = useState("");
   const [error, setError] = useState("");
 
   const [contTypeState, dispatchContType] = useReducer(contTypeReducer, {

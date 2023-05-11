@@ -19,6 +19,7 @@ import "./App.css";
 const CalendarPage = lazy(() => import("./pages/CalendarPage"));
 const TodoPage = lazy(() => import("./pages/TodoPage"));
 const NavbarRoot = lazy(() => import("./pages/NavbarRoot"));
+const FilePage = lazy(() => import("./pages/File"));
 
 const date = new Date();
 const dateMonth = date.getMonth();
@@ -125,7 +126,6 @@ function App() {
 
   useEffect(() => {
     setIsLoggingIn(false);
-  
   }, [loginError]);
 
   return (
@@ -203,6 +203,20 @@ function App() {
                   <>
                     <NavbarRoot onLogOut={logoutHandler} />
                     <TodoPage />
+                  </>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+
+            <Route
+              path="/file"
+              element={
+                isLogIn ? (
+                  <>
+                    <NavbarRoot onLogOut={logoutHandler} />
+                    <FilePage />
                   </>
                 ) : (
                   <Navigate to="/" />

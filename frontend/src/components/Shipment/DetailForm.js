@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import Checkbox from "./Checkbox";
 import "./ImportForm.css";
-import TypeSelector from "../Calendar/Select/TypeSelector";
 import ShipmentContext from "../../store/shipment-context";
 
 const DetailForm = (props) => {

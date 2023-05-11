@@ -34,12 +34,11 @@ const modalReducer = (state, action) => {
   }
 };
 
-const TodoPage = (props) => {
+const TodoPage = () => {
   const ctx = useContext(SelectContext);
-  const { dayp, monthp, yearp } = useParams();
+  const { dayp, monthp } = useParams();
 
   const [filteredData, setFilteredData] = useState([]);
-  const [dateFocused, setDateFocused] = useState("");
   const [dataAdded, setDataAdded] = useState(false);
   const [dataEdited, setDataEdited] = useState(false);
   const [shipmentAdded, setShipmentAdded] = useState(false);
@@ -131,8 +130,16 @@ const TodoPage = (props) => {
     setDataEdited(false);
     setShipmentAdded(false);
     setDateEdited(false);
-
-  }, [day, month, year, dataAdded, dataEdited, shipmentAdded, sortBy]);
+  }, [
+    day,
+    month,
+    year,
+    dataAdded,
+    dataEdited,
+    shipmentAdded,
+    sortBy,
+    ctx.token
+  ]);
 
   useEffect(() => {
     if (ctx.searchValue !== null && ctx.searchValue !== undefined) {
@@ -210,11 +217,10 @@ const TodoPage = (props) => {
               className="todo__typeDropdown"
             />
           </div>
-          
         </div>
         <div className="todo__contents">
           <div className="todo__contents__sm__items">
-            <h2>{showType === "BKR"? "Brokerage" : showType}</h2>
+            <h2>{showType === "BKR" ? "Brokerage" : showType}</h2>
             <hr />
             {typeArray.map((shipment) => {
               return (

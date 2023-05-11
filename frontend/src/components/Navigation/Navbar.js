@@ -16,7 +16,6 @@ import SelectContext from "../../store/select-context";
 import ShipmentPopup from "../Shipment/ShipmentPopup";
 import Profile from "./Profile";
 import Menubar from "../Sidebar/Menubar";
-import Sidebar from "../Sidebar/Sidebar";
 
 // CSS
 import "./Navbar.css";
@@ -97,6 +96,9 @@ const Navbar = (props) => {
           <Link className="navbar__menu__item" to="/todo">
             ToDo
           </Link>
+          <Link className="navbar__menu__item" to="/file">
+            File
+          </Link>
         </div>
         {isPopup && (
           <ShipmentPopup
@@ -161,11 +163,7 @@ const Navbar = (props) => {
             style={{ color: "#7868E6" }}
           />
         </div>
-        {onMenubar && (
-          <Menubar
-            setOnMenubar={setOnMenubar}
-          />
-        )}
+        {onMenubar && <Menubar setOnMenubar={setOnMenubar} />}
         {onProfile && (
           <Profile
             onLogOut={props.onLogOut}

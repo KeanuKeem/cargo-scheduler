@@ -1,5 +1,3 @@
-import { faMarsDouble } from "@fortawesome/free-solid-svg-icons";
-
 function generateBrokerArray(data, day) {
   let result = [];
   if (data.length > 0) {

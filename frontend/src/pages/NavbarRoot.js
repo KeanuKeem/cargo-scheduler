@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useRef } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navigation/Navbar";
 import SelectContext from "../store/select-context";

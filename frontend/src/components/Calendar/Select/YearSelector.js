@@ -15,7 +15,7 @@ import { getSelectYearArray } from "../../Reference/Calendar";
 import "./YearSelector.css";
 
 // -----YearSelector-Components----- //
-const YearSelector = () => {
+const YearSelector = (props) => {
   const ctx = useContext(SelectContext);
 
   const [selectedYear, setSelectedYear] = useState(ctx.thisYear);
@@ -46,6 +46,18 @@ const YearSelector = () => {
     setAnimationEnd(false);
   };
 
+  const fileYearHandler = (event) => {
+    setSelectedYear(event.target.id);
+    props.setYear(event.target.id);
+    setSelectYearClass("selectYear");
+    setArrowClass("selectYear__arrow hide");
+    setDropdownClass("selectYear__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("selectYear__dropdown");
+    }, 400);
+    setAnimationEnd(false);
+  };
+
   const blurHandler = (event) => {
     setSelectYearClass("selectYear");
     setArrowClass("selectYear__arrow hide");
@@ -63,6 +75,59 @@ const YearSelector = () => {
   useEffect(() => {
     setSelectedYear(ctx.year);
   }, [ctx.year]);
+
+  if (props.sendFrom === "file") {
+    return (
+      <>
+        <div
+          className={selectYearClass}
+          onClick={showDropdownYearHandler}
+          tabIndex={clicked ? -1 : 0}
+          {...(clicked ? {} : { onBlur: blurHandler })}
+          onAnimationEnd={animationStateHandler}
+        >
+          <h2 className="selectYear__header">{selectedYear}</h2>
+          <FontAwesomeIcon
+            className={arrowClass}
+            icon={
+              arrowClass === "selectYear__arrow show" ? faCaretUp : faCaretDown
+            }
+            size="lg"
+            style={{ color: "#000000" }}
+          />
+        </div>
+        <ul
+          className={dropdownClass + " " + props.className}
+          onMouseEnter={() => {
+            setClicked(true);
+          }}
+          onMouseLeave={() => {
+            setClicked(false);
+          }}
+        >
+          <li
+            className={selectedYear === "All" ? "this-year" : ""}
+            onClick={fileYearHandler}
+            id="All"
+          >
+            All
+          </li>
+          {yearArray.map((y) => {
+            return (
+              <li
+                className={y === selectedYear ? "this-year" : ""}
+                onClick={fileYearHandler}
+                key={y}
+                id={y}
+              >
+                {y}
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    );
+  }
 
   return (
     <>

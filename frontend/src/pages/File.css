@@ -1,0 +1,31 @@
+.file {
+    width: 80%;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 8vh;
+    left: 20%;
+    overflow-y: hidden;
+}
+
+.file__top {
+    width: 80%;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.file__top__month-drop {
+    top: 3.8rem;
+}
+
+.file__top__year-drop {
+    top: 1.8rem;
+}
+
+.file__top__year {
+    position: relative;
+}

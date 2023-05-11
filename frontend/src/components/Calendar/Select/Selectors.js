@@ -1,5 +1,5 @@
 // React
-import { useState, useRef, createContext, useContext } from "react";
+import { useState, useRef, useContext } from "react";
 
 // Context
 import SelectContext from "../../../store/select-context";

@@ -115,8 +115,11 @@
     .navbar__menu {
         margin: auto 0 auto 3rem;
     }
+    .navbar__menu__item {
+        margin-right: 1rem;
+    }
     .navbar__search {
-        right: 8%;
+        right: 5%;
     }
 }
 

@@ -41,6 +41,18 @@ const MonthSelector = (props) => {
     setAnimationEnd(false);
   };
 
+  const fileMonthHandler = (event) => {
+    setSelectedMonth(event.target.id);
+    props.setMonth(event.target.id);
+    setSelectMonthClass("selectMonth");
+    setArrowClass("selectMonth__arrow hide");
+    setDropdownClass("selectMonth__dropdown__hide");
+    setTimeout(() => {
+      setDropdownClass("selectMonth__dropdown");
+    }, 400);
+    setAnimationEnd(false);
+  };
+
   const blurHandler = () => {
     setSelectMonthClass("selectMonth");
     setArrowClass("selectMonth__arrow hide");
@@ -58,6 +70,131 @@ const MonthSelector = (props) => {
   useEffect(() => {
     setSelectedMonth(ctx.month);
   }, [ctx.month]);
+
+  if (props.sendFrom === "file") {
+    return (
+      <div className={props.className}>
+        <div
+          className={selectMonthClass}
+          onClick={showDropdownMonthHandler}
+          tabIndex={clicked ? -1 : 0}
+          {...(clicked ? {} : { onBlur: blurHandler })}
+          onAnimationEnd={animationStateHandler}
+        >
+          <h2 className="selectMonth__header">{selectedMonth}</h2>
+          <FontAwesomeIcon
+            className={arrowClass}
+            icon={
+              arrowClass === "selectMonth__arrow show" ? faCaretUp : faCaretDown
+            }
+            size="lg"
+            style={{ color: "#000000" }}
+          />
+        </div>
+        <ul
+          className={dropdownClass + " " + props.className}
+          onMouseEnter={() => {
+            setClicked(true);
+          }}
+          onMouseLeave={() => {
+            setClicked(false);
+          }}
+        >
+          <li
+            className={selectedMonth === "All" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="All"
+          >
+            All
+          </li>
+          <li
+            className={selectedMonth === "January" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="January"
+          >
+            January
+          </li>
+          <li
+            className={selectedMonth === "February" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="February"
+          >
+            February
+          </li>
+          <li
+            className={selectedMonth === "March" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="March"
+          >
+            March
+          </li>
+          <li
+            className={selectedMonth === "April" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="April"
+          >
+            April
+          </li>
+          <li
+            className={selectedMonth === "May" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="May"
+          >
+            May
+          </li>
+          <li
+            className={selectedMonth === "June" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="June"
+          >
+            June
+          </li>
+          <li
+            className={selectedMonth === "July" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="July"
+          >
+            July
+          </li>
+          <li
+            className={selectedMonth === "August" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="August"
+          >
+            August
+          </li>
+          <li
+            className={selectedMonth === "September" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="September"
+          >
+            September
+          </li>
+          <li
+            className={selectedMonth === "October" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="October"
+          >
+            October
+          </li>
+          <li
+            className={selectedMonth === "November" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="November"
+          >
+            November
+          </li>
+          <li
+            className={selectedMonth === "December" ? "this-month" : ""}
+            onClick={fileMonthHandler}
+            id="December"
+          >
+            December
+          </li>
+        </ul>
+      </div>
+    );
+  }
 
   return (
     <div className={props.className}>

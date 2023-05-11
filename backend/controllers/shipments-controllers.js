@@ -7,6 +7,7 @@ const { removeShipmentHandler } = require("../services/removeShipmentHandler");
 const { removeFakShipment } = require("../services/removeFakShipment");
 const { updateVesselSchedulesHandler } = require("../services/updateVesselSchedule");
 const { getSearchResult } = require("../services/getSearchResult");
+const { excelExport } = require("../services/excelExport");
 
 const getScheduleByDay = async (req, res, next) => {
   if (req.method === "OPTIONS") {
@@ -123,6 +124,15 @@ const getSearch = async (req, res) => {
   }
 }
 
+const getFileData = async (req, res) => {
+  const output = await excelExport(req);
+  if (output.result) {
+    res.status(200).json(output.data);
+  } else {
+    res.status(500).send(output.message);
+  }
+};
+
 exports.createShipment = createShipment;
 exports.getShipment = getShipment;
 exports.saveShipment = saveShipment;
@@ -133,3 +143,4 @@ exports.deleteShipments = deleteShipments;
 exports.updateVesselSchedules = updateVesselSchedules;
 exports.getScheduleByDay = getScheduleByDay;
 exports.getSearch = getSearch;
+exports.getFileData = getFileData;

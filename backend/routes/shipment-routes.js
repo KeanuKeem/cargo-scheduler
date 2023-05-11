@@ -20,6 +20,11 @@ router.get(
     shipmentsControllers.getSearch
 );
 
+router.get(
+    '/file',
+    shipmentsControllers.getFileData
+);
+
 router.post(
     '/',
     shipmentsControllers.createShipment

@@ -17,18 +17,19 @@ const saveHandling = async (req) => {
       );
       if (req.body.favourite) {
         const user = await User.findOne({ _id: req.userData.userId });
-        const userFav= user.favourites.filter(fav => {
-          fav.ref === req.body.ref
+        const userFav = user.favourites.filter((fav) => {
+          fav.ref === req.body.ref;
         });
+        console.log(userFav);
         if (userFav.length === 0) {
           user.favourites.push({ ref: req.body.ref });
         }
         user.save();
       } else {
         const user = await User.findOne({ _id: req.userData.userId });
-        const index = user.favourites.findIndex(shipment => {
-          shipment.ref === req.body.ref
-        });
+        const index = user.favourites.findIndex(
+          (shipment) => shipment.ref === req.body.ref
+        );
         user.favourites.splice(index, 1);
         user.save();
       }
@@ -71,7 +72,7 @@ const saveHandling = async (req) => {
 
       if (req.body.favourite) {
         const user = await User.findOne({ _id: req.userData.userId });
-        const userFav= user.favourites.filter(fav => {
+        const userFav = user.favourites.filter((fav) => {
           return fav.ref === req.body.ref;
         });
         if (userFav.length === 0) {
@@ -80,9 +81,9 @@ const saveHandling = async (req) => {
         user.save();
       } else {
         const user = await User.findOne({ _id: req.userData.userId });
-        const index = user.favourites.findIndex(shipment => {
-          shipment.ref === req.body.ref
-        });
+        const index = user.favourites.findIndex(
+          (shipment) => shipment.ref === req.body.ref
+        );
         user.favourites.splice(index, 1);
         user.save();
       }

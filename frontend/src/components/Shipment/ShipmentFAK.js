@@ -165,6 +165,7 @@ const ShipmentFAK = (props) => {
         setIsPopup(true);
         setPopupMessage(err.response.data);
       });
+    props.onDataEdit(true);
   };
 
   useEffect(() => {
@@ -363,7 +364,11 @@ const ShipmentFAK = (props) => {
               <div className="shipment__right__box">
                 <div className="shipment__right__box-top">
                   <p>Shipments:</p>
-                  {!isAdd && <button className="addBtn" onClick={AddBtnHandler}>+</button>}
+                  {!isAdd && (
+                    <button className="addBtn" onClick={AddBtnHandler}>
+                      +
+                    </button>
+                  )}
                 </div>
                 <div className="shipmentFAK__right__box-bottom">
                   <div className="shipmentFAK__right__box-bottom__list">

@@ -93,6 +93,10 @@
     cursor: pointer;
 }
 
+.calendar__table__shipments-item span {
+    margin-right: .1rem;
+}
+
 .calendar__table__shipments-item:not(:first-child) {
     margin-top: .3rem;
 }

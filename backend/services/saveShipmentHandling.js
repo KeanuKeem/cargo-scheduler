@@ -13,6 +13,7 @@ const saveHandling = async (req) => {
           "mbl.isSurr": req.body.isMblSurr,
           "mbl.date": req.body.mblSurrDate,
           favourite: req.body.favourite,
+          isHold: req.body.isHold,
         }
       );
       if (req.body.favourite) {
@@ -20,7 +21,6 @@ const saveHandling = async (req) => {
         const userFav = user.favourites.filter((fav) => {
           fav.ref === req.body.ref;
         });
-        console.log(userFav);
         if (userFav.length === 0) {
           user.favourites.push({ ref: req.body.ref });
         }
@@ -30,7 +30,9 @@ const saveHandling = async (req) => {
         const index = user.favourites.findIndex(
           (shipment) => shipment.ref === req.body.ref
         );
-        user.favourites.splice(index, 1);
+        if (index > -1) {
+          user.favourites.splice(index, 1);
+        }
         user.save();
       }
 
@@ -67,6 +69,7 @@ const saveHandling = async (req) => {
           "stepSeven.startDate": req.body.stepSevenStartValue,
           "stepSeven.endDate": req.body.stepSevenEndValue,
           favourite: req.body.favourite,
+          isHold: req.body.isHold,
         }
       );
 
@@ -84,7 +87,9 @@ const saveHandling = async (req) => {
         const index = user.favourites.findIndex(
           (shipment) => shipment.ref === req.body.ref
         );
-        user.favourites.splice(index, 1);
+        if (index > -1) {
+          user.favourites.splice(index, 1);
+        }
         user.save();
       }
 

@@ -197,6 +197,7 @@ const makeSchedule = async (schedule, month, year, userId) => {
       } else {
         filteredSchedule[0].values.push({
           id: shipment.ref,
+          isHold: shipment.isHold,
           contType: shipment.contType,
           cargoType: shipment.cargoType,
           font: colours.font,
@@ -221,6 +222,7 @@ const makeSchedule = async (schedule, month, year, userId) => {
           values: [
             {
               id: shipment.ref,
+              isHold: shipment.isHold,
               contType: shipment.contType,
               cargoType: shipment.cargoType,
               font: colours.font,

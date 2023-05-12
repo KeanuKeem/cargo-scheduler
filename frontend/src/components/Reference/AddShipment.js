@@ -277,6 +277,7 @@ export function makeChecklist(ref, contType, checklistState, favourite) {
       isMblSurr: checklistState.isMblSurr,
       mblSurrDate: checklistState.mblSurrDate,
       favourite,
+      isHold: checklistState.isHold
     }
   }
   return {
@@ -303,6 +304,7 @@ export function makeChecklist(ref, contType, checklistState, favourite) {
     isStepSevenEnd: checklistState.isStepSevenEnd,
     stepSevenEndValue: checklistState.stepSevenEndValue,
     favourite,
+    isHold: checklistState.isHold
   };
 }
 

@@ -23,6 +23,14 @@ const checklistReducer = (state, action) => {
     return {
       isMblSurr: action.isMblSurr,
       mblSurrDate: action.mblSurrDate,
+      isHold: state.isHold,
+    };
+  }
+  if (action.type === "HOLD") {
+    return {
+      isMblSurr: state.isMblSurr,
+      mblSurrDate: state.mblSurrDate,
+      isHold: action.isHold,
     };
   }
 };
@@ -48,6 +56,7 @@ const ShipmentFAK = (props) => {
     {
       isMblSurr: props.data.mbl.isSurr,
       mblSurrDate: props.data.mbl.date,
+      isHold: props.data.isHold || false,
     }
   );
 
@@ -72,6 +81,13 @@ const ShipmentFAK = (props) => {
       type: "MBL",
       isMblSurr: !checklistState.isMblSurr,
       mblSurrDate: today,
+    });
+  };
+
+  const holdHandler = () => {
+    dispatchChecklistState({
+      type: "HOLD",
+      isHold: !checklistState.isHold,
     });
   };
 
@@ -175,7 +191,8 @@ const ShipmentFAK = (props) => {
   useEffect(() => {
     if (
       props.data.mbl.isSurr !== checklistState.isMblSurr ||
-      props.data.favourite !== isFavourite
+      props.data.favourite !== isFavourite ||
+      props.data.isHold !== checklistState.isHold
     ) {
       setIsSave(true);
     } else {
@@ -308,6 +325,18 @@ const ShipmentFAK = (props) => {
                 )}
               </div>
             </li>
+            <li>
+              <div className="shipment__hold">
+                <span>
+                  <p>Shipment on Hold: </p>
+                  <input
+                    type="checkbox"
+                    onChange={holdHandler}
+                    defaultChecked={checklistState.isHold}
+                  />
+                </span>
+              </div>
+            </li>
             {isSave && (
               <li>
                 <button
@@ -336,6 +365,14 @@ const ShipmentFAK = (props) => {
                   type="checkbox"
                   onChange={mblSurrHandler}
                   defaultChecked={checklistState.isMblSurr}
+                />
+              </div>
+              <div className="shipment__left__sm-hold__items">
+                <p>Shipment on Hold: </p>
+                <input
+                  type="checkbox"
+                  onChange={holdHandler}
+                  defaultChecked={checklistState.isHold}
                 />
               </div>
               <div className="shipment__left__items">

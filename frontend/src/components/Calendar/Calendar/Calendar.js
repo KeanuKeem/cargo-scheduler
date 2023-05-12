@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleArrowLeft,
   faCircleArrowRight,
+  faCircleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Context
@@ -134,7 +135,16 @@ const Calendar = (props) => {
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
                           >
-                            &#40;{item.contType}&#41; {item.id}
+                            {item.isHold ? (
+                              <>
+                                <span>
+                                  <FontAwesomeIcon icon={faCircleExclamation} />
+                                </span>{" "}
+                                {" (" + item.contType + ") " + item.id}
+                              </>
+                            ) : (
+                              "(" + item.contType + ") " + item.id
+                            )}
                           </p>
                         );
                       })}
@@ -179,7 +189,16 @@ const Calendar = (props) => {
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
                           >
-                            &#40;{item.contType}&#41; {item.id}
+                            {item.isHold ? (
+                              <>
+                                <span>
+                                  <FontAwesomeIcon icon={faCircleExclamation} />
+                                </span>{" "}
+                                {" (" + item.contType + ") " + item.id}
+                              </>
+                            ) : (
+                              "(" + item.contType + ") " + item.id
+                            )}
                           </p>
                         );
                       })}
@@ -224,7 +243,16 @@ const Calendar = (props) => {
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
                           >
-                            &#40;{item.contType}&#41; {item.id}
+                            {item.isHold ? (
+                              <>
+                                <span>
+                                  <FontAwesomeIcon icon={faCircleExclamation} />
+                                </span>{" "}
+                                {" (" + item.contType + ") " + item.id}
+                              </>
+                            ) : (
+                              "(" + item.contType + ") " + item.id
+                            )}
                           </p>
                         );
                       })}
@@ -269,7 +297,16 @@ const Calendar = (props) => {
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
                           >
-                            &#40;{item.contType}&#41; {item.id}
+                            {item.isHold ? (
+                              <>
+                                <span>
+                                  <FontAwesomeIcon icon={faCircleExclamation} />
+                                </span>{" "}
+                                {" (" + item.contType + ") " + item.id}
+                              </>
+                            ) : (
+                              "(" + item.contType + ") " + item.id
+                            )}
                           </p>
                         );
                       })}
@@ -314,7 +351,16 @@ const Calendar = (props) => {
                             id={`${day.value.date}+${item.id}`}
                             name={day.value.date}
                           >
-                            &#40;{item.contType}&#41; {item.id}
+                            {item.isHold ? (
+                              <>
+                                <span>
+                                  <FontAwesomeIcon icon={faCircleExclamation} />
+                                </span>{" "}
+                                {" (" + item.contType + ") " + item.id}
+                              </>
+                            ) : (
+                              "(" + item.contType + ") " + item.id
+                            )}
                           </p>
                         );
                       })}
@@ -360,7 +406,18 @@ const Calendar = (props) => {
                               id={`${day.value.date}+${item.id}`}
                               name={day.value.date}
                             >
-                              &#40;{item.contType}&#41; {item.id}
+                              {item.isHold ? (
+                                <>
+                                  <span>
+                                    <FontAwesomeIcon
+                                      icon={faCircleExclamation}
+                                    />
+                                  </span>{" "}
+                                  {" (" + item.contType + ") " + item.id}
+                                </>
+                              ) : (
+                                "(" + item.contType + ") " + item.id
+                              )}
                             </p>
                           );
                         })}

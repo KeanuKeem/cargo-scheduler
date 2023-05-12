@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 
 import axios from "axios";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+
 import SelectContext from "../store/select-context";
 
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -138,7 +141,7 @@ const TodoPage = () => {
     dataEdited,
     shipmentAdded,
     sortBy,
-    ctx.token
+    ctx.token,
   ]);
 
   useEffect(() => {
@@ -232,7 +235,16 @@ const TodoPage = () => {
                   }}
                   onClick={modalShipmentOpenHandler}
                 >
-                  {"(" + shipment.contType + ") " + shipment.id}
+                  {shipment.isHold ? (
+                    <>
+                      <span>
+                        <FontAwesomeIcon icon={faCircleExclamation} />
+                      </span>{" "}
+                      {" (" + shipment.contType + ") " + shipment.id}
+                    </>
+                  ) : (
+                    "(" + shipment.contType + ") " + shipment.id
+                  )}
                 </p>
               );
             })}
@@ -250,7 +262,16 @@ const TodoPage = () => {
                   }}
                   onClick={modalShipmentOpenHandler}
                 >
-                  {"(" + shipment.contType + ") " + shipment.id}
+                  {shipment.isHold ? (
+                    <>
+                      <span>
+                        <FontAwesomeIcon icon={faCircleExclamation} />
+                      </span>{" "}
+                      {" (" + shipment.contType + ") " + shipment.id}
+                    </>
+                  ) : (
+                    "(" + shipment.contType + ") " + shipment.id
+                  )}
                 </p>
               );
             })}
@@ -268,7 +289,16 @@ const TodoPage = () => {
                   }}
                   onClick={modalShipmentOpenHandler}
                 >
-                  {"(" + shipment.contType + ") " + shipment.id}
+                  {shipment.isHold ? (
+                    <>
+                      <span>
+                        <FontAwesomeIcon icon={faCircleExclamation} />
+                      </span>{" "}
+                      {" (" + shipment.contType + ") " + shipment.id}
+                    </>
+                  ) : (
+                    "(" + shipment.contType + ") " + shipment.id
+                  )}
                 </p>
               );
             })}
@@ -286,7 +316,16 @@ const TodoPage = () => {
                   }}
                   onClick={modalShipmentOpenHandler}
                 >
-                  {"(" + shipment.contType + ") " + shipment.id}
+                  {shipment.isHold ? (
+                    <>
+                      <span>
+                        <FontAwesomeIcon icon={faCircleExclamation} />
+                      </span>{" "}
+                      {" (" + shipment.contType + ") " + shipment.id}
+                    </>
+                  ) : (
+                    "(" + shipment.contType + ") " + shipment.id
+                  )}
                 </p>
               );
             })}
@@ -304,7 +343,16 @@ const TodoPage = () => {
                   }}
                   onClick={modalShipmentOpenHandler}
                 >
-                  {"(" + shipment.contType + ") " + shipment.id}
+                  {shipment.isHold ? (
+                    <>
+                      <span>
+                        <FontAwesomeIcon icon={faCircleExclamation} />
+                      </span>{" "}
+                      {" (" + shipment.contType + ") " + shipment.id}
+                    </>
+                  ) : (
+                    "(" + shipment.contType + ") " + shipment.id
+                  )}
                 </p>
               );
             })}
@@ -322,7 +370,16 @@ const TodoPage = () => {
                   }}
                   onClick={modalShipmentOpenHandler}
                 >
-                  {"(" + shipment.contType + ") " + shipment.id}
+                  {shipment.isHold ? (
+                    <>
+                      <span>
+                        <FontAwesomeIcon icon={faCircleExclamation} />
+                      </span>{" "}
+                      {" (" + shipment.contType + ") " + shipment.id}
+                    </>
+                  ) : (
+                    "(" + shipment.contType + ") " + shipment.id
+                  )}
                 </p>
               );
             })}

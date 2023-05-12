@@ -55,7 +55,7 @@ const shipmentSchema = new mongoose.Schema({
     default: false,
   },
   fakShipments: {
-    type: [{ ref: String, font: String, back: String }],
+    type: [{ ref: String, font: String, back: String, isHold: {type: Boolean, default: false }}],
     required: function () {
       return this.contType === "FAK";
     },
@@ -105,6 +105,10 @@ const shipmentSchema = new mongoose.Schema({
     date: {
       type: String,
     },
+  },
+  isHold: {
+    type: Boolean,
+    default: false,
   },
   stepOne: {
     isHandle: {

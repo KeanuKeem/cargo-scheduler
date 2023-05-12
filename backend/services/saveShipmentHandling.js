@@ -14,6 +14,8 @@ const saveHandling = async (req) => {
           "mbl.date": req.body.mblSurrDate,
           favourite: req.body.favourite,
           isHold: req.body.isHold,
+          "dtr.isDtr": req.body.isDtr,
+          "dtr.date": req.body.dtrDate
         }
       );
       if (req.body.favourite) {
@@ -70,6 +72,8 @@ const saveHandling = async (req) => {
           "stepSeven.endDate": req.body.stepSevenEndValue,
           favourite: req.body.favourite,
           isHold: req.body.isHold,
+          "dtr.isDtr": req.body.isDtr,
+          "dtr.date": req.body.dtrDate
         }
       );
 

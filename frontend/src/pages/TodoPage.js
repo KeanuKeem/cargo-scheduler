@@ -84,7 +84,7 @@ const TodoPage = () => {
     dispatchModal({
       type: "SHIPMENT",
       val: "shipment",
-      id: "0+" + event.target.innerText.split(" ")[1],
+      id: "0+" + event.target.id,
     });
     setIsShipmentClicked(true);
   };
@@ -229,6 +229,7 @@ const TodoPage = () => {
               return (
                 <p
                   key={shipment.id}
+                  id={shipment.id}
                   style={{
                     backgroundColor: shipment.back,
                     color: shipment.font,
@@ -256,6 +257,7 @@ const TodoPage = () => {
               return (
                 <p
                   key={shipment.id}
+                  id={shipment.id}
                   style={{
                     backgroundColor: shipment.back,
                     color: shipment.font,
@@ -283,6 +285,7 @@ const TodoPage = () => {
               return (
                 <p
                   key={shipment.id}
+                  id={shipment.id}
                   style={{
                     backgroundColor: shipment.back,
                     color: shipment.font,
@@ -310,6 +313,7 @@ const TodoPage = () => {
               return (
                 <p
                   key={shipment.id}
+                  id={shipment.id}
                   style={{
                     backgroundColor: shipment.back,
                     color: shipment.font,
@@ -337,6 +341,7 @@ const TodoPage = () => {
               return (
                 <p
                   key={shipment.id}
+                  id={shipment.id}
                   style={{
                     backgroundColor: shipment.back,
                     color: shipment.font,
@@ -364,6 +369,7 @@ const TodoPage = () => {
               return (
                 <p
                   key={shipment.id}
+                  id={shipment.id}
                   style={{
                     backgroundColor: shipment.back,
                     color: shipment.font,

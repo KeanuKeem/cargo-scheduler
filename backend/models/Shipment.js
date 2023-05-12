@@ -41,21 +41,32 @@ const shipmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  dtr: {
+    isDtr: { type: Boolean, default: false },
+    date: { type: String, default: "" },
+  },
   notes: {
     type: String,
   },
-  consoleId : {
+  consoleId: {
     type: String,
     required: function () {
       return this.contType === "LCLFAK";
-    }
+    },
   },
   favourite: {
     type: Boolean,
     default: false,
   },
   fakShipments: {
-    type: [{ ref: String, font: String, back: String, isHold: {type: Boolean, default: false }}],
+    type: [
+      {
+        ref: String,
+        font: String,
+        back: String,
+        isHold: { type: Boolean, default: false },
+      },
+    ],
     required: function () {
       return this.contType === "FAK";
     },

@@ -133,6 +133,11 @@
     padding: 0 1rem;
 }
 
+.shipment__left__items input {
+    vertical-align: middle;
+    margin-left: .5rem;
+}
+
 .shipment__right:after {
     width: 50%;
     content: "";

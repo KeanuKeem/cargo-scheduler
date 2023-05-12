@@ -37,6 +37,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "TWO") {
@@ -62,6 +64,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "THREE") {
@@ -87,6 +91,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "FOUR") {
@@ -112,6 +118,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "FIVE") {
@@ -137,6 +145,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "SIX") {
@@ -162,6 +172,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "SEVENSTART") {
@@ -187,6 +199,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "SEVENEND") {
@@ -212,6 +226,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "MBLSURR") {
@@ -237,6 +253,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: action.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "HBLSURR") {
@@ -262,6 +280,8 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: action.hblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "HOLD") {
@@ -287,6 +307,35 @@ const checklistReducer = (state, action) => {
       mblSurrDate: state.mblSurrDate,
       hblSurrDate: state.hblSurrDate,
       isHold: action.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
+    };
+  }
+  if (action.type === "DTR") {
+    return {
+      isStepOneDone: state.isStepOneDone,
+      isStepTwoDone: state.isStepTwoDone,
+      isStepThreeDone: state.isStepThreeDone,
+      isStepFourDone: state.isStepFourDone,
+      isStepFiveDone: state.isStepFiveDone,
+      isStepSixDone: state.isStepSixDone,
+      isStepSevenStart: state.isStepSevenStart,
+      isStepSevenEnd: state.isStepSevenEnd,
+      stepOneValue: state.stepOneValue,
+      stepTwoValue: state.stepTwoValue,
+      stepThreeValue: state.stepThreeValue,
+      stepFourValue: state.stepFourValue,
+      stepFiveValue: state.stepFiveValue,
+      stepSixValue: state.stepSixValue,
+      stepSevenStartValue: state.stepSevenStartValue,
+      stepSevenEndValue: state.stepSevenEndValue,
+      isMblSurr: state.isMblSurr,
+      isHblSurr: state.isHblSurr,
+      mblSurrDate: state.mblSurrDate,
+      hblSurrDate: state.hblSurrDate,
+      isHold: state.isHold,
+      isDtr: action.isDtr,
+      dtrDate: action.dtrDate,
     };
   }
 };
@@ -328,6 +377,8 @@ const Shipment = (props) => {
       mblSurrDate: props.filteredData.mbl.date,
       hblSurrDate: props.filteredData.hbl.date,
       isHold: props.filteredData.isHold || false,
+      isDtr: props.filteredData.dtr.isDtr || false,
+      dtrDate: props.filteredData.dtr.date || "",
     }
   );
 
@@ -454,6 +505,14 @@ const Shipment = (props) => {
     });
   };
 
+  const checklistDtrHandler = (event) => {
+    dispatchChecklistState({
+      type: "DTR",
+      isDtr: event.target.checked,
+      dtrDate: today,
+    });
+  };
+
   const deleteBtnHandler = () => {
     setIsDelete(true);
   };
@@ -512,7 +571,8 @@ const Shipment = (props) => {
       props.filteredData.mbl.isSurr !== checklistState.isMblSurr ||
       props.filteredData.hbl.isSurr !== checklistState.isHblSurr ||
       props.filteredData.favourite !== isFavourite ||
-      props.filteredData.isHold !== checklistState.isHold
+      props.filteredData.isHold !== checklistState.isHold ||
+      props.filteredData.dtr.isDtr !== checklistState.isDtr
     ) {
       setSaveBtnShow(true);
     } else {
@@ -776,6 +836,19 @@ const Shipment = (props) => {
                 <div className="shipment__left__items">
                   <p>Available Depot: </p>
                   <p>{props.filteredData.depot}</p>
+                </div>
+                <div className="shipment__left__items">
+                  <p>
+                    Domestic Transfer Request:
+                    <input
+                      type="checkbox"
+                      onChange={checklistDtrHandler}
+                      defaultChecked={checklistState.isDtr}
+                    />
+                  </p>
+                  <p>
+                    {props.filteredData.dtr.isDtr ? props.filteredData.dtr.date : ""}
+                  </p>
                 </div>
 
                 <div className="shipment__left__notes">

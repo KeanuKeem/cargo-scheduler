@@ -3,7 +3,7 @@ import { useContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 import Shipment from "./Shipment";
 import ShipmentEdit from "./ShipmentEdit";
@@ -24,6 +24,8 @@ const checklistReducer = (state, action) => {
       isMblSurr: action.isMblSurr,
       mblSurrDate: action.mblSurrDate,
       isHold: state.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
     };
   }
   if (action.type === "HOLD") {
@@ -31,6 +33,17 @@ const checklistReducer = (state, action) => {
       isMblSurr: state.isMblSurr,
       mblSurrDate: state.mblSurrDate,
       isHold: action.isHold,
+      isDtr: state.isDtr,
+      dtrDate: state.dtrDate,
+    };
+  }
+  if (action.type === "DTR") {
+    return {
+      isMblSurr: state.isMblSurr,
+      mblSurrDate: state.mblSurrDate,
+      isHold: state.isHold,
+      isDtr: action.isDtr,
+      dtrDate: action.dtrDate,
     };
   }
 };
@@ -57,6 +70,8 @@ const ShipmentFAK = (props) => {
       isMblSurr: props.data.mbl.isSurr,
       mblSurrDate: props.data.mbl.date,
       isHold: props.data.isHold || false,
+      isDtr: props.data.dtr.isDtr || false,
+      dtrDate: props.data.dtr.date || "",
     }
   );
 
@@ -88,6 +103,14 @@ const ShipmentFAK = (props) => {
     dispatchChecklistState({
       type: "HOLD",
       isHold: !checklistState.isHold,
+    });
+  };
+
+  const dtrHandler = () => {
+    dispatchChecklistState({
+      type: "DTR",
+      isDtr: !checklistState.isDtr,
+      dtrDate: today,
     });
   };
 
@@ -192,7 +215,8 @@ const ShipmentFAK = (props) => {
     if (
       props.data.mbl.isSurr !== checklistState.isMblSurr ||
       props.data.favourite !== isFavourite ||
-      props.data.isHold !== checklistState.isHold
+      props.data.isHold !== checklistState.isHold ||
+      props.data.dtr.isDtr !== checklistState.isDtr
     ) {
       setIsSave(true);
     } else {
@@ -395,6 +419,17 @@ const ShipmentFAK = (props) => {
                 <p>Available Depot: </p>
                 <p>{props.data.depot}</p>
               </div>
+              <div className="shipment__left__items">
+                <p>
+                  Domestic Transfer Request:
+                  <input
+                    type="checkbox"
+                    onChange={dtrHandler}
+                    defaultChecked={checklistState.isDtr}
+                  />
+                </p>
+                <p>{props.data.dtr.isDtr ? props.data.dtr.date : ""}</p>
+              </div>
 
               <div className="shipment__left__notes">
                 <span className="notes-label">Notes: </span>
@@ -424,6 +459,13 @@ const ShipmentFAK = (props) => {
                           onClick={shipmentClickHandler}
                           id={shipment.ref}
                         >
+                          {shipment.isHold && (
+                            <>
+                              <span>
+                                <FontAwesomeIcon icon={faCircleExclamation} />
+                              </span>{" "}
+                            </>
+                          )}
                           {shipment.ref}
                         </p>
                       );

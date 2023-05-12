@@ -191,6 +191,7 @@ const makeSchedule = async (schedule, month, year, userId) => {
           if (shipmentInFak.ref === shipment.ref) {
             shipmentInFak.font = colours.font;
             shipmentInFak.back = colours.back;
+            shipmentInFak.isHold = shipment.isHold;
           }
         });
         await masterShipment.save();
@@ -213,6 +214,7 @@ const makeSchedule = async (schedule, month, year, userId) => {
           if (shipmentInFak.ref === shipment.ref) {
             shipmentInFak.font = colours.font;
             shipmentInFak.back = colours.back;
+            shipmentInFak.isHold = shipment.isHold;
           }
         });
         await masterShipment.save();

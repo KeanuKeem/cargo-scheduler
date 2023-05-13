@@ -25,6 +25,11 @@ router.get(
     shipmentsControllers.getFileData
 );
 
+router.get(
+    '/todo/day',
+    shipmentsControllers.getScheduleByDayFromTodo
+);
+
 router.post(
     '/',
     shipmentsControllers.createShipment

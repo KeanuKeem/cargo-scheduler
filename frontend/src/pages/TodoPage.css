@@ -1,160 +1,212 @@
 .todo {
-    width: 80%;
-    height: 92vh;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 8vh;
-    left: 20%;
-    overflow-y: hidden;
+  width: 80%;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 8vh;
+  left: 20%;
+  overflow-y: hidden;
 }
 
 .todo__top {
-    width: 80%;
-    margin: 2rem auto;
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
+  width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: center;
 }
 
 .todo__dropdown {
-    top: 3.8rem;
+  top: 3.8rem;
 }
 
 .todo__input {
-    position: relative;
+  position: relative;
 }
 
 .todo__input input {
-    border: 1px solid;
-    border-radius: .5rem;
-    padding: .2rem .5rem;
-    box-shadow: 3px 3px rgba(0, 0, 0, 0.275);
+  border: 1px solid;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.275);
 }
 
 .todo__input input:focus {
-    outline: none;
-    animation: pushed .3s linear;
-    animation-fill-mode: forwards;
-    box-shadow: none;
+  outline: none;
+  animation: pushed 0.3s linear;
+  animation-fill-mode: forwards;
+  box-shadow: none;
 }
 
 .todo__type > :last-child {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .todo__contents {
-    width: 80%;
-    height: 70vh;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    justify-content: center;
-    overflow: auto;
+  width: 80%;
+  height: 70vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  overflow: auto;
 }
 
 .todo__contents__items,
 .todo__contents__sm__items {
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid;
-    border-radius: .5rem;
-    box-shadow: 3px 3px rgba(0, 0, 0, 0.275);
-    text-align: center;
-    overflow-y: hidden;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  border-radius: 0.5rem;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.275);
+  text-align: center;
+  overflow-y: hidden;
 }
 
 .todo__contents__sm__items {
-    display: none;
+  display: none;
+}
+
+.todo__contents__items__head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle {
+  border: 2px solid;
+  border-radius: 0.5rem;
+  width: 12%;
+  height: 60%;
+  vertical-align: middle;
+}
+
+.toggle > * {
+  font-size: 0.5rem;
+  vertical-align: middle;
+  margin-left: -50%;
+  margin-bottom: 15%;
+}
+
+.toggle-on {
+  transform: translateX(120%);
+  transition: transform 0.5s ease;
+}
+
+.toggle-off {
+  transform: translateX(0%);
+  transition: transform 0.5s ease;
 }
 
 .todo__contents__items hr,
 .todo__contents__sm__items hr {
-    margin-bottom: 1rem;
-    border-top: 1px solid;
+  margin-bottom: 1rem;
+  border-top: 1px solid;
 }
 
 .todo__contents__sm__items hr {
-    border-bottom: 1px solid;
+  border-bottom: 1px solid;
 }
 
 .todo__contents__items p {
-    padding: .3rem 0;
-    font-size: .9rem;
-    background-color: #000;
-    color: #FFF;
-    border: 4px solid #FFF;
-    border-radius: .6rem;
-    cursor: pointer;
+  padding: 0.3rem 0;
+  font-size: 0.9rem;
+  background-color: #000;
+  color: #fff;
+  border: 4px solid #fff;
+  border-radius: 0.6rem;
+  cursor: pointer;
 }
 
 @keyframes pushed {
-    0% {
-        transform: translate(0, 0);
-    }
-    100% {
-        transform: translate(3px, 3px);
-    }
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(3px, 3px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .toggle {
+    width: 15%;
+  }
+  .toggle-on {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 1000px) {
+  .todo__contents__items__head {
+    gap: .3rem;
+  }
+  .toggle {
+    width: 25%;
+  }
+  .toggle-on {
+    transform: translateX(135%);
+  }
 }
 
 @media (max-width: 1000px) and (max-height: 500px) {
-    .todo__type > :first-child {
-        display: none;
-    }
-    .todo__items
-    .todo__contents__items h2 {
-        font-size: .9rem;
-    }
-    .todo__contents__items p {
-        font-size: .8rem;
-    }
+  .todo__type > :first-child {
+    display: none;
+  }
+  .todo__items .todo__contents__items h2 {
+    font-size: 0.9rem;
+  }
+  .todo__contents__items p {
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 750px) {
-    .todo {
-        width: 100%;
-        left: 0;
-    }
-    .todo__top {
-        width: 90%;
-        gap: .5rem;
-    }
-    .todo__input input {
-        width: 8rem;
-    }
-    .todo__type > :first-child {
-        display: none;
-    }
-    .todo__type > :last-child {
-        visibility: visible;
-    }
-    .todo__typeDropdown {
-        top: 3.8rem;
-        z-index: 10;
-    }
-    .todo__contents {
-        width: 80%;
-        height: 70vh;
-        margin: 0 auto;
-        position: relative;
-    }
-    .todo__contents__sm__items {
-        display: block;
-        width: 80%;
-        height: 69vh;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .todo__contents__sm__items p {
-        border-radius: .4rem;
-        margin: .5rem auto;
-        padding: .1rem 0;
-    }
-    .todo__contents__items {
-        visibility: hidden;
-    }
+  .todo {
+    width: 100%;
+    left: 0;
+  }
+  .todo__top {
+    width: 90%;
+    gap: 0.5rem;
+  }
+  .todo__input input {
+    width: 8rem;
+  }
+  .todo__type > :first-child {
+    display: none;
+  }
+  .todo__type > :last-child {
+    visibility: visible;
+  }
+  .todo__typeDropdown {
+    top: 3.8rem;
+    z-index: 10;
+  }
+  .todo__contents {
+    width: 80%;
+    height: 70vh;
+    margin: 0 auto;
+    position: relative;
+  }
+  .todo__contents__sm__items {
+    display: block;
+    width: 80%;
+    height: 69vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .todo__contents__sm__items p {
+    border-radius: 0.4rem;
+    margin: 0.5rem auto;
+    padding: 0.1rem 0;
+  }
+  .todo__contents__items {
+    visibility: hidden;
+  }
 }

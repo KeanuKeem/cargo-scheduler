@@ -23,7 +23,7 @@ function generateFAKArray(data, day) {
     });
     if (dateArray.length > 0) {
       dateArray[0].values.map((shipment) => {
-        if (shipment.contType === "FAK") {
+        if (shipment.contType === "FAK" || shipment.contType === "LCLFAK") {
           result.push(shipment);
         }
       });

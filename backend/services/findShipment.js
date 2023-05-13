@@ -278,3 +278,4 @@ const findShipmentsByDay = async (month, year, type, shipType, userId) => {
 };
 
 exports.findShipmentsByDay = findShipmentsByDay;
+exports.findColours = findColours;

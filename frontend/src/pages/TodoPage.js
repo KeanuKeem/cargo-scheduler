@@ -4,7 +4,10 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleExclamation,
+  faCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 import SelectContext from "../store/select-context";
 
@@ -67,6 +70,8 @@ const TodoPage = () => {
   const [showType, setShowType] = useState("");
   const [typeArray, setTypeArray] = useState([]);
   const [dateEdited, setDateEdited] = useState(false);
+  const [showFakShipment, setShowFakShipment] = useState(false);
+  const [toggleClass, setToggleClass] = useState("");
 
   const dateRef = useRef();
 
@@ -114,13 +119,23 @@ const TodoPage = () => {
     dateRef.current.blur();
   };
 
+  const toggleHandler = () => {
+    if (toggleClass === "" || toggleClass === "toggle-off") {
+      setToggleClass("toggle-on");
+      setShowFakShipment(true);
+    } else {
+      setToggleClass("toggle-off");
+      setShowFakShipment(false);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
           process.env.REACT_APP_BACKEND_URL +
-            `/shipment/day?month=${strMonth}&year=${year}&type=${sortBy}&shipType=All`,
+            `/shipment/todo/day?date=${day}&month=${strMonth}&year=${year}&type=${sortBy}&shipType=All`,
           { headers: { Authorization: "Bearer " + ctx.token } }
         );
         setIsLoading(false);
@@ -279,31 +294,63 @@ const TodoPage = () => {
             })}
           </div>
           <div className="todo__contents__items">
-            <h2>FAK</h2>
+            <div className="todo__contents__items__head">
+              <h2>FAK</h2>
+              <div className="toggle" onClick={toggleHandler}>
+                <FontAwesomeIcon className={toggleClass} icon={faCircle} />
+              </div>
+            </div>
             <hr />
             {fakArray.map((shipment) => {
-              return (
-                <p
-                  key={shipment.id}
-                  id={shipment.id}
-                  style={{
-                    backgroundColor: shipment.back,
-                    color: shipment.font,
-                  }}
-                  onClick={modalShipmentOpenHandler}
-                >
-                  {shipment.isHold ? (
-                    <>
-                      <span>
-                        <FontAwesomeIcon icon={faCircleExclamation} />
-                      </span>{" "}
-                      {" (" + shipment.contType + ") " + shipment.id}
-                    </>
-                  ) : (
-                    "(" + shipment.contType + ") " + shipment.id
-                  )}
-                </p>
-              );
+              if (shipment.contType === "FAK") {
+                return (
+                  <p
+                    key={shipment.id}
+                    id={shipment.id}
+                    style={{
+                      backgroundColor: shipment.back,
+                      color: shipment.font,
+                    }}
+                    onClick={modalShipmentOpenHandler}
+                  >
+                    {shipment.isHold ? (
+                      <>
+                        <span>
+                          <FontAwesomeIcon icon={faCircleExclamation} />
+                        </span>{" "}
+                        {" (" + shipment.contType + ") " + shipment.id}
+                      </>
+                    ) : (
+                      "(" + shipment.contType + ") " + shipment.id
+                    )}
+                  </p>
+                );
+              } else {
+                if (showFakShipment) {
+                  return (
+                    <p
+                      key={shipment.id}
+                      id={shipment.id}
+                      style={{
+                        backgroundColor: shipment.back,
+                        color: shipment.font,
+                      }}
+                      onClick={modalShipmentOpenHandler}
+                    >
+                      {shipment.isHold ? (
+                        <>
+                          <span>
+                            <FontAwesomeIcon icon={faCircleExclamation} />
+                          </span>{" "}
+                          {" (" + shipment.consoleId + ") " + shipment.id}
+                        </>
+                      ) : (
+                        "(" + shipment.consoleId + ") " + shipment.id
+                      )}
+                    </p>
+                  );
+                }
+              }
             })}
           </div>
           <div className="todo__contents__items">

@@ -5,9 +5,12 @@ const { saveHandling } = require("../services/saveShipmentHandling");
 const { updateShipmentHandler } = require("../services/updateShipment");
 const { removeShipmentHandler } = require("../services/removeShipmentHandler");
 const { removeFakShipment } = require("../services/removeFakShipment");
-const { updateVesselSchedulesHandler } = require("../services/updateVesselSchedule");
+const {
+  updateVesselSchedulesHandler,
+} = require("../services/updateVesselSchedule");
 const { getSearchResult } = require("../services/getSearchResult");
 const { excelExport } = require("../services/excelExport");
+const { findShipmentForTodo } = require("../services/findShipmentForTodo");
 
 const getScheduleByDay = async (req, res, next) => {
   if (req.method === "OPTIONS") {
@@ -123,7 +126,7 @@ const getSearch = async (req, res) => {
   } else {
     res.status(500).send(output.message);
   }
-}
+};
 
 const getFileData = async (req, res) => {
   const output = await excelExport(req);
@@ -131,6 +134,22 @@ const getFileData = async (req, res) => {
     res.status(200).json(output.data);
   } else {
     res.status(500).send(output.message);
+  }
+};
+
+const getScheduleByDayFromTodo = async (req, res) => {
+  try {
+    const schedule = await findShipmentForTodo(
+      req.query.date,
+      req.query.month,
+      req.query.year,
+      req.query.type,
+      req.query.shipType,
+      req.userData.userId
+    );
+    res.status(200).send(schedule);
+  } catch {
+    res.status(500).send("Please log in and try again!");
   }
 };
 
@@ -145,3 +164,4 @@ exports.updateVesselSchedules = updateVesselSchedules;
 exports.getScheduleByDay = getScheduleByDay;
 exports.getSearch = getSearch;
 exports.getFileData = getFileData;
+exports.getScheduleByDayFromTodo = getScheduleByDayFromTodo;

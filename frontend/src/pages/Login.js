@@ -1,6 +1,7 @@
-import { useState, useReducer, useContext } from "react";
+import { useState, useReducer, useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 import SelectContext from "../store/select-context";
 import Signup from "../components/Login/Signup";
@@ -9,6 +10,7 @@ import LoginBtn from "../components/Login/LoginBtn";
 import FindUsername from "../components/Login/FindUsername";
 import FindPassword from "../components/Login/FindPassword";
 import Logging from "../components/Login/Logging";
+import Message from "../components/Login/Message";
 
 import "./Login.css";
 
@@ -62,11 +64,33 @@ const Login = (props) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isUsername, setIsUsername] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
+  const [isMessage, setIsMessage] = useState(true);
+  const [cookies] = useCookies(["lastVisit"]);
+  const [checkbox, setCheckbox] = useState(false);
   const [isMinimised, dispatchIsMinimised] = useReducer(minimiseReducer, {
     signup: false,
     username: false,
     password: false,
   });
+
+  useEffect(() => {
+    const lastVisit = cookies.lastVisit;
+
+    if (lastVisit) {
+      const currentTime = new Date().getTime();
+      const expiryTime = 24 * 60 * 60 * 1000;
+      const timeRemaining = currentTime - new Date(lastVisit).getTime();
+
+      if (timeRemaining >= expiryTime) {
+        setIsMessage(true);
+        document.cookie = `lastVisit=${new Date().toISOString()}; path=/;`;
+      } else {
+        setIsMessage(false);
+      }
+    } else {
+      setIsMessage(true);
+    }
+  }, []);
 
   const navigate = useNavigate();
 
@@ -132,6 +156,14 @@ const Login = (props) => {
 
   return (
     <>
+      {isMessage && (
+        <Message
+          isMessage={isMessage}
+          setIsMessage={setIsMessage}
+          checkbox={checkbox}
+          setCheckbox={setCheckbox}
+        />
+      )}
       {isSignUp && (
         <>
           {ReactDOM.createPortal(

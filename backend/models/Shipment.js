@@ -121,6 +121,16 @@ const shipmentSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  colours: {
+    font: {
+      type: String,
+      default: "#ffffff"
+    },
+    back: {
+      type: String,
+      default: "#000000"
+    }
+  },
   stepOne: {
     isHandle: {
       type: Boolean,

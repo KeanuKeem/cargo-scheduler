@@ -11,6 +11,7 @@ const {
 const { getSearchResult } = require("../services/getSearchResult");
 const { excelExport } = require("../services/excelExport");
 const { findShipmentForTodo } = require("../services/findShipmentForTodo");
+const {addShipmentByUpdate} = require("../services/addShipmentByUpdate");
 
 const getScheduleByDay = async (req, res, next) => {
   if (req.method === "OPTIONS") {
@@ -153,6 +154,15 @@ const getScheduleByDayFromTodo = async (req, res) => {
   }
 };
 
+const addByUpload = async (req, res) => {
+  const output = await addShipmentByUpdate(req);
+  if (output.result) {
+    res.status(200).send(output.message);
+  } else {
+    res.status(500).send(output.message);
+  }
+};
+
 exports.createShipment = createShipment;
 exports.getShipment = getShipment;
 exports.saveShipment = saveShipment;
@@ -165,3 +175,4 @@ exports.getScheduleByDay = getScheduleByDay;
 exports.getSearch = getSearch;
 exports.getFileData = getFileData;
 exports.getScheduleByDayFromTodo = getScheduleByDayFromTodo;
+exports.addByUpload = addByUpload;

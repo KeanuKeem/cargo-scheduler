@@ -1,5 +1,5 @@
 const Shipment = require("../models/Shipment");
-const monthChanger = require("./schedule-references");
+const { monthChanger } = require("./schedule-references");
 
 const updateVesselSchedulesHandler = async (req) => {
   try {
@@ -24,7 +24,7 @@ const updateVesselSchedulesHandler = async (req) => {
           },
         }
       );
-      return {result: true, message: "Updated Successfully!"};
+      return { result: true, message: "Updated Successfully!" };
     } else {
       await Shipment.updateMany(
         {
@@ -44,7 +44,7 @@ const updateVesselSchedulesHandler = async (req) => {
           },
         }
       );
-      return {result: true, message: "Updated Succesfully!"};
+      return { result: true, message: "Updated Succesfully!" };
     }
   } catch {
     return {

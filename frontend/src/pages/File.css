@@ -1,31 +1,48 @@
 .file {
-    width: 80%;
-    height: 92vh;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 8vh;
-    left: 20%;
-    overflow-y: hidden;
+  width: 80%;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 8vh;
+  left: 20%;
+  overflow-y: hidden;
 }
 
 .file__top {
-    width: 80%;
-    margin: 2rem auto;
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
+  width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .file__top__month-drop {
-    top: 3.8rem;
+  top: 3.8rem;
 }
 
 .file__top__year-drop {
-    top: 1.8rem;
+  top: 1.8rem;
 }
 
 .file__top__year {
-    position: relative;
+  position: relative;
+}
+
+.file__upload {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.file__upload input {
+  padding: 0.3rem;
+  border: 1px solid;
+  border-radius: .5rem;
 }

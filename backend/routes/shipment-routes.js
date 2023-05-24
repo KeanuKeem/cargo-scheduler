@@ -2,6 +2,8 @@ const express = require('express');
 const shipmentsControllers = require('../controllers/shipments-controllers');
 const router = express.Router();
 const checkAuth = require("../services/check-auth");
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 router.use(checkAuth);
 
@@ -38,6 +40,12 @@ router.post(
 router.post(
     '/inFak',
     shipmentsControllers.createShipmentInFak
+);
+
+router.post(
+    '/upload', 
+    upload.single('file'), 
+    shipmentsControllers.addByUpload
 );
 
 router.patch(

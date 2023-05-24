@@ -1,5 +1,5 @@
 const Shipment = require("../models/Shipment");
-const monthChanger = require("../services/schedule-references");
+const { monthChanger } = require("../services/schedule-references");
 
 const updateShipmentHandler = async (req) => {
   if (req.body.contType === "FAK") {

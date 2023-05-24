@@ -1,6 +1,6 @@
 const Shipment = require("../models/Shipment");
 const User = require("../models/User");
-const monthChanger = require("../services/schedule-references");
+const { monthChanger } = require("../services/schedule-references");
 
 const checkEmptyForCreateShipment = (req) => {
   if (req.body.cargoType === "") {

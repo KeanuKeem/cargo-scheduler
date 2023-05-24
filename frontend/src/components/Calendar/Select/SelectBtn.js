@@ -5,7 +5,7 @@ const SelectBtn = (props) => {
     <button
       type={props.type}
       className={"selectBtn " + props.className}
-      onClick={props.onClick}
+      onClick={props.onClick ? props.onClick : null}
     >
       {props.children}
     </button>

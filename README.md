@@ -1,4 +1,4 @@
-Cargo Scheduler Project v1.0
+Cargo Scheduler Project v1.1
 https://cargo-scheduler.onrender.com/
 
 Aim: to help with management of freight schedule wherever you are.
@@ -9,8 +9,10 @@ Aim: to help with management of freight schedule wherever you are.
 2.  Account Creation requires an email address, if you are not wish to signup, please use tester account.
 3.  Account log in is restricted to 1 hour, for browsing only purpose.
 
-*Functionalities:
+*New features:
+1.   *Excel file from logistics app called "Cargowise" can be uploaded direclty to create multiple shipments. (new)
 
+*Functionalities:
 //--Calener Page--//
 1.  Shipment can be added via "ADD" button.
 2.  Shipment can be sorted via Dropdowns.
@@ -28,6 +30,7 @@ Aim: to help with management of freight schedule wherever you are.
 
 //--File Page--//
 1.  Sorted Shipment datas can be exported to excel file.
+2.  *Excel file from logistics app called "Cargowise" can be uploaded direclty to create multiple shipments. (new)
 
 //--Sidebar--//
 1.  Favourite Shipment will be showed on this "Sidebar"

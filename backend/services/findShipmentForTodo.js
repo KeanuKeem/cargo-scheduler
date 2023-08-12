@@ -15,85 +15,92 @@ const makeScheduleForTodo = async (schedule, month, year, userId) => {
       return dateObj.date === shipment.day.date;
     });
     if (filteredSchedule.length > 0) {
-      if (shipment.contType === "LCLFAK") {
-        const masterShipment = await Shipment.findOne({
-          ref: shipment.consoleId,
-        });
-        masterShipment.fakShipments.map((shipmentInFak) => {
-          if (shipmentInFak.ref === shipment.ref) {
-            shipmentInFak.font = colours.font;
-            shipmentInFak.back = colours.back;
-            shipmentInFak.isHold = shipment.isHold;
-          }
-        });
-        await masterShipment.save();
-        filteredSchedule[0].values.push({
-          id: shipment.ref,
-          isHold: shipment.isHold,
-          contType: shipment.contType,
-          cargoType: shipment.cargoType,
-          font: colours.font,
-          back: colours.back,
-          consoleId: shipment.consoleId
-        });
-      } else {
-        filteredSchedule[0].values.push({
-          id: shipment.ref,
-          isHold: shipment.isHold,
-          contType: shipment.contType,
-          cargoType: shipment.cargoType,
-          font: colours.font,
-          back: colours.back,
-        });
-      }
+      // if (shipment.contType === "LCLFAK") {
+      //   const masterShipment = await Shipment.findOne({
+      //     ref: shipment.consoleId,
+      //   });
+      //   masterShipment.fakShipments.map((shipmentInFak) => {
+      //     if (shipmentInFak.ref === shipment.ref) {
+      //       shipmentInFak.font = colours.font;
+      //       shipmentInFak.back = colours.back;
+      //       shipmentInFak.isHold = shipment.isHold;
+      //     }
+      //   });
+      //   await masterShipment.save();
+      //   filteredSchedule[0].values.push({
+      //     id: shipment.ref,
+      //     isHold: shipment.isHold,
+      //     contType: shipment.contType,
+      //     cargoType: shipment.cargoType,
+      //     font: colours.font,
+      //     back: colours.back,
+      //     consoleId: shipment.consoleId
+      //   });
+      // } else {
+      filteredSchedule[0].values.push({
+        id: shipment.ref,
+        isHold: shipment.isHold,
+        contType: shipment.contType,
+        cargoType: shipment.cargoType,
+        font: colours.font,
+        back: colours.back,
+      });
+      // }
     } else {
-      if (shipment.contType === "LCLFAK") {
-        const masterShipment = await Shipment.findOne({
-          ref: shipment.consoleId,
-        });
-        masterShipment.fakShipments.map((shipmentInFak) => {
-          if (shipmentInFak.ref === shipment.ref) {
-            shipmentInFak.font = colours.font;
-            shipmentInFak.back = colours.back;
-            shipmentInFak.isHold = shipment.isHold;
-          }
-        });
-        await masterShipment.save();
-        finalSchedule[0].shipments.push({
-          date: shipment.day.date,
-          values: [
-            {
-              id: shipment.ref,
-              isHold: shipment.isHold,
-              contType: shipment.contType,
-              cargoType: shipment.cargoType,
-              font: colours.font,
-              back: colours.back,
-              consoleId: shipment.consoleId
-            },
-          ],
-        });
-      } else {
-        finalSchedule[0].shipments.push({
-          date: shipment.day.date,
-          values: [
-            {
-              id: shipment.ref,
-              isHold: shipment.isHold,
-              contType: shipment.contType,
-              cargoType: shipment.cargoType,
-              font: colours.font,
-              back: colours.back,
-            },
-          ],
-        });
-      }
+      // if (shipment.contType === "LCLFAK") {
+      //   const masterShipment = await Shipment.findOne({
+      //     ref: shipment.consoleId,
+      //   });
+      //   masterShipment.fakShipments.map((shipmentInFak) => {
+      //     if (shipmentInFak.ref === shipment.ref) {
+      //       shipmentInFak.font = colours.font;
+      //       shipmentInFak.back = colours.back;
+      //       shipmentInFak.isHold = shipment.isHold;
+      //     }
+      //   });
+      //   await masterShipment.save();
+      //   finalSchedule[0].shipments.push({
+      //     date: shipment.day.date,
+      //     values: [
+      //       {
+      //         id: shipment.ref,
+      //         isHold: shipment.isHold,
+      //         contType: shipment.contType,
+      //         cargoType: shipment.cargoType,
+      //         font: colours.font,
+      //         back: colours.back,
+      //         consoleId: shipment.consoleId
+      //       },
+      //     ],
+      //   });
+      // } else {
+      finalSchedule[0].shipments.push({
+        date: shipment.day.date,
+        values: [
+          {
+            id: shipment.ref,
+            isHold: shipment.isHold,
+            contType: shipment.contType,
+            cargoType: shipment.cargoType,
+            font: colours.font,
+            back: colours.back,
+          },
+        ],
+      });
+      // }
     }
   }
   return finalSchedule;
 };
 
-const findShipmentForTodo = async (date, month, year, type, shipType, userId) => {
+const findShipmentForTodo = async (
+  date,
+  month,
+  year,
+  type,
+  shipType,
+  userId
+) => {
   let schedule;
   if (type === "All") {
     if (shipType === "All" || shipType === "Type") {
@@ -101,6 +108,7 @@ const findShipmentForTodo = async (date, month, year, type, shipType, userId) =>
         "day.date": date,
         "day.month": month,
         "day.year": year,
+        contType: { $ne: "LCLFAK" },
         creator: userId,
       });
     } else {
@@ -119,6 +127,7 @@ const findShipmentForTodo = async (date, month, year, type, shipType, userId) =>
         "day.month": month,
         "day.year": year,
         cargoType: type,
+        contType: { $ne: "LCLFAK" },
         creator: userId,
       });
     } else {

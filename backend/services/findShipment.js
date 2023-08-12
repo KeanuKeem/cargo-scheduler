@@ -182,56 +182,56 @@ const makeSchedule = async (schedule, month, year, userId) => {
       return dateObj.date === shipment.day.date;
     });
     if (filteredSchedule.length > 0) {
-      if (shipment.contType === "LCLFAK") {
-        const masterShipment = await Shipment.findOne({
-          ref: shipment.consoleId,
-        });
-        masterShipment.fakShipments.map((shipmentInFak) => {
-          if (shipmentInFak.ref === shipment.ref) {
-            shipmentInFak.font = shipment.font;
-            shipmentInFak.back = shipment.back;
-            shipmentInFak.isHold = shipment.isHold;
-          }
-        });
-        await masterShipment.save();
-      } else {
-        filteredSchedule[0].values.push({
-          id: shipment.ref,
-          isHold: shipment.isHold,
-          contType: shipment.contType,
-          cargoType: shipment.cargoType,
-          font: shipment.fontColour,
-          back: shipment.backColour,
-        });
-      }
+      // if (shipment.contType === "LCLFAK") {
+      //   const masterShipment = await Shipment.findOne({
+      //     ref: shipment.consoleId,
+      //   });
+      //   masterShipment.fakShipments.map((shipmentInFak) => {
+      //     if (shipmentInFak.ref === shipment.ref) {
+      //       shipmentInFak.font = shipment.font;
+      //       shipmentInFak.back = shipment.back;
+      //       shipmentInFak.isHold = shipment.isHold;
+      //     }
+      //   });
+      //   await masterShipment.save();
+      // } else {
+      filteredSchedule[0].values.push({
+        id: shipment.ref,
+        isHold: shipment.isHold,
+        contType: shipment.contType,
+        cargoType: shipment.cargoType,
+        font: shipment.fontColour,
+        back: shipment.backColour,
+      });
+      // }
     } else {
-      if (shipment.contType === "LCLFAK") {
-        const masterShipment = await Shipment.findOne({
-          ref: shipment.consoleId,
-        });
-        masterShipment.fakShipments.map((shipmentInFak) => {
-          if (shipmentInFak.ref === shipment.ref) {
-            shipmentInFak.font = shipment.fontColour;
-            shipmentInFak.back = shipment.backColour;
-            shipmentInFak.isHold = shipment.isHold;
-          }
-        });
-        await masterShipment.save();
-      } else {
-        finalSchedule[0].shipments.push({
-          date: shipment.day.date,
-          values: [
-            {
-              id: shipment.ref,
-              isHold: shipment.isHold,
-              contType: shipment.contType,
-              cargoType: shipment.cargoType,
-              font: shipment.fontColour,
-              back: shipment.backColour,
-            },
-          ],
-        });
-      }
+      // if (shipment.contType === "LCLFAK") {
+      //   const masterShipment = await Shipment.findOne({
+      //     ref: shipment.consoleId,
+      //   });
+      //   masterShipment.fakShipments.map((shipmentInFak) => {
+      //     if (shipmentInFak.ref === shipment.ref) {
+      //       shipmentInFak.font = shipment.fontColour;
+      //       shipmentInFak.back = shipment.backColour;
+      //       shipmentInFak.isHold = shipment.isHold;
+      //     }
+      //   });
+      //   await masterShipment.save();
+      // } else {
+      finalSchedule[0].shipments.push({
+        date: shipment.day.date,
+        values: [
+          {
+            id: shipment.ref,
+            isHold: shipment.isHold,
+            contType: shipment.contType,
+            cargoType: shipment.cargoType,
+            font: shipment.fontColour,
+            back: shipment.backColour,
+          },
+        ],
+      });
+      // }
     }
   }
   return finalSchedule;
@@ -244,6 +244,7 @@ const findShipmentsByDay = async (month, year, type, shipType, userId) => {
       schedule = await Shipment.find({
         "day.month": month,
         "day.year": year,
+        contType: { $ne: "LCLFAK" },
         creator: userId,
       });
     } else {
@@ -260,6 +261,7 @@ const findShipmentsByDay = async (month, year, type, shipType, userId) => {
         "day.month": month,
         "day.year": year,
         cargoType: type,
+        contType: { $ne: "LCLFAK" },
         creator: userId,
       });
     } else {

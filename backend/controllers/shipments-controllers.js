@@ -55,7 +55,6 @@ const getShipment = async (req, res) => {
     const shipment = await Shipment.findOne({ ref: ref, creator: _id });
     res.status(200).send(shipment);
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 };

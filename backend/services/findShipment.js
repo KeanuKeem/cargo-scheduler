@@ -178,7 +178,6 @@ const makeSchedule = async (schedule, month, year, userId) => {
     },
   ];
   for (const shipment of schedule) {
-    const colours = await findColours(shipment, userId);
     const filteredSchedule = finalSchedule[0].shipments.filter((dateObj) => {
       return dateObj.date === shipment.day.date;
     });
@@ -189,8 +188,8 @@ const makeSchedule = async (schedule, month, year, userId) => {
         });
         masterShipment.fakShipments.map((shipmentInFak) => {
           if (shipmentInFak.ref === shipment.ref) {
-            shipmentInFak.font = colours.font;
-            shipmentInFak.back = colours.back;
+            shipmentInFak.font = shipment.font;
+            shipmentInFak.back = shipment.back;
             shipmentInFak.isHold = shipment.isHold;
           }
         });
@@ -201,8 +200,8 @@ const makeSchedule = async (schedule, month, year, userId) => {
           isHold: shipment.isHold,
           contType: shipment.contType,
           cargoType: shipment.cargoType,
-          font: colours.font,
-          back: colours.back,
+          font: shipment.fontColour,
+          back: shipment.backColour,
         });
       }
     } else {
@@ -212,8 +211,8 @@ const makeSchedule = async (schedule, month, year, userId) => {
         });
         masterShipment.fakShipments.map((shipmentInFak) => {
           if (shipmentInFak.ref === shipment.ref) {
-            shipmentInFak.font = colours.font;
-            shipmentInFak.back = colours.back;
+            shipmentInFak.font = shipment.fontColour;
+            shipmentInFak.back = shipment.backColour;
             shipmentInFak.isHold = shipment.isHold;
           }
         });
@@ -227,8 +226,8 @@ const makeSchedule = async (schedule, month, year, userId) => {
               isHold: shipment.isHold,
               contType: shipment.contType,
               cargoType: shipment.cargoType,
-              font: colours.font,
-              back: colours.back,
+              font: shipment.fontColour,
+              back: shipment.backColour,
             },
           ],
         });

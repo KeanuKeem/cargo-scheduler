@@ -1,9 +1,12 @@
 const Shipment = require("../models/Shipment");
 const User = require("../models/User");
+const { findColours } = require("../services/findShipment");
 
 const saveHandling = async (req) => {
   if (req.contType === "FAK") {
     try {
+      const shipment = await Shipment.findOne({ref: req.body.ref});
+      const colours = findColours(shipment, req.userData.userId);
       await Shipment.findOneAndUpdate(
         {
           ref: req.body.ref,
@@ -15,7 +18,9 @@ const saveHandling = async (req) => {
           favourite: req.body.favourite,
           isHold: req.body.isHold,
           "dtr.isDtr": req.body.isDtr,
-          "dtr.date": req.body.dtrDate
+          "dtr.date": req.body.dtrDate,
+          backColour: colours.back,
+          fontColour: colours.font,
         }
       );
       if (req.body.favourite) {
@@ -44,6 +49,8 @@ const saveHandling = async (req) => {
     }
   } else {
     try {
+      const shipment = await Shipment.findOne({ref: req.body.ref});
+      const colours = await findColours(shipment, req.userData.userId);
       await Shipment.findOneAndUpdate(
         {
           ref: req.body.ref,
@@ -73,7 +80,9 @@ const saveHandling = async (req) => {
           favourite: req.body.favourite,
           isHold: req.body.isHold,
           "dtr.isDtr": req.body.isDtr,
-          "dtr.date": req.body.dtrDate
+          "dtr.date": req.body.dtrDate,
+          backColour: colours.back,
+          fontColour: colours.font,
         }
       );
 
@@ -98,7 +107,8 @@ const saveHandling = async (req) => {
       }
 
       return true;
-    } catch {
+    } catch(err) {
+      console.log(err);
       return false;
     }
   }

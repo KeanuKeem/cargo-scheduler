@@ -19,27 +19,18 @@ const shipmentSchema = new mongoose.Schema({
   },
   port: {
     type: String,
-    required: true,
   },
   vessel: {
     type: String,
-    required: true,
   },
   voyage: {
     type: String,
-    required: function () {
-      return this.contType !== "AIR";
-    },
   },
   container: {
     type: String,
-    required: function () {
-      return this.contType !== "AIR";
-    },
   },
   depot: {
     type: String,
-    required: true,
   },
   dtr: {
     isDtr: { type: Boolean, default: false },
@@ -85,12 +76,6 @@ const shipmentSchema = new mongoose.Schema({
   mbl: {
     number: {
       type: String,
-      required: function () {
-        if (this.contType === "BKR" || this.contType === "AIR") {
-          return false;
-        }
-        return true;
-      },
     },
     isSurr: {
       type: Boolean,
@@ -104,9 +89,6 @@ const shipmentSchema = new mongoose.Schema({
   hbl: {
     number: {
       type: String,
-      required: function () {
-        return this.contType !== "FAK";
-      },
     },
     isSurr: {
       type: Boolean,
@@ -214,6 +196,8 @@ const shipmentSchema = new mongoose.Schema({
       type: String,
     },
   },
+  fontColour: String,
+  backColour: String,
   creator: {
     type: mongoose.Types.ObjectId,
     required: true,

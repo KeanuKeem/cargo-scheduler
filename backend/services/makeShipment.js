@@ -12,24 +12,24 @@ const checkEmptyForCreateShipment = (req) => {
   if (req.body.schedule === "") {
     return { value: false, message: "Please choose the date." };
   }
-  if (req.body.port === "") {
-    return {
-      value: false,
-      message: "Arriving or Departuring place cannot be Empty.",
-    };
-  }
-  if (req.body.vessel === "") {
-    return { value: false, message: "Vessel name cannot be Empty." };
-  }
-  if (req.body.voyage === "") {
-    return { value: false, message: "Voyage# cannot be Empty." };
-  }
-  if (req.body.container === "") {
-    return { value: false, message: "Container# cannot be Empty." };
-  }
-  if (req.body.depot === "") {
-    return { value: false, message: "Handling Depot cannot be Empty." };
-  }
+  // if (req.body.port === "") {
+  //   return {
+  //     value: false,
+  //     message: "Arriving or Departuring place cannot be Empty.",
+  //   };
+  // }
+  // if (req.body.vessel === "") {
+  //   return { value: false, message: "Vessel name cannot be Empty." };
+  // }
+  // if (req.body.voyage === "") {
+  //   return { value: false, message: "Voyage# cannot be Empty." };
+  // }
+  // if (req.body.container === "") {
+  //   return { value: false, message: "Container# cannot be Empty." };
+  // }
+  // if (req.body.depot === "") {
+  //   return { value: false, message: "Handling Depot cannot be Empty." };
+  // }
   if (req.body.creator === "") {
     return { value: false, message: "Please log in and try again!" };
   } else {
@@ -53,6 +53,7 @@ const makeShipment = async (req) => {
   if (!checkEmpty.value) {
     return checkEmpty.message;
   } else {
+    const user = await User.findOne({ _id: req.userData.userId });
     try {
       let shipment;
       if (req.body.contType === "FAK") {
@@ -78,6 +79,8 @@ const makeShipment = async (req) => {
             isSurr: false,
             date: "",
           },
+          fontColour: user.preferences.fontBase,
+          backColour: user.preferences.backBase,
           creator: req.userData.userId,
         });
       } else if (req.body.contType === "AIR") {
@@ -142,6 +145,8 @@ const makeShipment = async (req) => {
             startDate: "",
             endDate: "",
           },
+          fontColour: user.preferences.backBase,
+          backColour: user.preferences.fontBase,
           creator: req.userData.userId,
         });
       } else if (req.body.contType === "BKR") {
@@ -203,6 +208,8 @@ const makeShipment = async (req) => {
             startDate: "",
             endDate: "",
           },
+          fontColour: user.preferences.fontBase,
+          backColour: user.preferences.backBase,
           creator: req.userData.userId,
         });
       } else if (req.body.contType === "LCLFAK") {
@@ -270,6 +277,8 @@ const makeShipment = async (req) => {
             startDate: "",
             endDate: "",
           },
+          fontColour: user.preferences.fontBase,
+          backColour: user.preferences.backBase,
           creator: req.userData.userId,
         });
       } else {
@@ -336,6 +345,8 @@ const makeShipment = async (req) => {
             startDate: "",
             endDate: "",
           },
+          fontColour: user.preferences.fontBase,
+          backColour: user.preferences.backBase,
           creator: req.userData.userId,
         });
       }

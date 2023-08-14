@@ -6,7 +6,7 @@ const saveHandling = async (req) => {
   if (req.contType === "FAK") {
     try {
       const shipment = await Shipment.findOne({ref: req.body.ref});
-      const colours = findColours(shipment, req.userData.userId);
+      const colours = await findColours(shipment, req.userData.userId);
       await Shipment.findOneAndUpdate(
         {
           ref: req.body.ref,

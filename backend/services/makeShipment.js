@@ -145,8 +145,8 @@ const makeShipment = async (req) => {
             startDate: "",
             endDate: "",
           },
-          fontColour: user.preferences.backBase,
-          backColour: user.preferences.fontBase,
+          fontColour: user.preferences.fontBase,
+          backColour: user.preferences.backBase,
           creator: req.userData.userId,
         });
       } else if (req.body.contType === "BKR") {

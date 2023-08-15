@@ -10,7 +10,7 @@ const makeScheduleForTodo = async (schedule, month, year, userId) => {
     },
   ];
   for (const shipment of schedule) {
-    const colours = await findColours(shipment, userId);
+    // const colours = await findColours(shipment, userId);
     const filteredSchedule = finalSchedule[0].shipments.filter((dateObj) => {
       return dateObj.date === shipment.day.date;
     });
@@ -42,8 +42,8 @@ const makeScheduleForTodo = async (schedule, month, year, userId) => {
         isHold: shipment.isHold,
         contType: shipment.contType,
         cargoType: shipment.cargoType,
-        font: colours.font,
-        back: colours.back,
+        font: shipment.font,
+        back: shipment.back,
       });
       // }
     } else {
@@ -82,8 +82,8 @@ const makeScheduleForTodo = async (schedule, month, year, userId) => {
             isHold: shipment.isHold,
             contType: shipment.contType,
             cargoType: shipment.cargoType,
-            font: colours.font,
-            back: colours.back,
+            font: shipment.font,
+            back: shipment.back,
           },
         ],
       });

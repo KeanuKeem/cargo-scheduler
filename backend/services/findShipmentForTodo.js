@@ -42,8 +42,8 @@ const makeScheduleForTodo = async (schedule, month, year, userId) => {
         isHold: shipment.isHold,
         contType: shipment.contType,
         cargoType: shipment.cargoType,
-        font: shipment.font,
-        back: shipment.back,
+        font: shipment.fontColour,
+        back: shipment.backColour,
       });
       // }
     } else {
@@ -82,8 +82,8 @@ const makeScheduleForTodo = async (schedule, month, year, userId) => {
             isHold: shipment.isHold,
             contType: shipment.contType,
             cargoType: shipment.cargoType,
-            font: shipment.font,
-            back: shipment.back,
+            font: shipment.fontColour,
+            back: shipment.backColour,
           },
         ],
       });

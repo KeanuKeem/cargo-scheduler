@@ -78,7 +78,7 @@ const saveHandling = async (req) => {
         }
       );
 
-      const shipment = await findOne({ref: req.body.ref});
+      const shipment = await Shipment.findOne({ref: req.body.ref});
       const colours = await findColours(shipment, req.userData.userId);
       await Shipment.findOneAndUpdate(
         {
